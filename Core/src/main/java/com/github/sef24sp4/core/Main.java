@@ -1,4 +1,4 @@
-package com.github.sef24sp4.shapewar;
+package com.github.sef24sp4.core;
 
 
 import javafx.application.Application;

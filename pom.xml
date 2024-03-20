@@ -110,7 +110,7 @@
 								in "java.lang.module.FindException: Module monitor.observer.zero not found";
 								strange... -->
 								<!-- <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000</argument> -->
-								<argument>--module=Core/com.github.sef24sp4.shapewar.Main</argument>
+								<argument>--module=Core/com.github.sef24sp4.core.Main</argument>
 							</arguments>
 						</configuration>
 					</plugin>
