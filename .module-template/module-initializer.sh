@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-readonly SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"
+SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"; readonly SCRIPT_DIR;
 print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
 stderr() { print "$@" 1>&2; }
 reportError() { stderr "$2"; return "$1"; }
@@ -15,8 +15,6 @@ TEMPLATE="TEMPLATE_1"
 TEMPLATE_KEYWORD="$TEMPLATE"
 TEMPLATE_PATH="$SCRIPT_DIR/templates/$TEMPLATE"
 TEMPLATE_GROUP_PATH="com/github/sef24sp4"
-TEMPLATE_MODULE_INFO_PATH="src/main/java/module-info.java"
-TEMPLATE_POM_PATH="pom.xml"
 
 COMMON_NAME="Common"
 
@@ -32,10 +30,6 @@ NEW_MODULE_CLASS_PATH="$TEMPLATE_GROUP_PATH/$NEW_MODULE_PATH_SUFFIX"
 FULL_MAIN_MODULE_PATH="$NEW_MODULE_PATH/src/main/java/$NEW_MODULE_CLASS_PATH"
 FULL_RESOURCES_MODULE_PATH="$NEW_MODULE_PATH/src/main/resources/$NEW_MODULE_CLASS_PATH"
 FULL_TEST_MODULE_PATH="$NEW_MODULE_PATH/src/test/java/$NEW_MODULE_CLASS_PATH"
-
-FULL_NEW_POM_PATH="$NEW_MODULE_PATH/$TEMPLATE_POM_PATH"
-FULL_NEW_MODULE_INFO_PATH="$NEW_MODULE_PATH/$TEMPLATE_MODULE_INFO_PATH"
-
 
 
 
@@ -58,8 +52,6 @@ for _i in "$FULL_MAIN_MODULE_PATH" "$FULL_RESOURCES_MODULE_PATH" "$FULL_TEST_MOD
 	install -D "$DEV_NULL" "$_i/$GIT_KEEP_FILENAME"
 done
 
-for _i in "$FULL_NEW_POM_PATH" "$FULL_NEW_MODULE_INFO_PATH"; do
-	sed -i "s/$TEMPLATE_KEYWORD/$NEW_MODULE_NAME/g" "$_i"
-done
+find "$NEW_MODULE_PATH" -type "f" -exec sed -i "s/$TEMPLATE_KEYWORD/$NEW_MODULE_NAME/g" {} \;
 
 print "<module>$NEW_MODULE_NAME</module>"

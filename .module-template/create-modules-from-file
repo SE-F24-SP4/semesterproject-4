@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-readonly SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"
+SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"; readonly SCRIPT_DIR;
 print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
 stderr() { print "$@" 1>&2; }
 reportError() { stderr "$2"; return "$1"; }
