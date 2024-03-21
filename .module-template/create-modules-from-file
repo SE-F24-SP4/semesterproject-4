@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+readonly SCRIPT_DIR="$(realpath "$(dirname -- "$0")")"
+print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
+stderr() { print "$@" 1>&2; }
+reportError() { stderr "$2"; return "$1"; }
+
+commandv() { command -v "$1" || reportError "$?" "Executable '$1' not found"; }
+
+
+MODULES_LIST="$1"
+
+if ! [ -f "$MODULES_LIST" ]; then
+	reportError 1 "No such file: $MODULES_LIST"
+fi
+
+
+awk 'NF > 0 && !/^[[:space:]]*#/' "$MODULES_LIST" | xargs -n 1 -- "$SCRIPT_DIR/module-initializer.sh"

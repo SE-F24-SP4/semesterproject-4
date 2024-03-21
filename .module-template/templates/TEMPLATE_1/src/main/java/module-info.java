@@ -1,0 +1,2 @@
+module TEMPLATE_1 {
+}
