@@ -8,15 +8,9 @@
 		<artifactId>shapewar</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-
 	<artifactId>Player</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>Common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 
 </project>
