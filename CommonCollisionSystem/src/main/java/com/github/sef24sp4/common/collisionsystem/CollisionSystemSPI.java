@@ -6,7 +6,7 @@ import com.github.sef24sp4.common.interfaces.IGameSettings;
 public interface CollisionSystemSPI {
 
 	/**
-	 * Important that this is called before processCollisions method
+	 * Important that this is called before processCollisions method.
 	 * @param callback
 	 */
 	public void setIntersectsCallback(IntersectsCallback callback);
