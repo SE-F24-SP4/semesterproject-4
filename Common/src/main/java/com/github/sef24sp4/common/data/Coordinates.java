@@ -30,7 +30,6 @@ public class Coordinates {
 	}
 
 
-	//TODO: implement this
 	public double getRelativeRotationTo(Coordinates otherCoordinates) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
