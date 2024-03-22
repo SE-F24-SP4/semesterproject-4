@@ -1,2 +1,3 @@
 module CommonCollisionSystem {
+	requires Common;
 }
