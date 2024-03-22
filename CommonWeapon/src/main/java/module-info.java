@@ -1,2 +1,3 @@
 module CommonWeapon {
+	requires Common;
 }
