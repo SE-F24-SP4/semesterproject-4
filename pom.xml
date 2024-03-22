@@ -11,9 +11,25 @@
 	<name>ShapeWar</name>
 
 	<modules>
-		<module>Core</module>
+		<module>AStarAI</module>
+		<module>BaseWeapon</module>
+		<module>CollisionSystem</module>
 		<module>Common</module>
+		<module>CommonAI</module>
+		<module>CommonCollisionSystem</module>
+		<module>CommonEnemy</module>
+		<module>CommonInventory</module>
+		<module>CommonItem</module>
+		<module>CommonProjectile</module>
+		<module>CommonWeapon</module>
+		<module>CommonWorldMap</module>
+		<module>Core</module>
+		<module>HealthItem</module>
+		<module>Inventory</module>
 		<module>Player</module>
+		<module>PolygonEnemy</module>
+		<module>WaveGenerator</module>
+		<module>WorldMap</module>
 	</modules>
 
 	<properties>
