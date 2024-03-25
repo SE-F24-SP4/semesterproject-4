@@ -88,6 +88,10 @@
 	<!-- </module> -->
 
 	<module name="TreeWalker">
+		<!-- Custom checks -->
+		<module name="RequireThis">
+			<property name="validateOnlyOverlapping" value="false"/>
+		</module>
 
 		<!-- Checks for Javadoc comments.                     -->
 		<!-- See https://checkstyle.org/checks/javadoc/index.html -->
