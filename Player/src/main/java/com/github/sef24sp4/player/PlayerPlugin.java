@@ -32,11 +32,11 @@ public class PlayerPlugin implements IGamePluginService {
 		this.player = new Player();
 		this.player.setX(gameSettings.getDisplayWidth() / 2);
 		this.player.setY(gameSettings.getDisplayHeight() / 2);
-		List<Coordinates> a = new ArrayList<>();
-		a.add(new Coordinates(-5, -5));
-		a.add(new Coordinates(10, 0));
-		a.add(new Coordinates(-5, 5));
-		this.player.setPolygonCoordinates(a);
+		List<Coordinates> cord = new ArrayList<>();
+		cord.add(new Coordinates(-5, -5));
+		cord.add(new Coordinates(10, 0));
+		cord.add(new Coordinates(-5, 5));
+		this.player.setPolygonCoordinates(cord);
 		return this.player;
 	}
 }

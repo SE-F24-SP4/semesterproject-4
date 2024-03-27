@@ -8,6 +8,8 @@ import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
 
 public class PlayerControl implements IEntityProcessingService {
+	private double walkSpeed = 10;
+	private double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
 	private IMouseCoordinates mouse;
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
@@ -18,17 +20,34 @@ public class PlayerControl implements IEntityProcessingService {
 				System.out.println("Shooting not implemented yet");
 				//Shoot
 			}
+			//maybe add diagonals in inputAction
+			if (gameSettings.getKeys().isDown(InputAction.UP) && gameSettings.getKeys().isDown(InputAction.LEFT)) {
+				player.setX(player.getX() - this.diagonalWalkSpeed);
+				player.setY(player.getY() + this.diagonalWalkSpeed);
+			}
+			if (gameSettings.getKeys().isDown(InputAction.UP) && gameSettings.getKeys().isDown(InputAction.RIGHT)) {
+				player.setX(player.getX() + this.diagonalWalkSpeed);
+				player.setY(player.getY() + this.diagonalWalkSpeed);
+			}
+			if (gameSettings.getKeys().isDown(InputAction.DOWN) && gameSettings.getKeys().isDown(InputAction.LEFT)) {
+				player.setX(player.getX() - this.diagonalWalkSpeed);
+				player.setY(player.getY() - this.diagonalWalkSpeed);
+			}
+			if (gameSettings.getKeys().isDown(InputAction.DOWN) && gameSettings.getKeys().isDown(InputAction.RIGHT)) {
+				player.setX(player.getX() + this.diagonalWalkSpeed);
+				player.setY(player.getY() - this.diagonalWalkSpeed);
+			}
 			if (gameSettings.getKeys().isDown(InputAction.LEFT)) {
-				player.setX(player.getX() - 1);
+				player.setX(player.getX() - this.walkSpeed);
 			}
 			if (gameSettings.getKeys().isDown(InputAction.RIGHT)) {
-				player.setX(player.getX() + 1);
+				player.setX(player.getX() + this.walkSpeed);
 			}
 			if (gameSettings.getKeys().isDown(InputAction.UP)) {
-				player.setY(player.getY() + 1);
+				player.setY(player.getY() + this.walkSpeed);
 			}
 			if (gameSettings.getKeys().isDown(InputAction.DOWN)) {
-				player.setY(player.getY() - 1);
+				player.setY(player.getY() - this.walkSpeed);
 			}
 			if (player.getX() < 0) {
 				player.setX(1);
