@@ -1,2 +1,4 @@
 module Player {
+	requires Common;
+
 }
