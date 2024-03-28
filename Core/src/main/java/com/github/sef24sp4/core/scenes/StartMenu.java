@@ -12,17 +12,32 @@ import java.io.IOException;
 import java.util.Objects;
 
 public final class StartMenu {
-	@FXML
-	private Button startButton;
-
 	public static void load(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(Objects.requireNonNull(StartMenu.class.getResource("start-menu.fxml")));
+		FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(StartMenu.class.getResource("start-menu.fxml")));
+		Parent root = loader.load();
+
+		StartMenu startMenu = loader.getController();
+		startMenu.setStage(stage);
 
 		stage.setScene(new Scene(root));
 		stage.show();
 	}
 
+	private Stage stage;
+
+	@FXML
+	private Button startButton;
+
+
+	public Stage getStage() {
+		return this.stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
 	public void startGame(ActionEvent actionEvent) {
-		System.out.println("Start game");
+		GameScene.load(this.getStage());
 	}
 }
