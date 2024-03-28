@@ -1,4 +1,4 @@
-package com.github.sef24sp4.core;
+package com.github.sef24sp4.core.scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,6 +1,7 @@
 package com.github.sef24sp4.core;
 
 
+import com.github.sef24sp4.core.scenes.StartMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
