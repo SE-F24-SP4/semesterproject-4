@@ -12,9 +12,9 @@ public final class Main extends Application {
 	}
 
 	@Override
-	public void start(final Stage window) throws Exception {
-		window.setTitle("Shape War");
-		StartMenu.load(window);
+	public void start(final Stage primaryStage) throws Exception {
+		primaryStage.setTitle("Shape War");
+		StartMenu.load(primaryStage);
 	}
 
 }

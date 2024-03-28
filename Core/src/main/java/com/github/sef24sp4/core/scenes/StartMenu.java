@@ -12,15 +12,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 public final class StartMenu {
-
 	@FXML
 	private Button startButton;
 
-	public static void load(Stage window) throws IOException {
+	public static void load(Stage stage) throws IOException {
 		Parent root = FXMLLoader.load(Objects.requireNonNull(StartMenu.class.getResource("start-menu.fxml")));
 
-		window.setScene(new Scene(root));
-		window.show();
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 
 	public void startGame(ActionEvent actionEvent) {
