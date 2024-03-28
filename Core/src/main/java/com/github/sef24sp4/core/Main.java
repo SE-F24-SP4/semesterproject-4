@@ -13,7 +13,7 @@ public final class Main extends Application {
 	@Override
 	public void start(final Stage window) throws Exception {
 		window.setTitle("Shape War");
-		window.show();
+		StartMenu.load(window);
 	}
 
 }
