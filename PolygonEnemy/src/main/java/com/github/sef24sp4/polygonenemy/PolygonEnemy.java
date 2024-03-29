@@ -87,7 +87,9 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		if (otherEntity instanceof IAttackingEntity attackingEntity && attackingEntity.getAttackDamage() > 0 && !(otherEntity instanceof PolygonEnemy)) {
+		if (otherEntity instanceof IAttackingEntity attackingEntity
+				&& attackingEntity.getAttackDamage() > 0
+				&& otherEntity.getMetadata().getType() != this.getMetadata().getType()) {
 			this.health -= attackingEntity.getAttackDamage();
 			// death check
 			if (this.getHealth() < 0) {
