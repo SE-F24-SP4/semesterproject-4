@@ -5,4 +5,6 @@ public interface IGameInput {
 	public boolean isDown(InputAction key);
 
 	public boolean isPressed(InputAction key);
+
+	public IMouseCoordinates getMouseCoordinates();
 }
