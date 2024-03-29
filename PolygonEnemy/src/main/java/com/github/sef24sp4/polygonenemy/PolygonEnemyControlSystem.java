@@ -9,10 +9,9 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 public class PolygonEnemyControlSystem implements IEntityProcessingService, EnemySPI {
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
-		for (IEntity polygonEnemy : entityManager.getEntitiesByClass(PolygonEnemy.class)) {
-			// movement
-
-		}
+//		for (IEntity polygonEnemy : entityManager.getEntitiesByClass(PolygonEnemy.class)) {
+//			// movement
+//		}
 	}
 
 	@Override

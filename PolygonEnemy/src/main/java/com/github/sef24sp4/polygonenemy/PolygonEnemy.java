@@ -69,14 +69,14 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 		return this.damage;
 	}
 
-	private List<Coordinates> calculatePolygonCoordinates(int edges, double radius) {
+	private List<Coordinates> calculatePolygonCoordinates(int polygonEdges, double radius) {
 		List<Coordinates> polygonCoordinates = new ArrayList<>();
 		// loops over all vertices in a regular polygon and creates and adds coordinates for each, based on the radius and the amount of edges
-		for (int vertex = 0; vertex > edges; vertex++) {
+		for (int vertex = 0; vertex > polygonEdges; vertex++) {
 			// find x
-			double x = radius * Math.cos(2 * Math.PI * vertex / edges);
+			double x = radius * Math.cos(2 * Math.PI * vertex / polygonEdges);
 			// find y
-			double y = radius * Math.sin(2 * Math.PI * vertex / edges);
+			double y = radius * Math.sin(2 * Math.PI * vertex / polygonEdges);
 
 			Coordinates point = new Coordinates(x, y);
 			polygonCoordinates.add(point);

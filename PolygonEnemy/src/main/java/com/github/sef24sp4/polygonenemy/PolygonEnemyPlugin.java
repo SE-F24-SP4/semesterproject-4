@@ -30,7 +30,7 @@ public class PolygonEnemyPlugin implements IGamePluginService {
 			// find y
 			double y = 20 * Math.sin(2 * Math.PI * enemy / enemyAmount);
 			// add start position
-			Coordinates startPosition = new Coordinates(x,y);
+			Coordinates startPosition = new Coordinates(x, y);
 			polygonEnemy.setCoordinates(startPosition);
 			// add entity
 			entityManager.addEntity(polygonEnemy);
