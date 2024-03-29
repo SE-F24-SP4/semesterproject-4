@@ -15,12 +15,11 @@ public class PlayerControl implements IEntityProcessingService {
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		for (CommonEntity player : entityManager.getEntitiesByClass(Player.class)) {
 			player.setRotation(this.getRotationToCursor(player, this.mouse));
-
 			if (gameSettings.getKeys().isDown(InputAction.SHOOT)) {
 				System.out.println("Shooting not implemented yet");
 				//Shoot
 			}
-			//maybe add diagonals in inputAction
+			//Player movement
 			if (gameSettings.getKeys().isDown(InputAction.UP) && gameSettings.getKeys().isDown(InputAction.LEFT)) {
 				player.setX(player.getX() - this.diagonalWalkSpeed);
 				player.setY(player.getY() + this.diagonalWalkSpeed);
@@ -37,18 +36,19 @@ public class PlayerControl implements IEntityProcessingService {
 				player.setX(player.getX() + this.diagonalWalkSpeed);
 				player.setY(player.getY() - this.diagonalWalkSpeed);
 			}
-			if (gameSettings.getKeys().isDown(InputAction.LEFT)) {
+			if (gameSettings.getKeys().isDown(InputAction.LEFT) && !gameSettings.getKeys().isDown(InputAction.UP) && !gameSettings.getKeys().isDown(InputAction.DOWN)) {
 				player.setX(player.getX() - this.walkSpeed);
 			}
-			if (gameSettings.getKeys().isDown(InputAction.RIGHT)) {
+			if (gameSettings.getKeys().isDown(InputAction.RIGHT) && !gameSettings.getKeys().isDown(InputAction.UP) && !gameSettings.getKeys().isDown(InputAction.DOWN)) {
 				player.setX(player.getX() + this.walkSpeed);
 			}
-			if (gameSettings.getKeys().isDown(InputAction.UP)) {
+			if (gameSettings.getKeys().isDown(InputAction.UP) && !gameSettings.getKeys().isDown(InputAction.LEFT) && !gameSettings.getKeys().isDown(InputAction.RIGHT)) {
 				player.setY(player.getY() + this.walkSpeed);
 			}
-			if (gameSettings.getKeys().isDown(InputAction.DOWN)) {
+			if (gameSettings.getKeys().isDown(InputAction.DOWN) && !gameSettings.getKeys().isDown(InputAction.LEFT) && !gameSettings.getKeys().isDown(InputAction.RIGHT)) {
 				player.setY(player.getY() - this.walkSpeed);
 			}
+			//Check if player is outside playable area
 			if (player.getX() < 0) {
 				player.setX(1);
 			}
