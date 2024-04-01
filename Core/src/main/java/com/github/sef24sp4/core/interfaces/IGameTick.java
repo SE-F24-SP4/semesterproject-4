@@ -1,4 +1,4 @@
-package com.github.sef24sp4.core.engine;
+package com.github.sef24sp4.core.interfaces;
 
 /**
  * A GameTick represents the code which gets executed continuously.

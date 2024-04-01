@@ -1,4 +1,4 @@
-package com.github.sef24sp4.core.game;
+package com.github.sef24sp4.core.interfaces;
 
 import com.github.sef24sp4.common.entities.IEntity;
 
