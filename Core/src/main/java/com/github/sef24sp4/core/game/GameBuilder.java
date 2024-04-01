@@ -1,0 +1,34 @@
+package com.github.sef24sp4.core.game;
+
+import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.core.interfaces.EntityToGraphicsMapper;
+import com.github.sef24sp4.core.interfaces.IGameProcessor;
+import com.github.sef24sp4.core.interfaces.IGameTickExecutor;
+
+public class GameBuilder {
+	private GameSettings gameSettings;
+	private EntityToGraphicsMapper<IEntity, ?> entityEntityToGraphicsMapper;
+
+	private IGameTickExecutor gameTickExecutor;
+
+	public GameBuilder setGameSettings(GameSettings gameSettings) {
+		this.gameSettings = gameSettings;
+		return this;
+	}
+
+	public GameBuilder setEntityEntityToGraphicsMapper(EntityToGraphicsMapper<IEntity, ?> entityEntityToGraphicsMapper) {
+		this.entityEntityToGraphicsMapper = entityEntityToGraphicsMapper;
+		return this;
+	}
+
+	public GameBuilder setGameTickExecutor(IGameTickExecutor gameTickExecutor) {
+		this.gameTickExecutor = gameTickExecutor;
+		return this;
+	}
+
+	public IGameProcessor build() {
+		final EntityManager entityManager = new EntityManager(this.entityEntityToGraphicsMapper);
+		final GameLoop gameLoop = new GameLoop(this.gameSettings, entityManager);
+		return new Game(gameLoop, this.gameTickExecutor);
+	}
+}

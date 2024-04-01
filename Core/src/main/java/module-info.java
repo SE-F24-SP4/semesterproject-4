@@ -1,4 +1,6 @@
 module Core {
+	uses com.github.sef24sp4.common.services.IEntityProcessingService;
+	uses com.github.sef24sp4.common.services.IGamePluginService;
 	requires javafx.graphics;
 	requires javafx.controls;
 	requires javafx.fxml;
