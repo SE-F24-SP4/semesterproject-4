@@ -19,17 +19,13 @@ public class CommonEntity implements IEntity {
 		this.getCoordinates().setY(y);
 	}
 
-	public void setCoordinates(Coordinates coordinates) {
-		this.coordinates = coordinates;
-	}
-
 	@Override
 	public Coordinates getCoordinates() {
 		return this.coordinates;
 	}
 
-	public void setPolygonCoordinates(List<Coordinates> polygonCoordinates) {
-		this.polygonCoordinates = polygonCoordinates;
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
 	}
 
 	@Override
@@ -37,12 +33,16 @@ public class CommonEntity implements IEntity {
 		return this.polygonCoordinates;
 	}
 
-	public void setRotation(double rotation) {
-		this.rotation = rotation;
+	public void setPolygonCoordinates(List<Coordinates> polygonCoordinates) {
+		this.polygonCoordinates = polygonCoordinates;
 	}
 
 	@Override
 	public double getRotation() {
 		return this.rotation;
+	}
+
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
 	}
 }
