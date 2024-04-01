@@ -28,12 +28,12 @@ public class GameInput implements IGameInput {
 
 	@Override
 	public boolean isDown(InputAction key) {
-		return this.keyState.get(key);
+		return this.keyState.getOrDefault(key, false);
 	}
 
 	@Override
 	public boolean isPressed(InputAction key) {
-		return this.currentTickKeyState.get(key);
+		return this.currentTickKeyState.getOrDefault(key, false);
 	}
 
 	@Override
