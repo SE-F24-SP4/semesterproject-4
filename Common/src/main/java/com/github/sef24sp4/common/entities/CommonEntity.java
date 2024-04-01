@@ -2,6 +2,7 @@ package com.github.sef24sp4.common.entities;
 
 import com.github.sef24sp4.common.data.Coordinates;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CommonEntity implements IEntity {
@@ -35,6 +36,10 @@ public class CommonEntity implements IEntity {
 
 	public void setPolygonCoordinates(List<Coordinates> polygonCoordinates) {
 		this.polygonCoordinates = polygonCoordinates;
+	}
+
+	public void setPolygonCoordinates(Coordinates... polygonCoordinates) {
+		this.setPolygonCoordinates(Arrays.asList(polygonCoordinates));
 	}
 
 	@Override
