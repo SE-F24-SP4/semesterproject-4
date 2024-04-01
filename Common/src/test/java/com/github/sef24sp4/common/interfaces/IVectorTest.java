@@ -58,7 +58,12 @@ class IVectorTest {
 	}
 
 	@Test
+	void getDeterminant() {
+		assertEquals(-11, this.vector.getDeterminant(this.otherVector));
+	}
+
+	@Test
 	void getAngleBetween() {
-		assertEquals(0.386875717731028, this.vector.getAngleBetween(this.otherVector));
+		assertEquals(0.3868757177310281, this.vector.getAngleBetween(this.otherVector));
 	}
 }

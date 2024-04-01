@@ -18,17 +18,13 @@ public class Coordinates implements IVector {
 		this.y = y;
 	}
 
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-	}
-
 	@Override
 	public double getX() {
 		return this.x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
 	}
 
 	@Override
@@ -36,6 +32,9 @@ public class Coordinates implements IVector {
 		return this.y;
 	}
 
+	public void setY(double y) {
+		this.y = y;
+	}
 
 	/**
 	 * Get a vector between current coordinates and the passed in coordinates.
