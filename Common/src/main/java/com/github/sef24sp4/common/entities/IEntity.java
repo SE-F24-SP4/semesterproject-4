@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface IEntity {
 
-	public List<Coordinates> getPolygonCoordinates();
+	public Coordinates[] getPolygonCoordinates();
 
 	public default double[] getPolygonValuesArray() {
-		List<Double> output = new ArrayList<>(this.getPolygonCoordinates().size() * 2);
-		this.getPolygonCoordinates().forEach(coordinates -> {
+		List<Double> output = new ArrayList<>(this.getPolygonCoordinates().length * 2);
+		for (Coordinates coordinates : this.getPolygonCoordinates()) {
 			output.add(coordinates.getX());
 			output.add(coordinates.getY());
-		});
+		}
 		// See: https://stackoverflow.com/a/23945015
 		return output.stream().mapToDouble(Double::doubleValue).toArray();
 	}

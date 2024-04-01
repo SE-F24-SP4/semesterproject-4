@@ -2,15 +2,18 @@ package com.github.sef24sp4.common.entities;
 
 import com.github.sef24sp4.common.data.Coordinates;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class CommonEntity implements IEntity {
 	private Coordinates coordinates;
 
-	private List<Coordinates> polygonCoordinates;
+	private Coordinates[] polygonCoordinates;
 
 	private double rotation;
+
+	public CommonEntity() {
+		this.coordinates = new Coordinates();
+	}
 
 	public void setX(double x) {
 		this.getCoordinates().setX(x);
@@ -30,16 +33,16 @@ public class CommonEntity implements IEntity {
 	}
 
 	@Override
-	public List<Coordinates> getPolygonCoordinates() {
+	public Coordinates[] getPolygonCoordinates() {
 		return this.polygonCoordinates;
 	}
 
 	public void setPolygonCoordinates(List<Coordinates> polygonCoordinates) {
-		this.polygonCoordinates = polygonCoordinates;
+		this.polygonCoordinates = polygonCoordinates.toArray(new Coordinates[0]);
 	}
 
 	public void setPolygonCoordinates(Coordinates... polygonCoordinates) {
-		this.setPolygonCoordinates(Arrays.asList(polygonCoordinates));
+		this.polygonCoordinates = polygonCoordinates;
 	}
 
 	@Override
