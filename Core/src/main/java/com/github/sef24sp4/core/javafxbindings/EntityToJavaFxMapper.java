@@ -46,7 +46,7 @@ public class EntityToJavaFxMapper implements EntityToGraphicsMapper<IEntity, Pol
 		this.map.forEach(((entity, polygon) -> {
 			polygon.setTranslateX(entity.getX());
 			polygon.setTranslateY(entity.getY());
-			polygon.setRotate(entity.getRotation());
+			polygon.setRotate(Math.toDegrees(entity.getRotation()));
 		}));
 	}
 }
