@@ -1,7 +1,7 @@
 package com.github.sef24sp4.common.metadata;
 
 public class MetadataBuilder {
-	private GameMetadata metadata;
+	private final GameMetadata metadata;
 
 
 	public MetadataBuilder(GameElementType type) {

@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GameMetadata implements IGameMetadata {
-	private GameElementType type;
-
-	private Map<String, String> map;
+	private final Map<String, String> map;
+	private final GameElementType type;
 
 	GameMetadata(GameElementType type) {
-		this.setType(type);
+		this.type = type;
 		this.map = new HashMap<>();
 	}
 
@@ -22,13 +21,8 @@ public class GameMetadata implements IGameMetadata {
 		return this.map.get(identifier);
 	}
 
-
-	void setType(GameElementType type) {
-		this.type = type;
-	}
-
 	@Override
 	public GameElementType getType() {
-		return null;
+		return this.type;
 	}
 }
