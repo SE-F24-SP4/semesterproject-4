@@ -92,7 +92,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 				&& otherEntity.getMetadata().getType() != this.getMetadata().getType()) {
 			this.health -= attackingEntity.getAttackDamage();
 			// death check
-			if (this.getHealth() < 0) {
+			if (this.getHealth() <= 0) {
 				if (this.getEdges() > 3) { // Transform
 					// instantiate the lower polygon entity
 					PolygonEnemy transformedPolygonEnemy = new PolygonEnemy(this.getEdges() - 1);
