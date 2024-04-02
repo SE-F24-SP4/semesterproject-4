@@ -8,7 +8,15 @@ import com.github.sef24sp4.common.services.IGamePluginService;
 
 import java.util.Random;
 
-// For demo
+/**
+ * For demo purpose
+ * <p>
+ * At game start it creates a circle of enemies ranging from 3 to 20 with random amount of edges ranging between 3 and 10
+ * <p>
+ * At game stop it deletes all enemies of type PolygonEnemy
+ * @see IGamePluginService
+ * @see PolygonEnemy
+ */
 public class PolygonEnemyPlugin implements IGamePluginService {
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
