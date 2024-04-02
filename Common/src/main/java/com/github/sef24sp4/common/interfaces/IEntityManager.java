@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IEntityManager {
 
-	public void addEntity(IEntity entity);
+	public boolean addEntity(IEntity entity);
 
-	public IEntity removeEntity(IEntity entity);
+	public boolean removeEntity(IEntity entity);
 
 	public List<IEntity> getAllEntities();
 
