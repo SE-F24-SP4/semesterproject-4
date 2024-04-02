@@ -2,6 +2,7 @@ package com.github.sef24sp4.common.metadata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameMetadata implements IGameMetadata {
 	private final Map<String, String> map;
@@ -17,8 +18,8 @@ public class GameMetadata implements IGameMetadata {
 	}
 
 	@Override
-	public String getProperty(String identifier) {
-		return this.map.get(identifier);
+	public Optional<String> getProperty(String identifier) {
+		return Optional.ofNullable(this.map.get(identifier));
 	}
 
 	@Override

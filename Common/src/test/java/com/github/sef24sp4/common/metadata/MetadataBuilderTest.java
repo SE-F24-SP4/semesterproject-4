@@ -3,7 +3,7 @@ package com.github.sef24sp4.common.metadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MetadataBuilderTest {
 	private MetadataBuilder builder;
@@ -15,9 +15,13 @@ class MetadataBuilderTest {
 
 	@Test
 	void getMetadata() {
-		this.builder.setProperty("test", "hello");
+		assertInstanceOf(MetadataBuilder.class, this.builder.setProperty("test", "hello"));
 		IGameMetadata metadata = this.builder.getMetadata();
+
 		assertEquals(GameElementType.ITEM, metadata.getType());
-		assertEquals("hello", metadata.getProperty("test"));
+
+		assertDoesNotThrow(() -> {
+			assertEquals("hello", metadata.getProperty("test").get());
+		});
 	}
 }
