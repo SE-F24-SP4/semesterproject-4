@@ -1,6 +1,6 @@
 package com.github.sef24sp4.polygonenemy;
 
-import com.github.sef24sp4.common.metadata.IGameMetadata;
+import com.github.sef24sp4.common.metadata.GameElementType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +47,6 @@ class PolygonEnemyTest {
 
 	@Test
 	void getMetadata() {
-		assertInstanceOf(IGameMetadata.class, this.polygonEnemy.getMetadata());
+		assertEquals(GameElementType.ENEMY, this.polygonEnemy.getMetadata().getType());
 	}
 }
