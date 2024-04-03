@@ -17,47 +17,8 @@ public class PlayerControl implements IEntityProcessingService {
 			player.setRotation(
 					player.getCoordinates().getAngleBetween(
 							keys.getMouseCoordinates()
-					)
-			);
-			//TODO:
-			//Check if it should shoot
-			if (keys.isDown(InputAction.SHOOT)) {
-				System.out.println("Shooting not implemented yet");
-				//Shoot code here
-			}
-			//Player movement
-			if (keys.isDown(InputAction.UP) && keys.isDown(InputAction.LEFT)) {
-				player.setX(player.getX() - player.getDiagonalWalkSpeed());
-				player.setY(player.getY() + player.getDiagonalWalkSpeed());
-			}
-			if (keys.isDown(InputAction.UP) && keys.isDown(InputAction.RIGHT)) {
-				player.setX(player.getX() + player.getDiagonalWalkSpeed());
-				player.setY(player.getY() + player.getDiagonalWalkSpeed());
-			}
-			if (keys.isDown(InputAction.DOWN) && keys.isDown(InputAction.LEFT)) {
-				player.setX(player.getX() - player.getDiagonalWalkSpeed());
-				player.setY(player.getY() - player.getDiagonalWalkSpeed());
-			}
-			if (keys.isDown(InputAction.DOWN) && keys.isDown(InputAction.RIGHT)) {
-				player.setX(player.getX() + player.getDiagonalWalkSpeed());
-				player.setY(player.getY() - player.getDiagonalWalkSpeed());
-			}
-			if (keys.isDown(InputAction.LEFT) && !keys.isDown(InputAction.UP)
-					&& !keys.isDown(InputAction.DOWN)) {
-				player.setX(player.getX() - player.getWalkSpeed());
-			}
-			if (keys.isDown(InputAction.RIGHT) && !keys.isDown(InputAction.UP)
-					&& !keys.isDown(InputAction.DOWN)) {
-				player.setX(player.getX() + player.getWalkSpeed());
-			}
-			if (keys.isDown(InputAction.UP) && !keys.isDown(InputAction.LEFT)
-					&& !keys.isDown(InputAction.RIGHT)) {
-				player.setY(player.getY() + player.getWalkSpeed());
-			}
-			if (keys.isDown(InputAction.DOWN) && !keys.isDown(InputAction.LEFT)
-					&& !keys.isDown(InputAction.RIGHT)) {
-				player.setY(player.getY() - player.getWalkSpeed());
-			}
+					));
+
 			//Check if player is outside playable area
 			if (!gameSettings.isEntityWithinFrame(player)) {
 				if (player.getX() < 0) {
@@ -72,6 +33,43 @@ public class PlayerControl implements IEntityProcessingService {
 				if (player.getY() > gameSettings.getDisplayHeight()) {
 					player.setY(gameSettings.getDisplayHeight());
 				}
+			}
+
+			//TODO:
+			//Check if it should shoot
+			if (keys.isDown(InputAction.SHOOT)) {
+				System.out.println("Shooting not implemented yet");
+				//Shoot code here
+			}
+			
+			//Player movement
+			if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
+				player.setX(player.getX() - player.getDiagonalWalkSpeed());
+				player.setY(player.getY() + player.getDiagonalWalkSpeed());
+			}
+			if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
+				player.setX(player.getX() + player.getDiagonalWalkSpeed());
+				player.setY(player.getY() + player.getDiagonalWalkSpeed());
+			}
+			if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+				player.setX(player.getX() - player.getDiagonalWalkSpeed());
+				player.setY(player.getY() - player.getDiagonalWalkSpeed());
+			}
+			if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+				player.setX(player.getX() + player.getDiagonalWalkSpeed());
+				player.setY(player.getY() - player.getDiagonalWalkSpeed());
+			}
+			else if (keys.isDown(InputAction.LEFT)) {
+				player.setX(player.getX() - player.getWalkSpeed());
+			}
+			else if (keys.isDown(InputAction.RIGHT)) {
+				player.setX(player.getX() + player.getWalkSpeed());
+			}
+			else if (keys.isDown(InputAction.UP)) {
+				player.setY(player.getY() + player.getWalkSpeed());
+			}
+			else if (keys.isDown(InputAction.DOWN)) {
+				player.setY(player.getY() - player.getWalkSpeed());
 			}
 		}
 	}
