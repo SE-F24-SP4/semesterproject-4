@@ -7,7 +7,7 @@ import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IGamePluginService;
 
 public class PlayerPlugin implements IGamePluginService {
-	private CommonEntity player;
+	private  Player player;
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
 
@@ -24,7 +24,7 @@ public class PlayerPlugin implements IGamePluginService {
 		entityManager.removeEntity(this.player);
 	}
 
-	public CommonEntity createPlayer(IGameSettings gameSettings) {
+	public Player createPlayer(IGameSettings gameSettings) {
 		this.player = new Player();
 		this.player.setX(gameSettings.getDisplayWidth() / 2.0);
 		this.player.setY(gameSettings.getDisplayHeight() / 2.0);
