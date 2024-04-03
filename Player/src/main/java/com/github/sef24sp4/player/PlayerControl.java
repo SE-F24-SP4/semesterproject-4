@@ -15,6 +15,7 @@ public class PlayerControl implements IEntityProcessingService {
 		for (CommonEntity player : entityManager.getEntitiesByClass(Player.class)) {
 			//Set rotation to look a cursor
 			player.getCoordinates().getAngleBetween(gameSettings.getKeys().getMouseCoordinates());
+			//TODO;
 			//Check if it should shoot
 			if (gameSettings.getKeys().isDown(InputAction.SHOOT)) {
 				System.out.println("Shooting not implemented yet");
