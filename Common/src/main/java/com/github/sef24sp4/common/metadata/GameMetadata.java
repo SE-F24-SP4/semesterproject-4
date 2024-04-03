@@ -2,14 +2,14 @@ package com.github.sef24sp4.common.metadata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameMetadata implements IGameMetadata {
-	private GameElementType type;
-
-	private Map<String, String> map;
+	private final Map<String, String> map;
+	private final GameElementType type;
 
 	GameMetadata(GameElementType type) {
-		this.setType(type);
+		this.type = type;
 		this.map = new HashMap<>();
 	}
 
@@ -18,17 +18,12 @@ public class GameMetadata implements IGameMetadata {
 	}
 
 	@Override
-	public String getProperty(String identifier) {
-		return this.map.get(identifier);
-	}
-
-
-	void setType(GameElementType type) {
-		this.type = type;
+	public Optional<String> getProperty(String identifier) {
+		return Optional.ofNullable(this.map.get(identifier));
 	}
 
 	@Override
 	public GameElementType getType() {
-		return null;
+		return this.type;
 	}
 }
