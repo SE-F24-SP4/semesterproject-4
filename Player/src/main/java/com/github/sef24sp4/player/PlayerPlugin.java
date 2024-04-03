@@ -6,21 +6,17 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IGamePluginService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class PlayerPlugin implements IGamePluginService {
 	private CommonEntity player;
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
-			this.player = this.createPlayer(gameSettings);
-			entityManager.addEntity(this.player);
+
 	}
 
 	@Override
 	public void gameStart(IEntityManager entityManager, IGameSettings gameSettings) {
-
+		this.player = this.createPlayer(gameSettings);
+		entityManager.addEntity(this.player);
 	}
 
 	@Override
