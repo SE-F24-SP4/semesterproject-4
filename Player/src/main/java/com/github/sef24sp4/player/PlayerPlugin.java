@@ -30,13 +30,13 @@ public class PlayerPlugin implements IGamePluginService {
 
 	public CommonEntity createPlayer(IGameSettings gameSettings) {
 		this.player = new Player();
-		this.player.setX(gameSettings.getDisplayWidth() / 2);
-		this.player.setY(gameSettings.getDisplayHeight() / 2);
-		List<Coordinates> cord = new ArrayList<>();
-		cord.add(new Coordinates(-5, -5));
-		cord.add(new Coordinates(10, 0));
-		cord.add(new Coordinates(-5, 5));
-		this.player.setPolygonCoordinates(cord);
+		this.player.setX(gameSettings.getDisplayWidth() / 2.0);
+		this.player.setY(gameSettings.getDisplayHeight() / 2.0);
+		this.player.setPolygonCoordinates(
+				new Coordinates(-5, -5),
+				new Coordinates(10, 0),
+				new Coordinates(-5, 5)
+		);
 		return this.player;
 	}
 }
