@@ -17,6 +17,21 @@ public class GameInput implements IGameInput {
 		this.mouseCoordinates = mouseCoordinates;
 	}
 
+	/**
+	 * Helper method to check and array of keys if they are pressed.
+	 * @param keyMap The specific key map to check.
+	 * @param keys The keys to check.
+	 * @return {@code true} if all keys are pressed. {@code false} otherwise.
+	 */
+	private static boolean checkActions(Map<InputAction, Boolean> keyMap, InputAction[] keys) {
+		for (InputAction action : keys) {
+			// If any action key is not set then return false.
+			if (!keyMap.getOrDefault(action, false)) return false;
+		}
+		// return true when all keys are pressed.
+		return true;
+	}
+
 	public void setKeyState(InputAction key, Boolean state) {
 		this.keyState.put(key, state);
 		this.currentTickKeyState.put(key, state);
@@ -27,13 +42,13 @@ public class GameInput implements IGameInput {
 	}
 
 	@Override
-	public boolean isDown(InputAction key) {
-		return this.keyState.getOrDefault(key, false);
+	public boolean isDown(InputAction... keys) {
+		return GameInput.checkActions(this.keyState, keys);
 	}
 
 	@Override
-	public boolean isPressed(InputAction key) {
-		return this.currentTickKeyState.getOrDefault(key, false);
+	public boolean isPressed(InputAction... keys) {
+		return GameInput.checkActions(this.currentTickKeyState, keys);
 	}
 
 	@Override
