@@ -27,8 +27,8 @@ public class GameBuilder {
 	}
 
 	public IGameProcessor build() {
-		final EntityManager entityManager = new EntityManager(this.entityEntityToGraphicsMapper);
-		final GameLoop gameLoop = new GameLoop(this.gameSettings, entityManager);
+		final GraphicsOverlayEntityManager graphicsOverlayEntityManager = new GraphicsOverlayEntityManager(this.entityEntityToGraphicsMapper);
+		final GameLoop gameLoop = new GameLoop(this.gameSettings, graphicsOverlayEntityManager);
 		return new Game(gameLoop, this.gameTickExecutor);
 	}
 }

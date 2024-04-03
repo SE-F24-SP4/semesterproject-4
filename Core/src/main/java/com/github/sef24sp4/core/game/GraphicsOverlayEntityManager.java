@@ -1,12 +1,13 @@
 package com.github.sef24sp4.core.game;
 
+import com.github.sef24sp4.common.data.EntityManager;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.core.interfaces.EntityToGraphicsMapper;
 
-public class EntityManager extends com.github.sef24sp4.common.data.EntityManager {
+public class GraphicsOverlayEntityManager extends EntityManager {
 	private final EntityToGraphicsMapper<IEntity, ?> graphicsMapping;
 
-	EntityManager(EntityToGraphicsMapper<IEntity, ?> graphicsMapping) {
+	GraphicsOverlayEntityManager(EntityToGraphicsMapper<IEntity, ?> graphicsMapping) {
 		this.graphicsMapping = graphicsMapping;
 	}
 
