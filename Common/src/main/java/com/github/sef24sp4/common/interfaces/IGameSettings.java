@@ -10,5 +10,11 @@ public interface IGameSettings {
 
 	public int getDisplayHeight();
 
-	public boolean isEntityWithinFrame(IEntity entity);
+	public default boolean isEntityWithinFrame(IEntity entity) {
+		final int displayStart = 0;
+		return entity.getX() >= displayStart
+				&& entity.getY() >= displayStart
+				&& entity.getX() <= this.getDisplayWidth()
+				&& entity.getY() <= this.getDisplayHeight();
+	}
 }

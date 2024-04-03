@@ -13,6 +13,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>21.0.2</version>
@@ -20,6 +25,11 @@
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-graphics</artifactId>
+			<version>21.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
 			<version>21.0.2</version>
 		</dependency>
 		<dependency>
@@ -42,7 +52,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<includeArtifactIds>javafx-controls,javafx-graphics,javafx-base</includeArtifactIds>
+							<includeArtifactIds>javafx-controls,javafx-graphics,javafx-base,javafx-fxml</includeArtifactIds>
 							<outputDirectory>../mods-mvn</outputDirectory>
 						</configuration>
 					</execution>

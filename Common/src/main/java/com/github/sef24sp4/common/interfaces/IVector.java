@@ -22,7 +22,6 @@ public interface IVector {
 	 * @return The norm.
 	 */
 	public default double getNorm() {
-		System.out.println(this.getX());
 		return Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2));
 	}
 
@@ -36,13 +35,19 @@ public interface IVector {
 		return this.getX() * otherVector.getX() + this.getY() * otherVector.getY();
 	}
 
+
+	public default double getDeterminant(IVector otherVector) {
+		return this.getX() * otherVector.getY() - otherVector.getX() * this.getY();
+	}
+
 	/**
 	 * Calculates the angle between the current vector and the passed in vector.
 	 *
 	 * @param otherVector The vector to get the angle in between with.
 	 * @return The angle in radians.
+	 * @see <a href="https://stackoverflow.com/a/16544330">Stackoverflow: Direct way of computing the clockwise angle between two vectors</a>
 	 */
 	public default double getAngleBetween(IVector otherVector) {
-		return Math.acos(this.getDotProduct(otherVector) / (this.getNorm() * otherVector.getNorm()));
+		return Math.atan2(otherVector.getDeterminant(this), otherVector.getDotProduct(this));
 	}
 }

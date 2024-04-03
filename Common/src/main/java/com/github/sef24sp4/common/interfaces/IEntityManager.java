@@ -16,7 +16,7 @@ public interface IEntityManager {
 	public default <E extends IEntity> List<E> getEntitiesByClass(Class<E> entityType) {
 		List<E> output = new ArrayList<>();
 		this.getAllEntities().forEach((entity) -> {
-			if (entityType.isAssignableFrom(entity.getClass())) output.add(entityType.cast(entity));
+			if (entityType.isInstance(entity)) output.add(entityType.cast(entity));
 		});
 		return output;
 	}
