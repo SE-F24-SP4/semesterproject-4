@@ -1,16 +1,43 @@
 package com.github.sef24sp4.player;
 
+import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
+import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 
 public class Player extends CommonEntity implements ICollidableEntity, IAttackingEntity {
+	/*TODO:
+implement health and damage taking
+Singleton
+Interface with Vivek
+ */
 	private double walkSpeed = 10;
-	private double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
+	private final double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
+
+	private static Player player;
+
+	private Player (IGameSettings gameSettings) {
+		player = new Player(gameSettings);
+		player.setX(gameSettings.getDisplayWidth() / 2.0);
+		player.setY(gameSettings.getDisplayHeight() / 2.0);
+		player.setPolygonCoordinates(
+				new Coordinates(-5, -5),
+				new Coordinates(10, 0),
+				new Coordinates(-5, 5)
+		);
+	}
+
+	public static Player getPlayer(IGameSettings gameSettings){
+		if(player == null) {
+			player = new Player(gameSettings);
+		}
+		return player;
+	}
 
 	public double getWalkSpeed() {
 		return this.walkSpeed;
