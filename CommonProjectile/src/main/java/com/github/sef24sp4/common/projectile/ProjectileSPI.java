@@ -4,5 +4,5 @@ import com.github.sef24sp4.common.entities.IEntity;
 
 public interface ProjectileSPI {
 
-	public Projectile createProjectile(IEntity shooter);
+	public CommonProjectile createProjectile(IEntity shooter);
 }

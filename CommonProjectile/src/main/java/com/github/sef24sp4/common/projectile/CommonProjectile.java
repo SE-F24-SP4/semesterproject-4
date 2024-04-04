@@ -6,12 +6,23 @@ import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 
-public abstract class Projectile extends CommonEntity implements ICollidableEntity {
+public abstract class CommonProjectile extends CommonEntity implements ICollidableEntity {
 	private final IGameMetadata metadata;
+	private final ICollidableEntity shooter;
 
-	protected Projectile() {
+	protected CommonProjectile(final ICollidableEntity shooter) {
 		this.metadata = new MetadataBuilder(GameElementType.PROJECTILE).
 				getMetadata();
+		this.shooter = shooter;
+	}
+
+	/**
+	 * Query the entity who shot the projectile.
+	 *
+	 * @return The entity who shot the projectile.
+	 */
+	public final ICollidableEntity getShooter() {
+		return this.shooter;
 	}
 
 	@Override
