@@ -14,13 +14,13 @@ public class PlayerControl implements IEntityProcessingService {
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
-		Player player = Player.getPlayer(gameSettings);
+		Player player = Player.getPlayer();
 		IGameInput keys = gameSettings.getKeys();
 		double playerX = player.getX();
 		double playerY = player.getY();
 
 		//Set rotation to look a cursor
-		Player.getPlayer(gameSettings).setRotation(
+		player.setRotation(
 				player.getCoordinates().getAngleBetween(
 						keys.getMouseCoordinates()
 				));

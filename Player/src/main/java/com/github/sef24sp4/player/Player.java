@@ -5,27 +5,22 @@ import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
-import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 
 public class Player extends CommonEntity implements ICollidableEntity, IAttackingEntity {
-	/*TODO:
-implement health and damage taking
-Interface with Vivek
- */
+	private double health = 10;
+	private double attackDamage = 1;
 	private double walkSpeed = 10;
 	private final double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
 	private final IGameMetadata metadata;
 	private static Player player;
 
-	private Player (IGameSettings gameSettings) {
-		player = new Player(gameSettings);
+	private Player () {
+		player = new Player();
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
-		player.setX(gameSettings.getDisplayWidth() / 2.0);
-		player.setY(gameSettings.getDisplayHeight() / 2.0);
 		player.setPolygonCoordinates(
 				new Coordinates(-5, -5),
 				new Coordinates(10, 0),
@@ -33,9 +28,9 @@ Interface with Vivek
 		);
 	}
 
-	public static Player getPlayer(IGameSettings gameSettings){
+	public static Player getPlayer(){
 		if(player == null) {
-			player = new Player(gameSettings);
+			player = new Player();
 		}
 		return player;
 	}
@@ -52,7 +47,13 @@ Interface with Vivek
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-
+		/* if (otherEntity.getMetadata().getType() == GameElementType.ENEMY)
+		Player.getPlayer().setHealth(
+				Player.getPlayer().getHealth() - otherEntity.getAttackDamage());
+		if(Player.getPlayer().getHealth() <= 0) {
+			//IDK
+		}
+		 */
 	}
 
 	@Override
@@ -72,7 +73,7 @@ Interface with Vivek
 
 	@Override
 	public IGameMetadata getMetadata() {
-		return null;
+		return metadata;
 	}
 
 	@Override
@@ -82,6 +83,17 @@ Interface with Vivek
 
 	@Override
 	public double getAttackDamage() {
-		return 0;
+		return attackDamage;
+	}
+	public void setAttackDamage(double damage) {
+		this.attackDamage = damage;
+	}
+
+	public double getHealth() {
+		return health;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
 	}
 }

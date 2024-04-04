@@ -13,11 +13,13 @@ public class PlayerPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStart(IEntityManager entityManager, IGameSettings gameSettings) {
-		entityManager.addEntity(Player.getPlayer(gameSettings));
+		entityManager.addEntity(Player.getPlayer());
+		Player.getPlayer().setX(gameSettings.getDisplayWidth()/2);
+		Player.getPlayer().setY(gameSettings.getDisplayWidth()/2);
 	}
 
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
-		entityManager.removeEntity(Player.getPlayer(gameSettings));
+		entityManager.removeEntity(Player.getPlayer());
 	}
 }
