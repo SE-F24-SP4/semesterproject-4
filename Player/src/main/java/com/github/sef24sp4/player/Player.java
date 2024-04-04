@@ -9,7 +9,7 @@ import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 
-public class Player extends CommonEntity implements ICollidableEntity, IAttackingEntity {
+public final class Player extends CommonEntity implements ICollidableEntity, IAttackingEntity {
 	private double health = 10;
 	private double attackDamage = 1;
 	private double walkSpeed = 10;
@@ -17,7 +17,7 @@ public class Player extends CommonEntity implements ICollidableEntity, IAttackin
 	private final IGameMetadata metadata;
 	private static Player player;
 
-	private Player () {
+	private Player() {
 		player = new Player();
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
@@ -28,8 +28,8 @@ public class Player extends CommonEntity implements ICollidableEntity, IAttackin
 		);
 	}
 
-	public static Player getPlayer(){
-		if(player == null) {
+	public static Player getPlayer() {
+		if (player == null) {
 			player = new Player();
 		}
 		return player;
@@ -42,7 +42,7 @@ public class Player extends CommonEntity implements ICollidableEntity, IAttackin
 		this.walkSpeed = speed;
 	}
 	public double getDiagonalWalkSpeed() {
-		return diagonalWalkSpeed;
+		return this.diagonalWalkSpeed;
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class Player extends CommonEntity implements ICollidableEntity, IAttackin
 
 	@Override
 	public IGameMetadata getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	@Override
@@ -83,14 +83,14 @@ public class Player extends CommonEntity implements ICollidableEntity, IAttackin
 
 	@Override
 	public double getAttackDamage() {
-		return attackDamage;
+		return this.attackDamage;
 	}
 	public void setAttackDamage(double damage) {
 		this.attackDamage = damage;
 	}
 
 	public double getHealth() {
-		return health;
+		return this.health;
 	}
 
 	public void setHealth(double health) {

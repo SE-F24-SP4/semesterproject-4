@@ -43,42 +43,33 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			getProjectileSPIs().stream().findFirst().ifPresent(
-					projectileSPI -> {entityManager.addEntity(projectileSPI.createProjectile(player));}
+			this.getProjectileSPIs().stream().findFirst().ifPresent(
+					projectileSPI -> {
+						entityManager.addEntity(projectileSPI.createProjectile(player));
+					}
 			);
-		}
-
-		//Player movement
-		else if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
+		} else if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
 			player.setX(playerX - player.getDiagonalWalkSpeed());
 			player.setY(playerY + player.getDiagonalWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
+		} else if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY + player.getDiagonalWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+		} else if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
 			player.setX(playerX - player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+		} else if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.LEFT)) {
+		} else if (keys.isDown(InputAction.LEFT)) {
 			player.setX(playerX - player.getWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.RIGHT)) {
+		} else if (keys.isDown(InputAction.RIGHT)) {
 			player.setX(playerX + player.getWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.UP)) {
+		} else if (keys.isDown(InputAction.UP)) {
 			player.setY(playerY + player.getWalkSpeed());
-		}
-		else if (keys.isDown(InputAction.DOWN)) {
+		} else if (keys.isDown(InputAction.DOWN)) {
 			player.setY(playerY - player.getWalkSpeed());
 		}
 	}
-	
 	//Get all ProjectileSPIs
 	private Collection<? extends ProjectileSPI> getProjectileSPIs() {
 		return ServiceLoader.load(ProjectileSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
