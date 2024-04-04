@@ -47,13 +47,21 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		/* if (otherEntity.getMetadata().getType() == GameElementType.ENEMY)
-		Player.getPlayer().setHealth(
-				Player.getPlayer().getHealth() - otherEntity.getAttackDamage());
-		if(Player.getPlayer().getHealth() <= 0) {
-			//IDK
+		if (otherEntity instanceof IAttackingEntity) {
+			Player.getPlayer().setHealth(
+					Player.getPlayer().getHealth() - ((IAttackingEntity) otherEntity).getAttackDamage()
+					);
+					//TODO Adjust position to not be inside other entity.
+			if (Player.getPlayer().getHealth() <= 0) {
+				entityManager.removeEntity(Player.getPlayer());
+			}
+		} else {
+			/* TODO
+			 * 	- Collision with wall (adjust position to not be inside wall).
+			 * 	- Collision with other HealthEntity (increase health).
+			 */
+			System.out.println("Collision not implemented yet");
 		}
-		 */
 	}
 
 	@Override
@@ -78,7 +86,7 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 
 	@Override
 	public GameElementType getType() {
-		return ICollidableEntity.super.getType();
+		return this.metadata.getType();
 	}
 
 	@Override
