@@ -4,7 +4,11 @@ import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.gamecontrol.InputAction;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
+import com.github.sef24sp4.common.projectile.ProjectileSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
+import java.util.Collection;
+import java.util.ServiceLoader;
+import static java.util.stream.Collectors.toList;
 
 public class PlayerControl implements IEntityProcessingService {
 
@@ -37,11 +41,11 @@ public class PlayerControl implements IEntityProcessingService {
 			}
 		}
 
-		//TODO:
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			System.out.println("Shooting not implemented yet");
-			//Shoot code here
+			getProjectileSPIs().stream().findFirst().ifPresent(
+					projectileSPI -> {entityManager.addEntity(projectileSPI.createProjectile(player));}
+			);
 		}
 
 		//Player movement
@@ -73,5 +77,10 @@ public class PlayerControl implements IEntityProcessingService {
 		else if (keys.isDown(InputAction.DOWN)) {
 			player.setY(playerY - player.getWalkSpeed());
 		}
+	}
+	
+	//Get all ProjectileSPIs
+	private Collection<? extends ProjectileSPI> getProjectileSPIs() {
+		return ServiceLoader.load(ProjectileSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
 	}
 }
