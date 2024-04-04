@@ -25,7 +25,9 @@ public class PolygonEnemyPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStart(IEntityManager entityManager, IGameSettings gameSettings) {
-		// spawn random enemies in a circle around the middle with equal spacing
+		Coordinates center = new Coordinates((double) gameSettings.getDisplayWidth() / 2, (double) gameSettings.getDisplayHeight() / 2);
+		int radius = (int) (gameSettings.getDisplayHeight() / 3);
+		// spawn random enemies in a circle around the center with equal spacing
 		Random generator = new Random();
 		int enemyAmount = generator.nextInt(3, 20);
 		for (int enemy = 0; enemy < enemyAmount; enemy++) {
@@ -34,9 +36,9 @@ public class PolygonEnemyPlugin implements IGamePluginService {
 			PolygonEnemy polygonEnemy = new PolygonEnemy(amountOfEdges);
 
 			// find x
-			double x = 20 * Math.cos(2 * Math.PI * enemy / enemyAmount);
+			double x = radius * Math.cos(2 * Math.PI * enemy / enemyAmount) + center.getX();
 			// find y
-			double y = 20 * Math.sin(2 * Math.PI * enemy / enemyAmount);
+			double y = radius * Math.sin(2 * Math.PI * enemy / enemyAmount) + center.getY();
 			// add start position
 			Coordinates startPosition = new Coordinates(x, y);
 			polygonEnemy.setCoordinates(startPosition);

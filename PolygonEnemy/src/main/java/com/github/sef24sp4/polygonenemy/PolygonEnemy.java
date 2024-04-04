@@ -37,7 +37,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 		this.maxHealth = edges;
 		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
 				getMetadata();
-		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges));
+		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
 	}
 	/**
 	 * Get the amount of edges.
