@@ -13,16 +13,17 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 public class Player extends CommonEntity implements ICollidableEntity, IAttackingEntity {
 	/*TODO:
 implement health and damage taking
-Singleton
 Interface with Vivek
  */
 	private double walkSpeed = 10;
 	private final double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
-
+	private final IGameMetadata metadata;
 	private static Player player;
 
 	private Player (IGameSettings gameSettings) {
 		player = new Player(gameSettings);
+		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
+				getMetadata();
 		player.setX(gameSettings.getDisplayWidth() / 2.0);
 		player.setY(gameSettings.getDisplayHeight() / 2.0);
 		player.setPolygonCoordinates(
