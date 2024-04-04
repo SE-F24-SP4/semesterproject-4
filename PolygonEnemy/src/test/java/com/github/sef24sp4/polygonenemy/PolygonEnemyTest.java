@@ -47,6 +47,6 @@ class PolygonEnemyTest {
 
 	@Test
 	void getMetadata() {
-		assertEquals(GameElementType.ENEMY, this.polygonEnemy.getMetadata().getType());
+		assertEquals(GameElementType.ENEMY, this.polygonEnemy.getType());
 	}
 }
