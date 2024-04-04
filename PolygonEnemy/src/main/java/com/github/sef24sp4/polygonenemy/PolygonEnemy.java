@@ -85,26 +85,35 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 		return polygonCoordinates;
 	}
 
+	// transforms this entity into a lower form
+	private void transform(IEntityManager entityManager) {
+		// instantiate the lower polygon entity
+		PolygonEnemy transformedPolygonEnemy = new PolygonEnemy(this.getEdges() - 1);
+
+		// data transfer from this entity to the lower polygon
+		transformedPolygonEnemy.setCoordinates(this.getCoordinates());
+		transformedPolygonEnemy.setRotation(this.getRotation());
+
+		// entity switch between this entity and the transformed entity
+		entityManager.removeEntity(this);
+		entityManager.addEntity(transformedPolygonEnemy);
+	}
+
+	private void die(IEntityManager entityManager) {
+		entityManager.removeEntity(this);
+	}
+
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof IAttackingEntity attackingEntity && attackingEntity.getAttackDamage() > 0 && otherEntity.getType() != this.getType()) {
 			this.health -= attackingEntity.getAttackDamage();
 			// death check
 			if (this.getHealth() <= 0) {
-				if (this.getEdges() > 3) { // Transform
-					// instantiate the lower polygon entity
-					PolygonEnemy transformedPolygonEnemy = new PolygonEnemy(this.getEdges() - 1);
-
-					// data transfer from this entity to the lower polygon
-					transformedPolygonEnemy.setCoordinates(this.getCoordinates());
-					transformedPolygonEnemy.setRotation(this.getRotation());
-
-					// entity switch between this entity and the transformed entity
-					entityManager.removeEntity(this);
-					entityManager.addEntity(transformedPolygonEnemy);
+				// transform or die
+				if (this.getEdges() > 3) {
+					this.transform(entityManager);
 				} else {
-					// dies
-					entityManager.removeEntity(this);
+					this.die(entityManager);
 				}
 			}
 		}
