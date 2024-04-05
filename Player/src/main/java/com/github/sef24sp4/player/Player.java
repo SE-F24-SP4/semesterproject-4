@@ -51,7 +51,6 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 			Player.getPlayer().setHealth(
 					Player.getPlayer().getHealth() - ((IAttackingEntity) otherEntity).getAttackDamage()
 					);
-					//TODO: Adjust position to not be inside other entity.
 			if (Player.getPlayer().getHealth() <= 0) {
 				entityManager.removeEntity(Player.getPlayer());
 			}
@@ -60,7 +59,7 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 			 * 	- Collision with wall (adjust position to not be inside wall).
 			 * 	- Collision with other HealthEntity (increase health).
 			 */
-			System.out.println("Collision not implemented yet");
+			System.out.println("Collision not fully implemented yet");
 		}
 	}
 

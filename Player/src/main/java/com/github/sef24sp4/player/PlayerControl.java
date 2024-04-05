@@ -44,10 +44,10 @@ public class PlayerControl implements IEntityProcessingService {
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
 			this.getWeaponSPIs().stream().findFirst().ifPresent(
-					projectileSPI -> {
-						if (projectileSPI.getRemainingCoolDownTicks() >= 0) {
-							if (projectileSPI.getAmmoCount() > 0) {
-								projectileSPI.shoot(entityManager, player);
+					weaponSPI -> {
+						if (weaponSPI.getRemainingCoolDownTicks() >= 0) {
+							if (weaponSPI.getAmmoCount() > 0) {
+								weaponSPI.shoot(entityManager, player);
 							}
 						}
 					}
