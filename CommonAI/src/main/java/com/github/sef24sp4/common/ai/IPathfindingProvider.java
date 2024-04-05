@@ -9,7 +9,8 @@ public interface IPathfindingProvider {
 	 * Entity can by implementing this method navigtate to a TargatCoordinate.
 	 * The Method start from the StartCoordinate of the Entity, open neighbor nodes, and expand the node with the lowest fCost.
 	 * When the best route towards a target is known. The Entity will navigate to the next step on this route, which is the TargatCoordinate.
-	 *
+	 * @param entity is for now a PolygonEnemy.
+	 * @param targetCoordinate is the next step for PolygonEnemy to go to.
 	 * @return an IVector, that is the next node (targetCoordinate), that the entity should go to. This can be a coordinate.
 	 */
 	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate);
