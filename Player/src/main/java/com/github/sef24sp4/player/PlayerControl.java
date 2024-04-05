@@ -9,7 +9,7 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 import java.util.ServiceLoader;
 
 public class PlayerControl implements IEntityProcessingService {
-	private final ServiceLoader<WeaponSPI> getWeaponSPI = ServiceLoader.load(WeaponSPI.class);
+	private final ServiceLoader<WeaponSPI> weaponProvider = ServiceLoader.load(WeaponSPI.class);
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		Player player = Player.getPlayer();
@@ -19,7 +19,7 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Set rotation to look a cursor
 		player.setRotation(
-				player.getCoordinates().getAngleBetween(
+				player.getCoordinates().getRelativeRotationTo(
 						keys.getMouseCoordinates()
 				));
 		//Check if player is outside playable area
@@ -40,7 +40,7 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			this.getWeaponSPI.forEach(weaponSPI -> {
+			this.weaponProvider.forEach(weaponSPI -> {
 						if (weaponSPI.getRemainingCoolDownTicks() >= 0) {
 							if (weaponSPI.getAmmoCount() > 0) {
 								weaponSPI.shoot(entityManager, player);
