@@ -64,37 +64,38 @@ public class AStar implements IPathfindingProvider {
 				this.openNode(this.node[x - 1][y]);
 			}
 			//Expand to see other
+			//TODO: Make the right check if neighbor nodes are on the map.
 /*
 			//open right neighbor
 			if (x + 1 < gridSizeX) {
 				this.openNode(this.node[x + 1][y]);
 			}
-//open top neighbor
+			//open top neighbor
 			if (y - 1 >= 0) {
 				this.openNode(this.node[x][y - 1]);
 			}
-//open bottom neighbor
+			//open bottom neighbor
 			if (y + 1 < gridSizeY) {
 				this.openNode(this.node[x][y + 1]);
 			}
-//topleft
+			//topleft
 			if (x - 1 >= 0 && y - 1 >= 0) {
 				this.openNode(this.node[x - 1][y - 1]);
 			}
-//topright
+			//topright
 			if (x + 1 < gridSizeX && y - 1 >= 0) {
 				this.openNode(this.node[x + 1][y - 1]);
 			}
-//bottomleft
+				//bottomleft
 			if (x - 1 >= 0 && y + 1 < gridSizeY) {
 				this.openNode(this.node[x - 1][y + 1]);
 			}
-//bottomright
+			//bottomright
 			if (x + 1 < gridSizeX && y + 1 < gridSizeY) {
 				this.openNode(this.node[x + 1][y + 1]);
 			}
-
  */
+
 
 			int bestNode = 0;
 			int bestFCost = 999;
@@ -131,7 +132,7 @@ public class AStar implements IPathfindingProvider {
 		Node currentNode = this.goalNode;
 
 		while (currentNode != this.startNode) {
-			this.pathList.add(0,currentNode);
+			this.pathList.add(0, currentNode);
 
 			//TODO: set parent for currentnode?
 
