@@ -47,6 +47,10 @@ public class AStar implements IPathfindingProvider {
 	//set nodes for whole map?
 
 	@Override
+	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate) {
+		//TODO: targetCoordinate = location of player = goalnode?
+		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
+		int x = (int) targetCoordinate.getX();
 	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
 		//set goalNode based on targetCoordinate
 		setNodes();
@@ -141,7 +145,6 @@ public class AStar implements IPathfindingProvider {
 			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode); //what if it is not in list?
-
 
 			int bestNode = 0;
 			int bestFCost = 999;
