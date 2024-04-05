@@ -22,9 +22,9 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
 		player.setPolygonCoordinates(
-				new Coordinates(-5, -5),
-				new Coordinates(10, 0),
-				new Coordinates(-5, 5)
+				new Coordinates(-0.5, -0.5),
+				new Coordinates(1, 0),
+				new Coordinates(-0.5, 0.5)
 		);
 	}
 
@@ -51,12 +51,12 @@ public final class Player extends CommonEntity implements ICollidableEntity, IAt
 			Player.getPlayer().setHealth(
 					Player.getPlayer().getHealth() - ((IAttackingEntity) otherEntity).getAttackDamage()
 					);
-					//TODO Adjust position to not be inside other entity.
+					//TODO: Adjust position to not be inside other entity.
 			if (Player.getPlayer().getHealth() <= 0) {
 				entityManager.removeEntity(Player.getPlayer());
 			}
 		} else {
-			/* TODO
+			/* TODO:
 			 * 	- Collision with wall (adjust position to not be inside wall).
 			 * 	- Collision with other HealthEntity (increase health).
 			 */
