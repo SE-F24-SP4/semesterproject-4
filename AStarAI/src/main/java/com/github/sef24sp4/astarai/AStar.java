@@ -33,6 +33,9 @@ public class AStar implements IPathfindingProvider {
 	public AStar() {
 	}
 
+	private ArrayList<Node> openList = new ArrayList<>();
+	private ArrayList<Node> closedList = new ArrayList<>();
+	private ArrayList<Node> pathList = new ArrayList<>();
 
 	//Explaination
 	//startNode is where the entity using AI is.
@@ -124,6 +127,8 @@ public class AStar implements IPathfindingProvider {
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode); //what if it is not in list?
 
+			int bestNode = 0;
+			int bestFCost = 999;
 			this.checkNeighborNodes(this.currentNode); //neighbors added to openlist if possible.
 
 			int bestNode = 0; //best node in index
