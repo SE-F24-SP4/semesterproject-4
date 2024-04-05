@@ -85,6 +85,7 @@ public class AStar implements IPathfindingProvider {
 		int width = Math.round(this.gameSettings.getDisplayWidth());
 		int height = Math.round(this.gameSettings.getDisplayHeight());
 
+	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
 		this.nodes = new Node[width][height];
 
 		for (int x = 0; x < width - 1; x++) {
