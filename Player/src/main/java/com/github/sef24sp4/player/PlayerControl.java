@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.gamecontrol.InputAction;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.projectile.ProjectileSPI;
+import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
 import java.util.Collection;
 import java.util.ServiceLoader;
@@ -43,9 +43,13 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			this.getProjectileSPIs().stream().findFirst().ifPresent(
+			this.getWeaponSPIs().stream().findFirst().ifPresent(
 					projectileSPI -> {
-						entityManager.addEntity(projectileSPI.createProjectile(player));
+						if (projectileSPI.getRemainingCoolDownTicks() >= 0) {
+							if (projectileSPI.getAmmoCount() > 0) {
+								projectileSPI.shoot(entityManager, player);
+							}
+						}
 					}
 			);
 		} else if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
@@ -70,8 +74,8 @@ public class PlayerControl implements IEntityProcessingService {
 			player.setY(playerY - player.getWalkSpeed());
 		}
 	}
-	//Get all ProjectileSPIs
-	private Collection<? extends ProjectileSPI> getProjectileSPIs() {
-		return ServiceLoader.load(ProjectileSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+	//Get all WeaponSPIs
+	private Collection<? extends WeaponSPI> getWeaponSPIs() {
+		return ServiceLoader.load(WeaponSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
 	}
 }
