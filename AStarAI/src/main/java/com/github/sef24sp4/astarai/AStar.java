@@ -141,6 +141,7 @@ public class AStar implements IPathfindingProvider {
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode); //what if it is not in list?
 
+
 			int bestNode = 0;
 			int bestFCost = 999;
 			this.checkNeighborNodes(this.currentNode); //neighbors added to openlist if possible.
