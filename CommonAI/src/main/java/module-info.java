@@ -1,2 +1,3 @@
 module CommonAI {
+	requires Common;
 }
