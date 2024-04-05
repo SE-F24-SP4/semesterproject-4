@@ -13,7 +13,7 @@ public interface IPathfindingProvider {
 	 * @param targetCoordinate is the Coordinate the entity needs to go to.
 	 * @return an IVector, that is the next node (targetCoordinate), that the entity should go to. This can be a coordinate.
 	 */
-	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate);
+	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate);
 
 }
 
