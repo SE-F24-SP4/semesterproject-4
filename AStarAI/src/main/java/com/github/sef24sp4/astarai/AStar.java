@@ -88,6 +88,7 @@ public class AStar implements IPathfindingProvider {
 			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
 
+	//method for getting distance (hCost) from current node to goalNode Enemy -> player.
 			this.openList.remove(this.currentNode);
 
 			checkNeighborNodes(currentNode);
@@ -156,6 +157,8 @@ public class AStar implements IPathfindingProvider {
 					}
 				}
 			}
+			//step++? to avoid it calculates the whole way, when enemy is far away.
+			//Could be based on the distance of Heuristics.
 
 			if (this.openList.isEmpty()) {
 				break;
