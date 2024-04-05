@@ -51,6 +51,8 @@ public class AStar implements IPathfindingProvider {
 		//set goalNode based on targetCoordinate
 		setNodes();
 
+	//make nodes for the map?
+	//check if node i solid?
 		int targetX = (int) Math.round(targetCoordinate.getX()); //round to nearest int (so 3.9 is 4 instead of 3)
 		int targetY = (int) Math.round(targetCoordinate.getY());
 		System.out.println(targetX);
