@@ -26,9 +26,6 @@ public class AStar implements IPathfindingProvider {
 	//make nodes for the map?
 	//check if node i solid?
 
-	//method for getting neighbors
-
-	//method for getting distance (hCost) from current node to goalNode Enemy -> player.
 
 	//method (getNeighbors) for seaching while goalNotReached(loop), Open all neighbors next to currentnode.
 
@@ -37,6 +34,21 @@ public class AStar implements IPathfindingProvider {
 
 	@Override
 	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate) {
+		//TODO: targetCoordinate = location of player = goalnode?
+		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
+		int x = (int) targetCoordinate.getX();
+
+
+		this.goalNode = node[x][y]; //does this work?
+
+
+		//set nodes for whole map?
+
+
+		//TODO: Where is the enemy, and how do i call the search method?
+
+
+
 		return null;
 	}
 
@@ -118,7 +130,7 @@ public class AStar implements IPathfindingProvider {
 			if (this.currentNode.equals(this.goalNode)) {
 				this.goalReached = true;
 				//track the path?
-				trackPath(); //
+				trackPath(); //What does this do?
 			}
 			//step++? to avoid it calculates the whole way, when enemy is far away.
 			//Could be based on the distance of Heuristics.
