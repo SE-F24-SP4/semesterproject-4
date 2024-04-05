@@ -6,12 +6,10 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-import java.util.Collection;
 import java.util.ServiceLoader;
-import static java.util.stream.Collectors.toList;
 
 public class PlayerControl implements IEntityProcessingService {
-
+	private final ServiceLoader<WeaponSPI> getWeaponSPI = ServiceLoader.load(WeaponSPI.class);
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		Player player = Player.getPlayer();
@@ -24,7 +22,6 @@ public class PlayerControl implements IEntityProcessingService {
 				player.getCoordinates().getAngleBetween(
 						keys.getMouseCoordinates()
 				));
-
 		//Check if player is outside playable area
 		if (!gameSettings.isEntityWithinFrame(player)) {
 			if (playerX < 0) {
@@ -43,8 +40,7 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			this.getWeaponSPIs().stream().findFirst().ifPresent(
-					weaponSPI -> {
+			this.getWeaponSPI.forEach(weaponSPI -> {
 						if (weaponSPI.getRemainingCoolDownTicks() >= 0) {
 							if (weaponSPI.getAmmoCount() > 0) {
 								weaponSPI.shoot(entityManager, player);
@@ -52,30 +48,28 @@ public class PlayerControl implements IEntityProcessingService {
 						}
 					}
 			);
-		} else if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
-			player.setX(playerX - player.getDiagonalWalkSpeed());
-			player.setY(playerY + player.getDiagonalWalkSpeed());
-		} else if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
-			player.setX(playerX + player.getDiagonalWalkSpeed());
-			player.setY(playerY + player.getDiagonalWalkSpeed());
-		} else if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+		} if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
 			player.setX(playerX - player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
-		} else if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+			System.out.println("DIAGONAL SPEED " + player.getDiagonalWalkSpeed());
+		} if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
-		} else if (keys.isDown(InputAction.LEFT)) {
+		} if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+			player.setX(playerX - player.getDiagonalWalkSpeed());
+			player.setY(playerY + player.getDiagonalWalkSpeed());
+		} if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+			player.setX(playerX + player.getDiagonalWalkSpeed());
+			player.setY(playerY + player.getDiagonalWalkSpeed());
+		} if (keys.isDown(InputAction.LEFT)) {
 			player.setX(playerX - player.getWalkSpeed());
-		} else if (keys.isDown(InputAction.RIGHT)) {
+			System.out.println("NORMAL SPEED " + player.getWalkSpeed());
+		} if (keys.isDown(InputAction.RIGHT)) {
 			player.setX(playerX + player.getWalkSpeed());
-		} else if (keys.isDown(InputAction.UP)) {
-			player.setY(playerY + player.getWalkSpeed());
-		} else if (keys.isDown(InputAction.DOWN)) {
+		} if (keys.isDown(InputAction.UP)) {
 			player.setY(playerY - player.getWalkSpeed());
+		} if (keys.isDown(InputAction.DOWN)) {
+			player.setY(playerY + player.getWalkSpeed());
 		}
-	}
-	//Get all WeaponSPIs
-	private Collection<? extends WeaponSPI> getWeaponSPIs() {
-		return ServiceLoader.load(WeaponSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
 	}
 }
