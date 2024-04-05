@@ -12,12 +12,12 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private double health = 10;
 	private double walkSpeed = 2;
-	private final double diagonalWalkSpeed = Math.sqrt(2 * (this.walkSpeed * this.walkSpeed));
+	private final double diagonalWalkSpeed = this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
 	private final IGameMetadata metadata;
 	private static Player player;
 
 	private Player() {
-		Player player = this;
+		player = this;
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
 		player.setPolygonCoordinates(
@@ -52,10 +52,6 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 				entityManager.removeEntity(Player.getPlayer());
 			}
 		} else {
-			/* TODO:
-			 * 	- Collision with wall (adjust position to not be inside wall).
-			 * 	- Collision with other HealthEntity (increase health).
-			 */
 			System.out.println("Collision not fully implemented yet");
 		}
 	}

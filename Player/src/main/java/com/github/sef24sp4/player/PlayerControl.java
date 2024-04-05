@@ -48,27 +48,37 @@ public class PlayerControl implements IEntityProcessingService {
 						}
 					}
 			);
-		} if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
+		}
+		if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
 			player.setX(playerX - player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
 			System.out.println("DIAGONAL SPEED " + player.getDiagonalWalkSpeed());
-		} if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
+		}
+		if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY - player.getDiagonalWalkSpeed());
-		} if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+		}
+		if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
 			player.setX(playerX - player.getDiagonalWalkSpeed());
 			player.setY(playerY + player.getDiagonalWalkSpeed());
-		} if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+		}
+		if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY + player.getDiagonalWalkSpeed());
-		} if (keys.isDown(InputAction.LEFT)) {
+		}
+		if (keys.isDown(InputAction.LEFT) && !keys.isDown(InputAction.UP)
+				&& !keys.isDown(InputAction.DOWN)) {
 			player.setX(playerX - player.getWalkSpeed());
 			System.out.println("NORMAL SPEED " + player.getWalkSpeed());
-		} if (keys.isDown(InputAction.RIGHT)) {
+		}
+		if (keys.isDown(InputAction.RIGHT) && !keys.isDown(InputAction.UP)
+				&& !keys.isDown(InputAction.DOWN)) {
 			player.setX(playerX + player.getWalkSpeed());
-		} if (keys.isDown(InputAction.UP)) {
+		}
+		if (keys.isDown(InputAction.UP)) {
 			player.setY(playerY - player.getWalkSpeed());
-		} if (keys.isDown(InputAction.DOWN)) {
+		}
+		if (keys.isDown(InputAction.DOWN)) {
 			player.setY(playerY + player.getWalkSpeed());
 		}
 	}
