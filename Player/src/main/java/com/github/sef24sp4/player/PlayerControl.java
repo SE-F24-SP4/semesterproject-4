@@ -9,7 +9,7 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 import java.util.ServiceLoader;
 
 public class PlayerControl implements IEntityProcessingService {
-	private final ServiceLoader<WeaponSPI> weaponProvider = ServiceLoader.load(WeaponSPI.class);
+	private final ServiceLoader<WeaponSPI> weaponProviders = ServiceLoader.load(WeaponSPI.class);
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		Player player = Player.getPlayer();
@@ -22,6 +22,39 @@ public class PlayerControl implements IEntityProcessingService {
 				player.getCoordinates().getRelativeRotationTo(
 						keys.getMouseCoordinates()
 				));
+
+		//Check if it should shoot
+		if (keys.isDown(InputAction.SHOOT)) {
+			this.weaponProviders.forEach(weaponSPI -> {
+						if (weaponSPI.getRemainingCoolDownTicks() <= 0 && weaponSPI.getAmmoCount() > 0) {
+							weaponSPI.shoot(entityManager, player);
+						}
+					}
+			);
+		}
+		if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
+			player.setX(playerX - player.getDiagonalWalkSpeed());
+			player.setY(playerY - player.getDiagonalWalkSpeed());
+		} else if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
+			player.setX(playerX + player.getDiagonalWalkSpeed());
+			player.setY(playerY - player.getDiagonalWalkSpeed());
+		} else if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
+			player.setX(playerX - player.getDiagonalWalkSpeed());
+			player.setY(playerY + player.getDiagonalWalkSpeed());
+		} else if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
+			player.setX(playerX + player.getDiagonalWalkSpeed());
+			player.setY(playerY + player.getDiagonalWalkSpeed());
+		} else if (keys.isDown(InputAction.LEFT) && !keys.isDown(InputAction.UP)
+				&& !keys.isDown(InputAction.DOWN)) {
+			player.setX(playerX - player.getWalkSpeed());
+		} else if (keys.isDown(InputAction.RIGHT) && !keys.isDown(InputAction.UP)
+				&& !keys.isDown(InputAction.DOWN)) {
+			player.setX(playerX + player.getWalkSpeed());
+		} else if (keys.isDown(InputAction.UP)) {
+			player.setY(playerY - player.getWalkSpeed());
+		} else if (keys.isDown(InputAction.DOWN)) {
+			player.setY(playerY + player.getWalkSpeed());
+		}
 		//Check if player is outside playable area
 		if (!gameSettings.isEntityWithinFrame(player)) {
 			if (playerX < 0) {
@@ -36,50 +69,6 @@ public class PlayerControl implements IEntityProcessingService {
 			if (playerY > gameSettings.getDisplayHeight()) {
 				player.setY(gameSettings.getDisplayHeight());
 			}
-		}
-
-		//Check if it should shoot
-		if (keys.isDown(InputAction.SHOOT)) {
-			this.weaponProvider.forEach(weaponSPI -> {
-						if (weaponSPI.getRemainingCoolDownTicks() >= 0) {
-							if (weaponSPI.getAmmoCount() > 0) {
-								weaponSPI.shoot(entityManager, player);
-							}
-						}
-					}
-			);
-		}
-		if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
-			player.setX(playerX - player.getDiagonalWalkSpeed());
-			player.setY(playerY - player.getDiagonalWalkSpeed());
-			System.out.println("DIAGONAL SPEED " + player.getDiagonalWalkSpeed());
-		}
-		if (keys.isDown(InputAction.UP, InputAction.RIGHT)) {
-			player.setX(playerX + player.getDiagonalWalkSpeed());
-			player.setY(playerY - player.getDiagonalWalkSpeed());
-		}
-		if (keys.isDown(InputAction.DOWN, InputAction.LEFT)) {
-			player.setX(playerX - player.getDiagonalWalkSpeed());
-			player.setY(playerY + player.getDiagonalWalkSpeed());
-		}
-		if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
-			player.setX(playerX + player.getDiagonalWalkSpeed());
-			player.setY(playerY + player.getDiagonalWalkSpeed());
-		}
-		if (keys.isDown(InputAction.LEFT) && !keys.isDown(InputAction.UP)
-				&& !keys.isDown(InputAction.DOWN)) {
-			player.setX(playerX - player.getWalkSpeed());
-			System.out.println("NORMAL SPEED " + player.getWalkSpeed());
-		}
-		if (keys.isDown(InputAction.RIGHT) && !keys.isDown(InputAction.UP)
-				&& !keys.isDown(InputAction.DOWN)) {
-			player.setX(playerX + player.getWalkSpeed());
-		}
-		if (keys.isDown(InputAction.UP)) {
-			player.setY(playerY - player.getWalkSpeed());
-		}
-		if (keys.isDown(InputAction.DOWN)) {
-			player.setY(playerY + player.getWalkSpeed());
 		}
 	}
 }

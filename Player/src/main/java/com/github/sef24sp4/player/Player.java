@@ -12,15 +12,13 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private double health = 10;
 	private double walkSpeed = 2;
-	private final double diagonalWalkSpeed = this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
 	private final IGameMetadata metadata;
-	private static Player player;
+	private static final Player PLAYER = new Player();
 
 	private Player() {
-		player = this;
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
-		player.setPolygonCoordinates(
+		this.setPolygonCoordinates(
 				new Coordinates(-5, -5),
 				new Coordinates(10, 0),
 				new Coordinates(-5, 5)
@@ -28,10 +26,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	}
 
 	public static Player getPlayer() {
-		if (player == null) {
-			player = new Player();
-		}
-		return player;
+		return PLAYER;
 	}
 
 	public double getWalkSpeed() {
@@ -41,33 +36,18 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		this.walkSpeed = speed;
 	}
 	public double getDiagonalWalkSpeed() {
-		return this.diagonalWalkSpeed;
+		return this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
 	}
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof IAttackingEntity) {
-			this.player.takeDmg(((IAttackingEntity) otherEntity).getAttackDamage());
-			if (this.player.health <= 0) {
-				entityManager.removeEntity(Player.getPlayer());
+			this.takeDamage(((IAttackingEntity) otherEntity).getAttackDamage());
+			if (this.health <= 0) {
+				entityManager.removeEntity(PLAYER);
 			}
-		} else {
-			System.out.println("Collision not fully implemented yet");
 		}
 	}
-
-	public double[] getPolygonValuesArray() {
-		return super.getPolygonValuesArray();
-	}
-
-	public double getX() {
-		return super.getX();
-	}
-
-	public double getY() {
-		return super.getY();
-	}
-
 	@Override
 	public IGameMetadata getMetadata() {
 		return this.metadata;
@@ -82,7 +62,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		return this.health;
 	}
 
-	public void takeDmg(double damage) {
+	public void takeDamage(double damage) {
 		this.health -= damage;
 	}
 }
