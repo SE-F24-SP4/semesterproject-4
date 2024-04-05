@@ -23,14 +23,6 @@ public class AStar implements IPathfindingProvider {
 	//goalNode is the position of the player
 	//currentNode, is used when calculating next node to open.
 
-	//make nodes for the map?
-	//check if node i solid?
-
-
-	//method (getNeighbors) for seaching while goalNotReached(loop), Open all neighbors next to currentnode.
-
-	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
-
 
 	@Override
 	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate) {
@@ -38,16 +30,15 @@ public class AStar implements IPathfindingProvider {
 		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
 		int x = (int) targetCoordinate.getX();
 
-
 		this.goalNode = node[x][y]; //does this work?
+		//TODO: Make this.startNode = entity.x,y
 
+		//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
 
 		//set nodes for whole map?
 
 
 		//TODO: Where is the enemy, and how do i call the search method?
-
-
 
 		return null;
 	}
@@ -61,8 +52,8 @@ public class AStar implements IPathfindingProvider {
 		//fCost
 	}
 
-	//Method to expand neigbors, and open the one with best f-score.
-	public boolean search() {
+
+	public boolean search() { //could i add parameter nodes?
 		while (!this.goalReached) { // and step =?
 			int x = this.currentNode.getX();
 			int y = this.currentNode.getY();
@@ -76,7 +67,7 @@ public class AStar implements IPathfindingProvider {
 				this.openNode(this.node[x - 1][y]);
 			}
 			//Expand to see other
-			//TODO: Make the right check if neighbor nodes are on the map.
+			//TODO: Check if neighbor nodes are on the map.
 /*
 			//open right neighbor
 			if (x + 1 < gridSizeX) {
@@ -107,7 +98,6 @@ public class AStar implements IPathfindingProvider {
 				this.openNode(this.node[x + 1][y + 1]);
 			}
  */
-
 
 			int bestNode = 0;
 			int bestFCost = 999;
@@ -157,14 +147,15 @@ public class AStar implements IPathfindingProvider {
 		if (!aNode.isOpen() && !aNode.isChecked() && !aNode.isSolid()) {
 
 			aNode.setOpen(true);
-			//set currentnode as parent
-			aNode.setParent(currentNode);
+
+			aNode.setParent(currentNode); //set currentnode as parent
 
 			this.openList.add(aNode);
 
 		}
 	}
 
+	//getters and setters
 	public Node[][] getNode() {
 		return this.node;
 	}
