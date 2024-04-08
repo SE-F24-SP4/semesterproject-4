@@ -8,6 +8,7 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
+import com.github.sef24sp4.common.projectile.CommonProjectile;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private double health = 10;
@@ -24,28 +25,45 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 				new Coordinates(-5, 5)
 		);
 	}
-
+	/**
+	 * The player is a singleton.
+	 * @return The only instance of the player
+	 */
 	public static Player getPlayer() {
 		return PLAYER;
 	}
-
+	/**
+	 * The amount the entity should move
+	 * in the X and Y cords per game tick.
+	 * @return The walk speed
+	 */
 	public double getWalkSpeed() {
 		return this.walkSpeed;
 	}
 	public void setWalkSpeed(double speed) {
 		this.walkSpeed = speed;
 	}
+
+	/**
+	 * When walking diagonally, the X and Y coordinates
+	 * should change by the diagonal walk speed instead of the normal speed.
+	 * @return The diagonal walk speed
+	 */
 	public double getDiagonalWalkSpeed() {
 		return this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
 	}
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		if (otherEntity instanceof IAttackingEntity) {
-			this.takeDamage(((IAttackingEntity) otherEntity).getAttackDamage());
-			if (this.health <= 0) {
-				entityManager.removeEntity(PLAYER);
+		if (otherEntity instanceof CommonProjectile) {
+			if (((CommonProjectile) otherEntity).getShooter() != this) {
+				this.takeDamage(((CommonProjectile) otherEntity).getShooter().getAttackDamage());
 			}
+		} else if (otherEntity instanceof IAttackingEntity) {
+			this.takeDamage(((IAttackingEntity) otherEntity).getAttackDamage());
+		}
+		if (this.health <= 0) {
+			entityManager.removeEntity(PLAYER);
 		}
 	}
 	@Override
@@ -61,7 +79,11 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	public double getHealth() {
 		return this.health;
 	}
-
+	/**
+	 * Takes the entity's health and subtracts the damage.
+	 *
+	 * @param damage: Takes the attack-damage of the attacking entity as a parameter.
+	 */
 	public void takeDamage(double damage) {
 		this.health -= damage;
 	}
