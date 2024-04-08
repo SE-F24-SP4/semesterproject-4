@@ -1,7 +1,6 @@
 package com.github.sef24sp4.polygonenemy;
 
 import com.github.sef24sp4.common.data.Coordinates;
-import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IGamePluginService;
@@ -14,6 +13,7 @@ import java.util.Random;
  * At game start it creates a circle of enemies ranging from 3 to 20 with random amount of edges ranging between 3 and 10.
  * <p>
  * At game stop it deletes all enemies of type PolygonEnemy.
+ *
  * @see IGamePluginService
  * @see PolygonEnemy
  */
@@ -50,8 +50,6 @@ public class PolygonEnemyPlugin implements IGamePluginService {
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
 		// delete all enemies of type PolygonEnemy
-		for (IEntity polygonEnemy : entityManager.getEntitiesByClass(PolygonEnemy.class)) {
-			entityManager.removeEntity(polygonEnemy);
-		}
+		entityManager.removeEntitiesByClass(PolygonEnemy.class);
 	}
 }
