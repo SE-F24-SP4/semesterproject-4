@@ -55,17 +55,12 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		if (otherEntity instanceof CommonProjectile) {
-			if (((CommonProjectile) otherEntity).getShooter() != this) {
-				this.takeDamage(((CommonProjectile) otherEntity).getShooter().getAttackDamage());
-			}
-		} else if (otherEntity instanceof IAttackingEntity) {
-			this.takeDamage(((IAttackingEntity) otherEntity).getAttackDamage());
-		}
-		if (this.health <= 0) {
-			entityManager.removeEntity(PLAYER);
+		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
+		if (otherEntity instanceof IAttackingEntity attackingEntity) {
+			this.takeDamage(attackingEntity.getAttackDamage());
 		}
 	}
+
 	@Override
 	public IGameMetadata getMetadata() {
 		return this.metadata;
