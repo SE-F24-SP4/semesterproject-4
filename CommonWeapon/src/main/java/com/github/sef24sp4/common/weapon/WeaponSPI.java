@@ -21,8 +21,8 @@ public interface WeaponSPI {
 	 * This method queries the amount of ammunition left.
 	 *
 	 * @return Positive integer describes the amount of projectiles the weapon has.
-	 * {@code 0} If out of ammunition.
-	 * {@code -1} If the weapon has infinite ammunition.
+	 * {@code 0} or less means the weapon is out of ammunition.
+	 * {@link Integer#MAX_VALUE} If the weapon has infinite ammunition.
 	 */
 	public int getAmmoCount();
 
