@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.interfaces.IVector;
 
 import java.util.Objects;
 
-public class Coordinates implements IVector {
+public class Coordinates implements IVector, Cloneable {
 	private static final IVector UNIT_VECTOR = new Coordinates(1, 0);
 	private double x;
 	private double y;
@@ -70,5 +70,14 @@ public class Coordinates implements IVector {
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.x, this.y);
+	}
+
+	@Override
+	public Coordinates clone() {
+		try {
+			return (Coordinates) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError("Clone operation failed for Class Coordinates");
+		}
 	}
 }

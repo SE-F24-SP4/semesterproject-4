@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CoordinatesTest {
 
@@ -52,5 +51,15 @@ class CoordinatesTest {
 	@Test
 	void testHashCode() {
 		assertEquals(new Coordinates(3, 4).hashCode(), this.coordinates.hashCode());
+	}
+
+	@Test
+	void testClone() {
+		final Coordinates clone = this.coordinates.clone();
+		assertNotSame(this.coordinates, clone);
+		clone.setX(23);
+		clone.setY(78);
+		assertNotEquals(this.coordinates.getX(), clone.getX());
+		assertNotEquals(this.coordinates.getY(), clone.getY());
 	}
 }
