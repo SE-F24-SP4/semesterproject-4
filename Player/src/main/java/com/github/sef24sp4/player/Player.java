@@ -77,7 +77,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
-	 * @param damage: Takes the attack-damage of the attacking entity as a parameter.
+	 * @param damage The damage of the attacking entity.
 	 */
 	public void takeDamage(double damage) {
 		this.health -= damage;
