@@ -55,6 +55,8 @@ public class PlayerControl implements IEntityProcessingService {
 		}
 		//Check if player is outside playable area
 		if (!gameSettings.isEntityWithinFrame(player)) {
+			playerX = player.getX();
+			playerY = player.getY();
 			if (playerX < 0) {
 				player.setX(0);
 			}
