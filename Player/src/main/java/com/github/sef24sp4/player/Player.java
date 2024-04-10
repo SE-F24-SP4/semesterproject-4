@@ -23,7 +23,8 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		this.setPolygonCoordinates(
 				new Coordinates(-5, -5),
 				new Coordinates(10, 0),
-				new Coordinates(-5, 5)
+				new Coordinates(-5, 5),
+				new Coordinates(-2, 0)
 		);
 	}
 
