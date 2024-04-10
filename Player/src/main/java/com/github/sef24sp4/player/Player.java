@@ -11,6 +11,7 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
+	private final double maxHealth = 10;
 	private double health = 10;
 	private double walkSpeed = 2;
 	private final IGameMetadata metadata;
@@ -61,7 +62,6 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		}
 	}
 
-	@Override
 	public IGameMetadata getMetadata() {
 		return this.metadata;
 	}
@@ -73,6 +73,10 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	public double getHealth() {
 		return this.health;
+	}
+
+	public double getMaxHealth() {
+		return maxHealth;
 	}
 	/**
 	 * Takes the entity's health and subtracts the damage.
