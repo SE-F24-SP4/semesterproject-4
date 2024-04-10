@@ -82,7 +82,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	}
 
 	/**
-	 * Checks whether the players health is below 0. If true the player entity is removed.
+	 * The player is removed.
 	 * @param entityManager The games entityManager.
 	 */
 	public void kill(IEntityManager entityManager) {
