@@ -6,6 +6,6 @@ import com.github.sef24sp4.common.interfaces.IVector;
 public interface IPathfindingProvider {
 
 
-	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate); //goalX and goalY beeing position of player.
+	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate); //goalX and goalY beeing position of player.
 }
 
