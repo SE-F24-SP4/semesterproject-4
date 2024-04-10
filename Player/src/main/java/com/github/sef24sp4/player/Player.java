@@ -52,7 +52,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @param speed The amount the player should move per game tick. Needs to be positive.
 	 */
 	public void setWalkSpeed(double speed) {
-		if (speed <= 0) throw new IllegalArgumentException("Speed has to be positive");
+		if (speed < 0) throw new IllegalArgumentException("Speed has to be positive");
 		this.walkSpeed = speed;
 	}
 
