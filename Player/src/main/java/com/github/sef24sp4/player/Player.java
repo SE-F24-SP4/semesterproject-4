@@ -1,6 +1,7 @@
 package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.data.EntityManager;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
@@ -49,7 +50,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 */
 	public void setWalkSpeed(double speed) {
 		try {
-			if (speed < 0) {
+			if (speed <= 0) {
 				throw new IllegalArgumentException();
 				} else {
 				this.walkSpeed = speed;
@@ -80,6 +81,21 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	public double getMaxHealth() {
 		return this.maxHealth;
 	}
+
+	/**
+	 * Checks whether the players health is below 0. If true the player entity is removed.
+	 *
+	 * @return boolean - Returns true if player was killed
+	 */
+	public boolean killCheck() {
+		if (this.health <= 0) {
+			IEntityManager e = new EntityManager();
+			e.removeEntity(this);
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
@@ -91,6 +107,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 				throw new IllegalArgumentException();
 			} else {
 				this.health -= damage;
+				this.killCheck();
 			}
 		} catch (Exception e) {
 			System.out.println("Illegal argument. Damage has to be positive");
