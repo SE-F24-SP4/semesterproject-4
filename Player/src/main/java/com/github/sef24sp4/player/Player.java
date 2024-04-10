@@ -1,7 +1,6 @@
 package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.data.Coordinates;
-import com.github.sef24sp4.common.data.EntityManager;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
@@ -84,6 +83,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	/**
 	 * Checks whether the players health is below 0. If true the player entity is removed.
+	 * @param entityManager The games entityManager.
 	 */
 	public void kill(IEntityManager entityManager) {
 		entityManager.removeEntity(this);
@@ -92,6 +92,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * Takes the entity's health and subtracts the damage.
 	 *
 	 * @param damage The damage of the attacking entity. Has to be positive.
+	 * @param entityManager The games entityManager.
 	 */
 	public void takeDamage(double damage, IEntityManager entityManager) {
 		try {
