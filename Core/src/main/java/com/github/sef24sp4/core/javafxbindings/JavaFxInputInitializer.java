@@ -32,7 +32,7 @@ public final class JavaFxInputInitializer {
 	}
 
 	private GameInput init() {
-		this.setEvents(MouseEvent.MOUSE_CLICKED, MouseEvent.MOUSE_RELEASED, (event, state) -> {
+		this.setEvents(MouseEvent.MOUSE_PRESSED, MouseEvent.MOUSE_RELEASED, (event, state) -> {
 			JavaFXInputMap.getFromMouseButton(event.getButton()).ifPresent(action -> this.gameInput.setKeyState(action, state));
 		});
 
