@@ -102,6 +102,13 @@ public class AStar implements IPathfindingProvider {
 		}
 		return Optional.empty();
 	}
+	//returns the next Node in the pathList
+	public Node getNextStep() {
+		if  (!this.pathList.isEmpty()) {
+			return pathList.remove(0);
+		}
+		return null;
+	}
 
 	//TODO: Calculate costs
 	public void getCost(Node aNode) {
@@ -124,6 +131,7 @@ public class AStar implements IPathfindingProvider {
 
 		while (!this.goalReached) { // and step =?
 
+			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode); //what if it is not in list?
 
