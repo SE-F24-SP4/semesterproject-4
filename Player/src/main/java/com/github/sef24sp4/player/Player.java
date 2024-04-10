@@ -12,7 +12,7 @@ import com.github.sef24sp4.common.projectile.CommonProjectile;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
-	private double health = 10;
+	private double health = this.maxHealth;
 	private double walkSpeed = 2;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
@@ -26,16 +26,20 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 				new Coordinates(-5, 5)
 		);
 	}
+
 	/**
 	 * The player is a singleton.
+	 *
 	 * @return The only instance of the player
 	 */
 	public static Player getPlayer() {
 		return PLAYER;
 	}
+
 	/**
 	 * The amount the entity should move
-	 * in the X and Y cords per game tick.
+	 * in the X and Y coordinates per game tick.
+	 *
 	 * @return The walk speed
 	 */
 	public double getWalkSpeed() {
@@ -48,20 +52,14 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @param speed The amount the player should move per game tick. Needs to be positive.
 	 */
 	public void setWalkSpeed(double speed) {
-		try {
-			if (speed <= 0) {
-				throw new IllegalArgumentException();
-				} else {
-				this.walkSpeed = speed;
-			}
-		} catch (Exception e) {
-			System.out.println("Illegal argument. Speed has to be positive");
-		}
+		if (speed <= 0) throw new IllegalArgumentException("Speed has to be positive");
+		this.walkSpeed = speed;
 	}
 
 	/**
 	 * When walking diagonally, the X and Y coordinates
 	 * should change by the diagonal walk speed instead of the normal speed.
+	 *
 	 * @return The diagonal walk speed
 	 */
 	public double getDiagonalWalkSpeed() {
@@ -83,31 +81,27 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	/**
 	 * The player is removed.
+	 *
 	 * @param entityManager The games entityManager.
 	 */
 	public void kill(IEntityManager entityManager) {
 		entityManager.removeEntity(this);
 	}
+
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
-	 * @param damage The damage of the attacking entity. Has to be positive.
+	 * @param damage        The damage of the attacking entity. Has to be positive.
 	 * @param entityManager The games entityManager.
 	 */
 	public void takeDamage(double damage, IEntityManager entityManager) {
-		try {
-			if (damage < 0) {
-				throw new IllegalArgumentException();
-			} else {
-				this.health -= damage;
-				if (this.health <= 0) {
-					this.kill(entityManager);
-				}
+			if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
+			this.health -= damage;
+			if (this.health <= 0) {
+				this.kill(entityManager);
 			}
-		} catch (Exception e) {
-			System.out.println("Illegal argument. Damage has to be positive");
-		}
 	}
+
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
