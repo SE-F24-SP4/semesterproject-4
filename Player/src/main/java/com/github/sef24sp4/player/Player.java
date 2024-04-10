@@ -76,7 +76,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	}
 
 	public double getMaxHealth() {
-		return maxHealth;
+		return this.maxHealth;
 	}
 	/**
 	 * Takes the entity's health and subtracts the damage.
