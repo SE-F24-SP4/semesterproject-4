@@ -74,6 +74,10 @@ public class AStar implements IPathfindingProvider {
 		return entity.getCoordinates();
 	}
 
+		if (pathFound) { //can be exchanged with just if search
+			Node nextStep = getNextStep();
+			double nextStepX = nextStep.getX();
+			double nextStepY = nextStep.getY();
 
 	private void setNodes() { //public?
 		int width = Math.round(this.gameSettings.getDisplayWidth());
@@ -102,8 +106,8 @@ public class AStar implements IPathfindingProvider {
 		}
 		return Optional.empty();
 	}
-	//returns the next Node in the pathList
-	public Node getNextStep() {
+
+	public Node getNextStep() { //returns the next Node in the pathList
 		if  (!this.pathList.isEmpty()) {
 			return pathList.remove(0);
 		}
