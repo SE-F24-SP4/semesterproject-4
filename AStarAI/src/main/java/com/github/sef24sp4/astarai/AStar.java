@@ -19,8 +19,8 @@ public class AStar implements IPathfindingProvider {
 	private ArrayList<Node> pathList = new ArrayList<>();
 
 	//Explaination
-	//startNode is where the enemy is.
-	//goalNode is the position of the player
+	//startNode is where the entity using AI is.
+	//goalNode is the position of the targetGoal
 	//currentNode, is used when calculating next node to open.
 
 
@@ -33,6 +33,13 @@ public class AStar implements IPathfindingProvider {
 		this.goalNode = node[x][y]; //does this work?
 		//TODO: Make this.startNode = entity.x,y
 
+		double iVectorX = getNextStep().getX();
+		double iVectorY = getNextStep().getY();
+
+
+
+
+
 		//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
 
 		//set nodes for whole map?
@@ -40,6 +47,13 @@ public class AStar implements IPathfindingProvider {
 
 		//TODO: Where is the enemy, and how do i call the search method?
 
+		return null;
+	}
+	//returns the next Node in the pathList
+	public Node getNextStep() {
+		if  (!this.pathList.isEmpty()) {
+			return pathList.remove(0);
+		}
 		return null;
 	}
 
@@ -55,9 +69,11 @@ public class AStar implements IPathfindingProvider {
 
 	public boolean search() { //could i add parameter nodes?
 		while (!this.goalReached) { // and step =?
+
 			int x = this.currentNode.getX();
 			int y = this.currentNode.getY();
 
+			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
 
 			this.openList.remove(this.currentNode);
@@ -119,8 +135,10 @@ public class AStar implements IPathfindingProvider {
 
 			if (this.currentNode.equals(this.goalNode)) {
 				this.goalReached = true;
-				//track the path?
-				trackPath(); //What does this do?
+
+				//when goal reached : track the path by adding all parent node from goalNode to startNode.
+				trackPath();
+
 			}
 			//step++? to avoid it calculates the whole way, when enemy is far away.
 			//Could be based on the distance of Heuristics.
@@ -130,14 +148,14 @@ public class AStar implements IPathfindingProvider {
 	}
 
 
-	public void trackPath() { //This method can be used to draw the path.
+	public void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
 		Node currentNode = this.goalNode;
 
 		while (currentNode != this.startNode) {
-			this.pathList.add(0, currentNode);
+			this.pathList.add(0, currentNode); //does it always add to index 0?
+			currentNode = currentNode.getParent(); //parent to currentnode, is the next on path.
 
-			//TODO: set parent for currentnode?
-
+			//TODO: track the path with color?
 		}
 	}
 
