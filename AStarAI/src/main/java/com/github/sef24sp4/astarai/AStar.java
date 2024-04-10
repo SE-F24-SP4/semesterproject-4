@@ -1,6 +1,7 @@
 package com.github.sef24sp4.astarai;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
+import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IVector;
 
@@ -24,33 +25,35 @@ public class AStar implements IPathfindingProvider {
 	//currentNode, is used when calculating next node to open.
 
 
+	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
+	//set nodes for whole map?
+
 	@Override
 	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
-		//TODO: targetCoordinate = location of player = goalnode?
-		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
-		int x = (int) targetCoordinate.getX();
+		//set goalNode based on targetCoordinate
+		int targetX = (int) targetCoordinate.getX();//does it cause problems that it casts to int?
+		int targetY = (int) targetCoordinate.getY();
+		this.goalNode = node[targetX][targetY]; //does this work?
 
-		this.goalNode = node[x][y]; //does this work?
-		//TODO: Make this.startNode = entity.x,y
+		//set startNode based on entity
+		int startX = (int) entity.getX();
+		int startY = (int) entity.getY();
+		this.startNode = node[startX][startY];
 
-		double iVectorX = getNextStep().getX();
-		double iVectorY = getNextStep().getY();
+		boolean pathFound = search(); //return true if path is found
 
+		if (pathFound) { //can be exchanged with just if search
+			Node nextStep = getNextStep();
+			double nextStepX = nextStep.getX();
+			double nextStepY = nextStep.getY();
 
-
-
-
-		//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
-
-		//set nodes for whole map?
-
-
-		//TODO: Where is the enemy, and how do i call the search method?
+			return new Coordinates(nextStepX,nextStepY);
+		}
 
 		return null;
 	}
-	//returns the next Node in the pathList
-	public Node getNextStep() {
+
+	public Node getNextStep() { //returns the next Node in the pathList
 		if  (!this.pathList.isEmpty()) {
 			return pathList.remove(0);
 		}
@@ -68,6 +71,9 @@ public class AStar implements IPathfindingProvider {
 
 
 	public boolean search() { //could i add parameter nodes?
+		//at first current node is the same as startnode
+		this.currentNode = this.startNode;
+
 		while (!this.goalReached) { // and step =?
 
 			int x = this.currentNode.getX();
@@ -118,7 +124,7 @@ public class AStar implements IPathfindingProvider {
 			int bestNode = 0;
 			int bestFCost = 999;
 
-			//find best node with loop though openlist, comparing fCost.
+			//find best node with loop though openList, comparing fCost.
 			for (int i = 0; i < this.openList.size(); i++) {
 				if (this.openList.get(i).getFCost() < bestFCost) {
 					bestNode = i;
@@ -138,7 +144,6 @@ public class AStar implements IPathfindingProvider {
 
 				//when goal reached : track the path by adding all parent node from goalNode to startNode.
 				trackPath();
-
 			}
 			//step++? to avoid it calculates the whole way, when enemy is far away.
 			//Could be based on the distance of Heuristics.
