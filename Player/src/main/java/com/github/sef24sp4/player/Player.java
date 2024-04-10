@@ -41,8 +41,22 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	public double getWalkSpeed() {
 		return this.walkSpeed;
 	}
+
+	/**
+	 * Sets the players movement speed to "speed".
+	 *
+	 * @param speed The amount the player should move per game tick. Needs to be positive.
+	 */
 	public void setWalkSpeed(double speed) {
-		this.walkSpeed = speed;
+		try {
+			if (speed < 0) {
+				throw new IllegalArgumentException();
+				} else {
+				this.walkSpeed = speed;
+			}
+		} catch (Exception e) {
+			System.out.println("Illegal argument. Speed has to be positive");
+		}
 	}
 
 	/**
@@ -55,20 +69,8 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	}
 
 	@Override
-	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
-		if (otherEntity instanceof IAttackingEntity attackingEntity) {
-			this.takeDamage(attackingEntity.getAttackDamage());
-		}
-	}
-
 	public IGameMetadata getMetadata() {
 		return this.metadata;
-	}
-
-	@Override
-	public GameElementType getType() {
-		return this.metadata.getType();
 	}
 
 	public double getHealth() {
@@ -81,9 +83,24 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
-	 * @param damage The damage of the attacking entity.
+	 * @param damage The damage of the attacking entity. Has to be positive.
 	 */
 	public void takeDamage(double damage) {
-		this.health -= damage;
+		try {
+			if (damage < 0) {
+				throw new IllegalArgumentException();
+			} else {
+				this.health -= damage;
+			}
+		} catch (Exception e) {
+			System.out.println("Illegal argument. Damage has to be positive");
+		}
+	}
+	@Override
+	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
+		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
+		if (otherEntity instanceof IAttackingEntity attackingEntity) {
+			this.takeDamage(attackingEntity.getAttackDamage());
+		}
 	}
 }
