@@ -8,7 +8,6 @@ public class BaseWeapon implements WeaponSPI {
 	private final int ammoCount = Integer.MAX_VALUE;
 	private final ProjectileControlSystem projectileControlSystem = new ProjectileControlSystem();
 
-
 	private final long maxCoolDownTicks = 1_000_000_000 / 4;
 	private long timeOfLastShot;
 
