@@ -6,7 +6,7 @@ import com.github.sef24sp4.common.interfaces.IVector;
 public interface IPathfindingProvider {
 
 	/**
-	 * Entity can by implementing this method navigtate to a TargatCoordinate.
+	 * Entity can by implementing this method navigate to a TargatCoordinate.
 	 * The Method gives the entity the next coordinate on the optimal route towards the TargatCoordinate.
 	 * @param entity is the entity that needs to be moved.
 	 * @param targetCoordinate is the Coordinate the entity essentially needs to go to.
