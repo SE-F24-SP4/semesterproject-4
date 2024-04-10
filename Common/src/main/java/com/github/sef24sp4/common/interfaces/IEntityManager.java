@@ -20,4 +20,17 @@ public interface IEntityManager {
 		});
 		return output;
 	}
+
+	/**
+	 * Remove all entities of a specific type.
+	 *
+	 * @param entityType The type of entities to remove.
+	 * @param <E>        The entity type.
+	 * @return A {@link List} of the removed entities.
+	 */
+	public default <E extends IEntity> List<E> removeEntitiesByClass(Class<E> entityType) {
+		List<E> entities = this.getEntitiesByClass(entityType);
+		entities.forEach(this::removeEntity);
+		return entities;
+	}
 }
