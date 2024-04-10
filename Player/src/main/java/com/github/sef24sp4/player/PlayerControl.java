@@ -44,11 +44,9 @@ public class PlayerControl implements IEntityProcessingService {
 		} else if (keys.isDown(InputAction.DOWN, InputAction.RIGHT)) {
 			player.setX(playerX + player.getDiagonalWalkSpeed());
 			player.setY(playerY + player.getDiagonalWalkSpeed());
-		} else if (keys.isDown(InputAction.LEFT) && !keys.isDown(InputAction.UP)
-				&& !keys.isDown(InputAction.DOWN)) {
+		} else if (keys.isDown(InputAction.LEFT)) {
 			player.setX(playerX - player.getWalkSpeed());
-		} else if (keys.isDown(InputAction.RIGHT) && !keys.isDown(InputAction.UP)
-				&& !keys.isDown(InputAction.DOWN)) {
+		} else if (keys.isDown(InputAction.RIGHT)) {
 			player.setX(playerX + player.getWalkSpeed());
 		} else if (keys.isDown(InputAction.UP)) {
 			player.setY(playerY - player.getWalkSpeed());
