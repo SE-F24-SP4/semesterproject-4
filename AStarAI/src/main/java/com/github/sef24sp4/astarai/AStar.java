@@ -47,7 +47,7 @@ public class AStar implements IPathfindingProvider {
 	//set nodes for whole map?
 
 	@Override
-	public IVector calculateNextMove(IEntity entity, IVector targetCoordinate) {
+	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
 		//TODO: targetCoordinate = location of player = goalnode?
 		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
 		int x = (int) targetCoordinate.getX();
