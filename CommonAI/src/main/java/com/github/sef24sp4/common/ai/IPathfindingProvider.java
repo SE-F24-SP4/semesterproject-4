@@ -7,11 +7,10 @@ public interface IPathfindingProvider {
 
 	/**
 	 * Entity can by implementing this method navigtate to a TargatCoordinate.
-	 * The Method start from the StartCoordinate of the Entity, open neighbor nodes, and expand the node with the lowest fCost.
-	 * When the best route towards a target is known, the Entity will navigate to the next step on this route towards the TargatCoordinate.
+	 * The Method gives the entity the next coordinate on the optimal route towards the TargatCoordinate.
 	 * @param entity is the entity that needs to be moved.
-	 * @param targetCoordinate is the Coordinate the entity needs to go to.
-	 * @return an IVector, that is the next node (targetCoordinate), that the entity should go to. This can be a coordinate.
+	 * @param targetCoordinate is the Coordinate the entity essentially needs to go to.
+	 * @return an IVector, that is the next coordinate that the entity should go to.
 	 */
 	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate);
 
