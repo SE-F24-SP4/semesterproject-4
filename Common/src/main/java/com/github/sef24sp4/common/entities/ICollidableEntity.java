@@ -9,8 +9,9 @@ public interface ICollidableEntity extends IEntity, IGameElement {
 	 * Do NOT call `collide` method on `otherEntity`, this will be done automatically by CollisionProcessor
 	 * `otherEntity` is provided to query which entity it has collided with.
 	 *
-	 * @param entityManager
-	 * @param otherEntity
+	 * @param entityManager The entityManager for the game.
+	 * @param otherEntity   The entity which has been collided with.
+	 *                      Do NOT alter state of this entity or remove it from the entityManager.
 	 */
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity);
 }
