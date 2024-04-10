@@ -120,6 +120,13 @@ public class AStar implements IPathfindingProvider {
 		}
 		return Optional.empty();
 	}
+	//returns the next Node in the pathList
+	public Node getNextStep() {
+		if  (!this.pathList.isEmpty()) {
+			return pathList.remove(0);
+		}
+		return null;
+	}
 
 	//TODO: Calculate costs
 	public void getCost(Node aNode) {
@@ -191,6 +198,7 @@ public class AStar implements IPathfindingProvider {
 
 			// track the path with color?
 		}
+		return this.goalReached; //return if goal is reached or not.
 	}
 
 	private void checkNeighborNodes(Node theCurrentNode) {
