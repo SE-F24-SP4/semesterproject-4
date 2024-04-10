@@ -30,6 +30,8 @@
 		<module>PolygonEnemy</module>
 		<module>WaveGenerator</module>
 		<module>WorldMap</module>
+		<module>WeaponPack</module>
+		<module>ItemPack</module>
 	</modules>
 
 	<properties>

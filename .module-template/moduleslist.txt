@@ -17,3 +17,5 @@ Player
 PolygonEnemy
 WorldMap
 WaveGenerator
+WeaponPack
+ItemPack
