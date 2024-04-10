@@ -84,30 +84,24 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	/**
 	 * Checks whether the players health is below 0. If true the player entity is removed.
-	 *
-	 * @return boolean - Returns true if player was killed
 	 */
-	public boolean killCheck() {
-		if (this.health <= 0) {
-			IEntityManager e = new EntityManager();
-			e.removeEntity(this);
-			return true;
-		} else {
-			return false;
-		}
+	public void kill(IEntityManager entityManager) {
+		entityManager.removeEntity(this);
 	}
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
 	 * @param damage The damage of the attacking entity. Has to be positive.
 	 */
-	public void takeDamage(double damage) {
+	public void takeDamage(double damage, IEntityManager entityManager) {
 		try {
 			if (damage < 0) {
 				throw new IllegalArgumentException();
 			} else {
 				this.health -= damage;
-				this.killCheck();
+				if (this.health <= 0) {
+					this.kill(entityManager);
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("Illegal argument. Damage has to be positive");
@@ -117,7 +111,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
-			this.takeDamage(attackingEntity.getAttackDamage());
+			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
 		}
 	}
 }
