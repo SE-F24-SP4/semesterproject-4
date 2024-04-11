@@ -5,9 +5,9 @@ public class Node {
 	private Node parent;
 	private int x;
 	private int y;
-	private int gCost;
-	private int hCost;
-	private int fCost;
+	private double gCost;
+	private double hCost;
+	private double fCost;
 	private boolean solid;
 	private boolean open;
 	private boolean checked;
@@ -26,15 +26,15 @@ public class Node {
 		return this.y;
 	}
 
-	public int getGCost() {
+	public double getGCost() {
 		return this.gCost;
 	}
 
-	public int getHCost() {
+	public double getHCost() {
 		return this.hCost;
 	}
 
-	public int getFCost() {
+	public double getFCost() {
 		return this.fCost;
 	}
 
@@ -58,15 +58,15 @@ public class Node {
 		this.y = y;
 	}
 
-	public void setGCost(int cost) {
+	public void setGCost(double cost) {
 		this.gCost = cost;
 	}
 
-	public void setHCost(int cost) {
+	public void setHCost(double cost) {
 		this.hCost = cost;
 	}
 
-	public void setFCost(int cost) {
+	public void setFCost(double cost) {
 		this.fCost = cost;
 	}
 
