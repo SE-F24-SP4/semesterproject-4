@@ -5,9 +5,8 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 
 public class BaseMachineGun implements WeaponSPI{
-	//Husk, at denne Machine Gun skal skyde med (begrænset antal) bullets.
-	//Kan du bruge MIN_VALUE istedet for MAX, siden det repræsenterer det mindste værdi for integer??
-	private final int ammoCount = Integer.MIN_VALUE;
+	//Variables defined for ammoCount and projectiles.
+	private final int ammoCount = 250;
 	private final BulletControlSystem bulletControlSystem = new BulletControlSystem();
 
 	private final long maxCountDownTicks = 1_000_000_000 / 4;
