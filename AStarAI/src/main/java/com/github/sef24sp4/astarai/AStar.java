@@ -107,11 +107,11 @@ public class AStar implements IPathfindingProvider {
 		return Optional.empty();
 	}
 
-	public Node getNextStep() { //returns the next Node in the pathList
-		if  (!this.pathList.isEmpty()) {
-			return pathList.remove(0);
+	public Optional<Node> getNextStep() { //returns the next Node in the pathList
+		if (!this.pathList.isEmpty()) {
+			return Optional.of(pathList.remove(0));
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	//TODO: Calculate costs
