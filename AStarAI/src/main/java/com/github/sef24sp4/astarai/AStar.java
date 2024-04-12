@@ -41,17 +41,17 @@ public class AStar implements IPathfindingProvider {
 		//set goalNode based on targetCoordinate
 		int targetX = (int) Math.round(targetCoordinate.getX()); //round to nearest int (so 3.9 is 4 instead of 3)
 		int targetY = (int) Math.round(targetCoordinate.getY());
-		this.goalNode = node[targetX][targetY]; //does this work?
+		this.goalNode = this.node[targetX][targetY]; //does this work?
 
 		//set startNode based on entity
 		int startX = (int) Math.round(entity.getX());
 		int startY = (int) Math.round(entity.getY());
-		this.startNode = node[startX][startY];
+		this.startNode = this.node[startX][startY];
 
-		search();
+		this.search();
 
 		//Feels like this is too complicated
-		Optional<Node> nextStep = getNextStep();
+		Optional<Node> nextStep = this.getNextStep();
 		if (nextStep.isPresent()) {
 			Node nextNode = nextStep.get();
 			return new Coordinates(nextNode.getX(), nextNode.getY());
@@ -61,7 +61,7 @@ public class AStar implements IPathfindingProvider {
 
 	private Optional<Node> getNextStep() { //returns the next Node in the pathList
 		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
+			return Optional.of(this.pathList.remove(0));
 		}
 		return Optional.empty();
 	}
@@ -89,7 +89,7 @@ public class AStar implements IPathfindingProvider {
 			int x = this.currentNode.getX();
 			int y = this.currentNode.getY();
 
-			//TODO: need to specify currentNode?
+			//to do: need to specify currentNode?
 			this.currentNode.setChecked(true);
 
 			this.openList.remove(this.currentNode);
@@ -143,19 +143,19 @@ public class AStar implements IPathfindingProvider {
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode); //what if it is not in list?
 
-			checkNeighborNodes(currentNode);//neighbors added to openlist if possible.
+			this.checkNeighborNodes(this.currentNode); //neighbors added to openlist if possible.
 
 			int bestNode = 0; //best node in index
 			double bestFCost = MAX_VALUE; //so far best fCost close to infinity.
 
 			//find best node with loop though openList, comparing fCost.
 			for (int i = 0; i < this.openList.size(); i++) {
-				getCost(this.openList.get(i)); //calculate its cost.
+				this.getCost(this.openList.get(i)); //calculate its cost.
 				if (this.openList.get(i).getFCost() < bestFCost) {
 					bestNode = i;
 					bestFCost = this.openList.get(i).getFCost();
 				} else if (this.openList.get(i).getFCost() == bestFCost) {
-					if (this.openList.get(i).getGCost() < openList.get(bestNode).getGCost()) {
+					if (this.openList.get(i).getGCost() < this.openList.get(bestNode).getGCost()) {
 						bestNode = i;
 					}
 				}
@@ -169,18 +169,18 @@ public class AStar implements IPathfindingProvider {
 
 			if (this.currentNode.equals(this.goalNode)) {
 				this.goalReached = true;
-				trackPath();
+				this.trackPath();
 				return;
 			}
 		}
 	}
 
 	private void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
-		Node currentNode = this.goalNode;
+		Node endNode = this.goalNode;
 
-		while (currentNode != this.startNode) {
-			this.pathList.add(0, currentNode);
-			currentNode = currentNode.getParent(); //parent to currentnode, is the next on path.
+		while (this.currentNode != this.startNode) {
+			this.pathList.add(0, this.currentNode);
+			this.currentNode = this.currentNode.getParent(); //parent to currentnode, is the next on path.
 
 			// track the path with color?
 		}
@@ -203,7 +203,7 @@ public class AStar implements IPathfindingProvider {
 			this.openNode(this.node[x][y - 1]);
 		}
 		//open bottom neighbor
-		if (y + 1 < gameSettings.getDisplayHeight()) {
+		if (y + 1 < this.gameSettings.getDisplayHeight()) {
 			this.openNode(this.node[x][y + 1]);
 		}
 		//topleft
@@ -211,15 +211,15 @@ public class AStar implements IPathfindingProvider {
 			this.openNode(this.node[x - 1][y - 1]);
 		}
 		//topright
-		if (x + 1 < gameSettings.getDisplayWidth() && y - 1 >= 0) {
+		if (x + 1 < this.gameSettings.getDisplayWidth() && y - 1 >= 0) {
 			this.openNode(this.node[x + 1][y - 1]);
 		}
 		//bottomleft
-		if (x - 1 >= 0 && y + 1 < gameSettings.getDisplayHeight()) {
+		if (x - 1 >= 0 && y + 1 < this.gameSettings.getDisplayHeight()) {
 			this.openNode(this.node[x - 1][y + 1]);
 		}
 		//bottomright
-		if (x + 1 < gameSettings.getDisplayWidth() && y + 1 < gameSettings.getDisplayHeight()) {
+		if (x + 1 < this.gameSettings.getDisplayWidth() && y + 1 < this.gameSettings.getDisplayHeight()) {
 			this.openNode(this.node[x + 1][y + 1]);
 		}
 	}

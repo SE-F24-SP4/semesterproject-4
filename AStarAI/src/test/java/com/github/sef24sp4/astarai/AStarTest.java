@@ -2,31 +2,28 @@ package com.github.sef24sp4.astarai;
 
 import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
-import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.interfaces.IVector;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Entity;
 
 public class AStarTest {
-	IGameSettings gameSettings;
-
+	private IGameSettings gameSettings;
 
 	@Test
-	void AStarNavigateTest() {
+	void aStarNavigateTest() {
 		int mapWidth = 10;
 		int mapHeight = 10;
 
-		gameSettings.setDisplayWidth(mapWidth);
-		gameSettings.setDisplayHeight(mapHeight);
-		
-		Node[][] nodes = new Node[gameSettings.getDisplayWidth()][gameSettings.getDisplayHeight()];
+		this.gameSettings.setDisplayWidth(mapWidth);
+		this.gameSettings.setDisplayHeight(mapHeight);
+
+		Node[][] nodes = new Node[this.gameSettings.getDisplayWidth()][this.gameSettings.getDisplayHeight()];
 
 		for (int i = 0; i < mapWidth; i++) {
 			for (int j = 0; j < mapHeight; j++) {
-				nodes[i][j] = new Node(i,j);
+				nodes[i][j] = new Node(i, j);
 
-				if(i==3 && j>=3 && j <=7){
+				if (i == 3 && j >= 3 && j <= 7) {
 					nodes[i][j].setSolid(true);
 				}
 			}
@@ -36,12 +33,9 @@ public class AStarTest {
 			enemy.setX(1);
 			enemy.setY(1);
 
-			IVector iVector = new Coordinates(8,8);
+			IVector iVector = new Coordinates(8, 8);
 
-			aStar.nextCoordinateInPath(enemy,iVector);
-
+			aStar.nextCoordinateInPath(enemy, iVector);
 		}
-
-
 	}
 }
