@@ -102,6 +102,20 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 				this.kill(entityManager);
 			}
 	}
+	/**
+	 * Takes the entity's health and subtracts the damage.
+	 *
+	 * @param amount        The amount the player is healed. Has to be positive.
+	 * @param entityManager The games entityManager.
+	 */
+	public void heal(double amount, IEntityManager entityManager) {
+		if (amount < 0) throw new IllegalArgumentException("Amount has to be positive");
+		if (this.health + amount >= this.maxHealth) {
+			this.health = this.maxHealth;
+			return;
+		}
+		this.health += amount;
+	}
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
