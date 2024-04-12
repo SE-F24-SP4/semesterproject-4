@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IGamePluginService;
 
-public class BaseBulletPlugin implements IGamePluginService {
+public class BulletPlugin implements IGamePluginService {
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
 
@@ -17,6 +17,6 @@ public class BaseBulletPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
-		entityManager.removeEntitiesByClass(BaseBullet.class);
+		entityManager.removeEntitiesByClass(Bullet.class);
 	}
 }

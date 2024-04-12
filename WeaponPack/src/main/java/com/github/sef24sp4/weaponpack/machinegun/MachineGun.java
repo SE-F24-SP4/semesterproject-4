@@ -4,15 +4,15 @@ import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 
-public class BaseMachineGun implements WeaponSPI {
+public class MachineGun implements WeaponSPI {
 	//Variables defined for ammoCount and projectiles.
 	private int ammoCount = 250;
 	private final BulletControlSystem bulletControlSystem = new BulletControlSystem();
 
-	private final long maxCountDownTicks = 1_000_000_000 / 4;
+	private final long maxCountDownTicks = 1_000_000_000 / 16;
 	private long timeOfLastShot;
 
-	public BaseMachineGun() {
+	public MachineGun() {
 		this.timeOfLastShot = System.nanoTime() - this.maxCountDownTicks;
 	}
 
@@ -20,7 +20,7 @@ public class BaseMachineGun implements WeaponSPI {
 	//But if this statement needs to be true, then we need to add a bullet, which decreases based on the ammoCount--;
 	@Override
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
-		if (this.getRemainingCoolDownTicks() > 0 || this.ammoCount <= 0) return false;
+		if (this.ammoCount <= 0 || this.getRemainingCoolDownTicks() > 0) return false;
 		this.timeOfLastShot = System.nanoTime();
 		entityManager.addEntity(this.bulletControlSystem.createProjectile(shooter));
 		this.ammoCount--;

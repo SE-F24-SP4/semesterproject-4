@@ -13,7 +13,7 @@ public class BulletControlSystem implements IEntityProcessingService, Projectile
 
 	@Override
 	public CommonProjectile createProjectile(IEntity shooter) {
-		BaseBullet bullet = new BaseBullet(shooter);
+		Bullet bullet = new Bullet(shooter);
 		bullet.setPolygonCoordinates(
 				new Coordinates(-2, 2),
 				new Coordinates(-2, -2),
@@ -28,7 +28,7 @@ public class BulletControlSystem implements IEntityProcessingService, Projectile
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
-		for (BaseBullet bullet : entityManager.removeEntitiesByClass(BaseBullet.class)) {
+		for (Bullet bullet : entityManager.removeEntitiesByClass(Bullet.class)) {
 			if (!gameSettings.isEntityWithinFrame(bullet)) {
 				entityManager.removeEntity(bullet);
 			}
