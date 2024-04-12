@@ -20,7 +20,7 @@ public class BaseMachineGun implements WeaponSPI {
 	//But if this statement needs to be true, then we need to add a bullet, which decreases based on the ammoCount--;
 	@Override
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
-		if (this.getRemainingCoolDownTicks() > 0 && this.ammoCount <= 0) return false;
+		if (this.getRemainingCoolDownTicks() > 0 || this.ammoCount <= 0) return false;
 		this.timeOfLastShot = System.nanoTime();
 		entityManager.addEntity(this.bulletControlSystem.createProjectile(shooter));
 		this.ammoCount--;
