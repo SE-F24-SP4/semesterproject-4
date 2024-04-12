@@ -12,6 +12,8 @@
           <option name="goals">
             <list>
               <option value="checkstyle:checkstyle" />
+              <option value="-T" />
+              <option value="2C" />
             </list>
           </option>
           <option name="multimoduleDir" />
