@@ -1,10 +1,10 @@
 package com.github.sef24sp4.common.inventory;
 
-import com.github.sef24sp4.common.item.ItemSPI;
+import com.github.sef24sp4.common.item.CommonItem;
 import java.util.LinkedHashMap;
 
 public interface InventorySPI {
-	public LinkedHashMap<ItemSPI, Integer> INVENTORY = new LinkedHashMap<>(3);
+	public LinkedHashMap<CommonItem, Integer> INVENTORY = new LinkedHashMap<>(3);
 
 	/**
 	 * Adds item to the inventory.
@@ -13,9 +13,9 @@ public interface InventorySPI {
 	 *
 	 * @param item is the item you add to the inventory.
 	 * @param amount is the amount of the item you add to the inventory.
-	 * @see ItemSPI
+	 * @see CommonItem
 	 */
-	public void addItem(ItemSPI item, int amount);
+	public void addItem(CommonItem item, int amount);
 
 	/**
 	 * @return Returns an integer of the currently selected inventory slot.
