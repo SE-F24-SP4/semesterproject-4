@@ -7,7 +7,7 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 
-public class BaseBullet extends CommonProjectile implements ICollidableEntity, IAttackingEntity{
+public class BaseBullet extends CommonProjectile implements ICollidableEntity, IAttackingEntity {
 	private final double damage = 5;
 
 	protected BaseBullet(IEntity shooter) {

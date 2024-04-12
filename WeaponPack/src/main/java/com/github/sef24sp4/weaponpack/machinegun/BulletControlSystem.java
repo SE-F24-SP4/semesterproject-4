@@ -17,8 +17,8 @@ public class BulletControlSystem implements IEntityProcessingService, Projectile
 		bullet.setPolygonCoordinates(
 				new Coordinates(-2, 2),
 				new Coordinates(-2, -2),
-				new Coordinates(2,-2),
-				new Coordinates(2,2)
+				new Coordinates(2, -2),
+				new Coordinates(2, 2)
 		);
 
 		bullet.setCoordinates(shooter.getCoordinates().clone());
@@ -29,7 +29,7 @@ public class BulletControlSystem implements IEntityProcessingService, Projectile
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		for (BaseBullet bullet : entityManager.removeEntitiesByClass(BaseBullet.class)) {
-			if(!gameSettings.isEntityWithinFrame(bullet)){
+			if (!gameSettings.isEntityWithinFrame(bullet)) {
 				entityManager.removeEntity(bullet);
 			}
 			bullet.setX(bullet.getX() + Math.cos(bullet.getRotation()) * this.bulletSpeed);
