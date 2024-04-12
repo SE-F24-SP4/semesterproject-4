@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.item.ItemSPI;
 import java.util.LinkedHashMap;
 
 public interface InventorySPI {
-	public LinkedHashMap<ItemSPI, Integer> inventory = new LinkedHashMap<>(3);
+	public LinkedHashMap<ItemSPI, Integer> INVENTORY = new LinkedHashMap<>(3);
 
 	/**
 	 * Adds item to the inventory.
