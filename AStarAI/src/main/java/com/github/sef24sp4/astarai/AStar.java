@@ -3,6 +3,7 @@ package com.github.sef24sp4.astarai;
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.interfaces.IVector;
 
 import java.util.ArrayList;
@@ -19,9 +20,12 @@ public class AStar implements IPathfindingProvider {
 
 	private boolean goalReached = false;
 
-	private List<Node> openList = new ArrayList<>();
-	private List<Node> closedList = new ArrayList<>();
-	private List<Node> pathList = new ArrayList<>(); //this should be a PriorityQueue
+	private List<Node> openList = new ArrayList<>(); //best for random access
+	private List<Node> closedList = new ArrayList<>(); //do i even use this?
+	private List<Node> pathList = new ArrayList<>(); //Is PriorityQueue good when removing specific element - LL is best for 1st element?
+
+	private IGameSettings gameSettings;
+
 
 	//Explaination
 	//startNode is where the entity using AI is.
@@ -46,6 +50,7 @@ public class AStar implements IPathfindingProvider {
 
 		search();
 
+		//Feels like this is too complicated
 		Optional<Node> nextStep = getNextStep();
 		if (nextStep.isPresent()) {
 			Node nextNode = nextStep.get();
@@ -54,14 +59,13 @@ public class AStar implements IPathfindingProvider {
 		return entity.getCoordinates();
 	}
 
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
+	private Optional<Node> getNextStep() { //returns the next Node in the pathList
 		if (!this.pathList.isEmpty()) {
 			return Optional.of(pathList.remove(0));
 		}
 		return Optional.empty();
 	}
 
-	//TODO: Calculate costs
 	public void getCost(Node aNode) {
 		//gCost (maybe it should be all parent nodes to startnode to get accurate cost)
 		double gCostX = (double) aNode.getX() - (double) this.startNode.getX();
@@ -130,7 +134,7 @@ public class AStar implements IPathfindingProvider {
 
 	 */
 
-	public void search() { //could i add parameter nodes?
+	private void search() { //method
 		//at first current node is the same as startnode
 		this.currentNode = this.startNode;
 
@@ -171,14 +175,14 @@ public class AStar implements IPathfindingProvider {
 		}
 	}
 
-	public void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
+	private void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
 		Node currentNode = this.goalNode;
 
 		while (currentNode != this.startNode) {
 			this.pathList.add(0, currentNode);
 			currentNode = currentNode.getParent(); //parent to currentnode, is the next on path.
 
-			//TODO: track the path with color?
+			// track the path with color?
 		}
 	}
 
@@ -190,37 +194,34 @@ public class AStar implements IPathfindingProvider {
 		if (x - 1 >= 0) { //is this correct?
 			this.openNode(this.node[x - 1][y]);
 		}
-
-		//TODO: Check if neighbor nodes are on the map.
-
-			//open right neighbor
-			if (x + 1 < gridSizeX) {
-				this.openNode(this.node[x + 1][y]);
-			}
-			//open top neighbor
-			if (y - 1 >= 0) {
-				this.openNode(this.node[x][y - 1]);
-			}
-			//open bottom neighbor
-			if (y + 1 < gridSizeY) {
-				this.openNode(this.node[x][y + 1]);
-			}
-			//topleft
-			if (x - 1 >= 0 && y - 1 >= 0) {
-				this.openNode(this.node[x - 1][y - 1]);
-			}
-			//topright
-			if (x + 1 < gridSizeX && y - 1 >= 0) {
-				this.openNode(this.node[x + 1][y - 1]);
-			}
-				//bottomleft
-			if (x - 1 >= 0 && y + 1 < gridSizeY) {
-				this.openNode(this.node[x - 1][y + 1]);
-			}
-			//bottomright
-			if (x + 1 < gridSizeX && y + 1 < gridSizeY) {
-				this.openNode(this.node[x + 1][y + 1]);
-			}
+		//open right neighbor
+		if (x + 1 < this.gameSettings.getDisplayWidth()) {
+			this.openNode(this.node[x + 1][y]);
+		}
+		//open top neighbor
+		if (y - 1 >= 0) {
+			this.openNode(this.node[x][y - 1]);
+		}
+		//open bottom neighbor
+		if (y + 1 < gameSettings.getDisplayHeight()) {
+			this.openNode(this.node[x][y + 1]);
+		}
+		//topleft
+		if (x - 1 >= 0 && y - 1 >= 0) {
+			this.openNode(this.node[x - 1][y - 1]);
+		}
+		//topright
+		if (x + 1 < gameSettings.getDisplayWidth() && y - 1 >= 0) {
+			this.openNode(this.node[x + 1][y - 1]);
+		}
+		//bottomleft
+		if (x - 1 >= 0 && y + 1 < gameSettings.getDisplayHeight()) {
+			this.openNode(this.node[x - 1][y + 1]);
+		}
+		//bottomright
+		if (x + 1 < gameSettings.getDisplayWidth() && y + 1 < gameSettings.getDisplayHeight()) {
+			this.openNode(this.node[x + 1][y + 1]);
+		}
 	}
 
 	//Method for open nodes if: not open, not checked and not solid : open it.
