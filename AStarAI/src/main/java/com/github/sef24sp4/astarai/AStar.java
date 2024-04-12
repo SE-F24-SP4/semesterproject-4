@@ -128,7 +128,6 @@ public class AStar implements IPathfindingProvider {
 		return Optional.empty();
 	}
 
-	//TODO: Calculate costs
 	public void getCost(Node aNode) {
 		//gCost (maybe it should be all parent nodes to startnode to get accurate cost)
 		double gCostX = (double) aNode.getX() - (double) this.startNode.getX();
