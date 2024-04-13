@@ -11,10 +11,10 @@ public abstract class CommonItem extends CommonEntity implements ICollidableEnti
 	protected CommonItem(String identifier, String value) {
 		this.metadata = new MetadataBuilder(GameElementType.ITEM).setProperty(identifier, value).getMetadata();
 		this.setPolygonCoordinates(
-				new Coordinates(5,5),
-				new Coordinates(5,-5),
-				new Coordinates(-5,-5),
-				new Coordinates(-5,5)
+				new Coordinates(5, 5),
+				new Coordinates(5, -5),
+				new Coordinates(-5, -5),
+				new Coordinates(-5, 5)
 		);
 	}
 	@Override
