@@ -9,7 +9,6 @@ import java.util.Objects;
  * It is provided as a default implementation of {@link IVector}.
  */
 public class BasicVector implements IVector, Cloneable {
-
 	private double x;
 	private double y;
 
@@ -20,6 +19,16 @@ public class BasicVector implements IVector, Cloneable {
 	public BasicVector(final double x, final double y) {
 		this.setX(x);
 		this.setY(y);
+	}
+
+	/**
+	 * Constructs a new {@link BasicVector} using the values from generic {@link IVector vector}.
+	 *
+	 * @param vector The {@link IVector} to construct from.
+	 * @return The newly constructed {@link BasicVector}.
+	 */
+	public static BasicVector from(final IVector vector) {
+		return new BasicVector(vector.getX(), vector.getY());
 	}
 
 	@Override
@@ -38,6 +47,41 @@ public class BasicVector implements IVector, Cloneable {
 
 	public void setY(final double y) {
 		this.y = y;
+	}
+
+	/**
+	 * Scale the current vector with {@code factor}.
+	 *
+	 * @param factor The factor to scale the current vector with.
+	 */
+	public void scale(final double factor) {
+		this.x *= factor;
+		this.y *= factor;
+	}
+
+	/**
+	 * Add the {@code vector} to the current vector.
+	 * This is done by adding the individual components from {@code vector}
+	 * to the current vectors components.
+	 *
+	 * @param vector The vector whose components will be added with.
+	 * @see #subtract(IVector)
+	 */
+	public void add(final IVector vector) {
+		this.x += vector.getX();
+		this.y += vector.getY();
+	}
+
+	/**
+	 * Subtract the components of {@code vector} from the current vectors components.
+	 * This is exactly the same as calling {@link #add(IVector)} with {@link IVector#negative() vector.negative()}.
+	 *
+	 * @param vector The vector whose components will be subtracted with.
+	 * @see #add(IVector)
+	 * @see IVector#negative()
+	 */
+	public void subtract(final IVector vector) {
+		this.add(vector.negative());
 	}
 
 	@Override

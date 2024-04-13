@@ -1,5 +1,7 @@
 package com.github.sef24sp4.common.interfaces;
 
+import com.github.sef24sp4.common.vector.BasicVector;
+
 public interface IVector {
 
 	/**
@@ -36,7 +38,7 @@ public interface IVector {
 	}
 
 
-	public default double getDeterminant(IVector otherVector) {
+	public default double getDeterminant(final IVector otherVector) {
 		return this.getX() * otherVector.getY() - otherVector.getX() * this.getY();
 	}
 
@@ -47,7 +49,34 @@ public interface IVector {
 	 * @return The angle in radians.
 	 * @see <a href="https://stackoverflow.com/a/16544330">Stackoverflow: Direct way of computing the clockwise angle between two vectors</a>
 	 */
-	public default double getAngleBetween(IVector otherVector) {
+	public default double getAngleBetween(final IVector otherVector) {
 		return Math.atan2(otherVector.getDeterminant(this), otherVector.getDotProduct(this));
+	}
+
+
+	/**
+	 * Get a normalized version of the current vector.
+	 * Not that if the current vector is a zero vector, then a new zero vector is returned.
+	 * This is done instead of throwing an error or returning null.
+	 *
+	 * @return A normalized vector of the current vector. <br/>
+	 * Unless current vector is a zero vector, then a new zero vector is returned.
+	 * @see <a href="https://stackoverflow.com/a/722087">Stackoverflow: How do you normalize a zero vector</a>
+	 */
+	public default IVector getNormalizedVector() {
+		final double norm = this.getNorm();
+		if (norm == 0) return new BasicVector();
+		return new BasicVector(this.getX() / norm, this.getY() / norm);
+	}
+
+	/**
+	 * Get a new {@link IVector} whose components are negative value of the original vector. <br/>
+	 * E.g. {@code newVector.getX() == -oldVector.getX()}
+	 * and {@code newVector.getY() == -oldVector.getY()}.
+	 *
+	 * @return The negative vector.
+	 */
+	public default IVector negative() {
+		return new BasicVector(-this.getX(), -this.getY());
 	}
 }

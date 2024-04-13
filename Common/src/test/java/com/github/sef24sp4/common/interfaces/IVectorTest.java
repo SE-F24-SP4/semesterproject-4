@@ -66,4 +66,19 @@ class IVectorTest {
 	void getAngleBetween() {
 		assertEquals(0.3868757177310281, this.vector.getAngleBetween(this.otherVector));
 	}
+
+
+	@Test
+	void getNormalizedVector() {
+		final IVector normalizedVector = this.vector.getNormalizedVector();
+		assertEquals(0.6, normalizedVector.getX());
+		assertEquals(0.8, normalizedVector.getY());
+	}
+
+	@Test
+	void getNegative() {
+		final IVector negative = this.vector.negative();
+		assertEquals(-3, negative.getX());
+		assertEquals(-4, negative.getY());
+	}
 }
