@@ -11,7 +11,9 @@
           </option>
           <option name="goals">
             <list>
-              <option value="test" />
+              <option value="checkstyle:check" />
+              <option value="-T" />
+              <option value="2C" />
             </list>
           </option>
           <option name="multimoduleDir" />
@@ -29,7 +31,7 @@
     </MavenSettings>
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="compile -T 2C" />
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="checkstyle:check -T 2C" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="test" />
     </method>
   </configuration>
 </component>
