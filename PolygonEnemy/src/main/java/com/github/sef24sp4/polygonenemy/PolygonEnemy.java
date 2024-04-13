@@ -17,6 +17,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	private final double damage;
 	private final double maxHealth;
 	private double health;
+	private double speed;
 	private final IGameMetadata metadata;
 
 	/**
@@ -35,6 +36,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 		this.health = edges;
 		this.damage = edges;
 		this.maxHealth = edges;
+		this.speed = 1.05 - (edges - 2) * 0.05;
 		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
 				getMetadata();
 		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
@@ -62,6 +64,15 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	 */
 	public double getHealth() {
 		return this.health;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		if (speed < 0) throw new IllegalArgumentException("speed is negative");
+		this.speed = speed;
 	}
 
 	@Override
