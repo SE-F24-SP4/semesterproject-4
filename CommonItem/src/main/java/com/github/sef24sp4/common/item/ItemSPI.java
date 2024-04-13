@@ -22,20 +22,22 @@ public interface ItemSPI {
 	/**
 	 * Despawns/removes the item from the map.
 	 * Can be used if an item isn't picked up after a duration of time.
+	 * @param entityManager the games entity manager.
 	 */
-	public void despawnItem();
+	public void despawnItem(IEntityManager entityManager);
 
 	/**
 	 * Collects the item and adds it to the entities inventory.
 	 *
 	 * @param entity is the entity that is collecting the item.
 	 */
-	public void collectItem(ICollidableEntity entity);
+	public void collectItem(ICollidableEntity entity, IEntityManager entityManager);
 
 	/**
 	 * Uses item on an entity.
 	 *
 	 * @param targetEntity The entity that the item is used on.
+	 * @param entityManager the games entity manager.
 	 */
-	public void useItem(IEntity targetEntity);
+	public void useItem(IEntity targetEntity, IEntityManager entityManager);
 }
