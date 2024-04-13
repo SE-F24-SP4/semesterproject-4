@@ -2,9 +2,11 @@ package com.github.sef24sp4.common.item;
 
 import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
+import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 
-public interface ItemSPI extends IGameMetadata {
+public interface ItemSPI {
 	/**
 	 * Spawns a new item with specified metadata.
 	 * <p>
@@ -16,7 +18,7 @@ public interface ItemSPI extends IGameMetadata {
 	 * @see ICollidableEntity
 	 * @see CommonItem
 	 */
-	public ICollidableEntity spawnItem(Coordinates coordinates);
+	public void spawnItem(Coordinates coordinates, IEntityManager entityManager);
 
 	/**
 	 * Despawns/removes the item from the map.
@@ -32,7 +34,9 @@ public interface ItemSPI extends IGameMetadata {
 	public void collectItem(ICollidableEntity entity);
 
 	/**
-	 * Consumes item.
+	 * Uses item on an entity.
+	 *
+	 * @param targetEntity The entity that the item is used on.
 	 */
-	public void useItem();
+	public void useItem(IEntity targetEntity);
 }
