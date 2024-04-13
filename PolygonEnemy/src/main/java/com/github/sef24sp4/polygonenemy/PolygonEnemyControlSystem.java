@@ -17,12 +17,12 @@ public class PolygonEnemyControlSystem implements IEntityProcessingService, Enem
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
-		entityManager.getEntitiesByClass(PolygonEnemy.class).forEach( polygonEnemy -> {
+		entityManager.getEntitiesByClass(PolygonEnemy.class).forEach(polygonEnemy -> {
 			// standard value, so will always go towards the player.
 			IVector pointToGo = Player.getPlayer().getCoordinates();
 			// will overwrite if pathfinding provider is available, to find a better path to player.
-			if (pathfindingProviders.findFirst().isPresent()) {
-				pointToGo = pathfindingProviders.findFirst().get().nextCoordinateInPath(polygonEnemy, pointToGo);
+			if (this.pathfindingProviders.findFirst().isPresent()) {
+				pointToGo = this.pathfindingProviders.findFirst().get().nextCoordinateInPath(polygonEnemy, pointToGo);
 			}
 
 			IVector directionVector = polygonEnemy.getCoordinates().getVectorTo(pointToGo);

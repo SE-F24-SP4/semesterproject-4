@@ -29,14 +29,12 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	 * @throws IllegalArgumentException if the amount of edges is below 3
 	 */
 	public PolygonEnemy(int edges) {
-		if (edges < 3) {
-			throw new IllegalArgumentException("edges must be larger or equal to 3");
-		}
+		if (edges < 3) throw new IllegalArgumentException("edges must be larger or equal to 3");
 		this.edges = edges;
 		this.health = edges;
 		this.damage = edges;
 		this.maxHealth = edges;
-		this.speed = 1.05 - (edges - 2) * 0.05;
+		this.speed = 1.0 / Math.log(1.0 + (edges - 2));
 		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
 				getMetadata();
 		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
@@ -67,7 +65,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	}
 
 	public double getSpeed() {
-		return speed;
+		return this.speed;
 	}
 
 	public void setSpeed(double speed) {
