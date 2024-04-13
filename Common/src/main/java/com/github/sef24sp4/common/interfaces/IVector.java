@@ -76,7 +76,7 @@ public interface IVector {
 	 *
 	 * @return The negative vector.
 	 */
-	public default IVector negative() {
+	public default IVector getNegative() {
 		return new BasicVector(-this.getX(), -this.getY());
 	}
 }

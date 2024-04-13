@@ -76,8 +76,8 @@ class IVectorTest {
 	}
 
 	@Test
-	void getNegative() {
-		final IVector negative = this.vector.negative();
+	void getGetNegative() {
+		final IVector negative = this.vector.getNegative();
 		assertEquals(-3, negative.getX());
 		assertEquals(-4, negative.getY());
 	}

@@ -74,14 +74,14 @@ public class BasicVector implements IVector, Cloneable {
 
 	/**
 	 * Subtract the components of {@code vector} from the current vectors components.
-	 * This is exactly the same as calling {@link #add(IVector)} with {@link IVector#negative() vector.negative()}.
+	 * This is exactly the same as calling {@link #add(IVector)} with {@link IVector#getNegative() vector.negative()}.
 	 *
 	 * @param vector The vector whose components will be subtracted with.
 	 * @see #add(IVector)
-	 * @see IVector#negative()
+	 * @see IVector#getNegative()
 	 */
 	public void subtract(final IVector vector) {
-		this.add(vector.negative());
+		this.add(vector.getNegative());
 	}
 
 	@Override
