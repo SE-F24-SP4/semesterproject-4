@@ -1,7 +1,4 @@
-package com.github.sef24sp4.common.data;
-
-import com.github.sef24sp4.common.interfaces.IVector;
-import com.github.sef24sp4.common.vector.BasicVector;
+package com.github.sef24sp4.common.vector;
 
 public class Coordinates extends BasicVector implements Cloneable {
 	private static final IVector UNIT_VECTOR = new Coordinates(1, 0);

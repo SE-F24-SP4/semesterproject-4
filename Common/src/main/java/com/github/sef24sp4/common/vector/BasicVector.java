@@ -1,7 +1,5 @@
 package com.github.sef24sp4.common.vector;
 
-import com.github.sef24sp4.common.interfaces.IVector;
-
 import java.util.Objects;
 
 /**

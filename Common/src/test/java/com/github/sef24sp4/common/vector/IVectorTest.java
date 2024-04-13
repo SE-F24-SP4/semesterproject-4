@@ -1,4 +1,4 @@
-package com.github.sef24sp4.common.interfaces;
+package com.github.sef24sp4.common.vector;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

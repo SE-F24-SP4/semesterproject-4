@@ -1,4 +1,4 @@
-package com.github.sef24sp4.common.data;
+package com.github.sef24sp4.common.vector;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,4 @@
-package com.github.sef24sp4.common.interfaces;
-
-import com.github.sef24sp4.common.vector.BasicVector;
+package com.github.sef24sp4.common.vector;
 
 public interface IVector {
 
