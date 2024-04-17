@@ -50,7 +50,6 @@ public class AStar implements IPathfindingProvider {
 
 		this.search();
 
-		//Feels like this is too complicated
 		Optional<Node> nextStep = this.getNextStep();
 		if (nextStep.isPresent()) {
 			Node nextNode = nextStep.get();

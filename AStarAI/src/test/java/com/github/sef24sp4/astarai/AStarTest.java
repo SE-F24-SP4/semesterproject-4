@@ -5,7 +5,6 @@ import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.interfaces.IVector;
-import com.github.sef24sp4.core.game.GameSettings;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,21 +26,28 @@ public class AStarTest {
 
 		//doAnswer(when(gameSettings).setDisplayHeight(anyInt()));
 
+		doAnswer(invocation -> {
+			int height = invocation.getArgument(0);
+			gameSettings.setDisplayHeight(height);
+			return null;
+		}).when(gameSettings).setDisplayHeight(anyInt());
+
+
 		//this.gameSettings.setDisplayWidth(mapWidth);
-		this.gameSettings.setDisplayHeight(mapHeight);
+		gameSettings.setDisplayHeight(mapHeight);
 		System.out.println(gameSettings.getDisplayHeight());
 
 		//assertTrue(this.gameSettings.getDisplayWidth() == 10);
 
-		Node[][] nodes = new Node[10][10];
+		Node[][] nodegrid = new Node[10][10];
 
 
 		for (int i = 0; i < mapWidth-1; i++) {
 			for (int j = 0; j < mapHeight-1; j++) {
-				nodes[i][j] = new Node(i,j);
+				nodegrid[i][j] = new Node(i,j);
 
 				if (i == 3 && j >= 3 && j <= 7) {
-					nodes[i][j].setSolid(true);
+					nodegrid[i][j].setSolid(true);
 				}
 			}
 
