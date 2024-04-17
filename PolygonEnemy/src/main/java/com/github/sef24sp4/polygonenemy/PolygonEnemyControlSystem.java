@@ -10,10 +10,11 @@ import com.github.sef24sp4.common.interfaces.IVector;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
 import com.github.sef24sp4.player.Player;
 
+import java.util.Optional;
 import java.util.ServiceLoader;
 
 public class PolygonEnemyControlSystem implements IEntityProcessingService, EnemySPI {
-	private final ServiceLoader<IPathfindingProvider> pathfindingProviders = ServiceLoader.load(IPathfindingProvider.class);
+	private final Optional<IPathfindingProvider> optionalAIPathProvider = ServiceLoader.load(IPathfindingProvider.class).findFirst();
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
@@ -21,8 +22,8 @@ public class PolygonEnemyControlSystem implements IEntityProcessingService, Enem
 			// standard value, so will always go towards the player.
 			IVector pointToGo = Player.getPlayer().getCoordinates();
 			// will overwrite if pathfinding provider is available, to find a better path to player.
-			if (this.pathfindingProviders.findFirst().isPresent()) {
-				pointToGo = this.pathfindingProviders.findFirst().get().nextCoordinateInPath(polygonEnemy, pointToGo);
+			if (this.optionalAIPathProvider.isPresent()) {
+				pointToGo = this.optionalAIPathProvider.get().nextCoordinateInPath(polygonEnemy, pointToGo);
 			}
 
 			IVector directionVector = polygonEnemy.getCoordinates().getVectorTo(pointToGo);
