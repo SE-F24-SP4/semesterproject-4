@@ -1,6 +1,6 @@
 package com.github.sef24sp4.common.item;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
@@ -11,7 +11,7 @@ public interface ItemSPI {
 	 * Spawns a new item with specified metadata.
 	 * <p>
 	 * Note the new item does not have any start coordinates and should be provided after,
-	 * or it will assume the standard values (0,0) provided by {@link com.github.sef24sp4.common.data.Coordinates}.
+	 * or it will assume the standard values (0,0) provided by {@link com.github.sef24sp4.common.vector.Coordinates}.
 	 *
 	 * @param coordinates define where on the map the item should spawn.
 	 * @param entityManager the games entity manager.
