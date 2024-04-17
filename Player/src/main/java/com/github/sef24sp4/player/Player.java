@@ -109,11 +109,8 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 */
 	private void heal(double amount) {
 		if (amount < 0) throw new IllegalArgumentException("Amount has to be positive");
-		if (this.health + amount >= this.maxHealth) {
-			this.health = this.maxHealth;
-			return;
-		}
 		this.health += amount;
+		if (this.health >= this.maxHealth) this.health = this.maxHealth;
 	}
 
 	@Override
