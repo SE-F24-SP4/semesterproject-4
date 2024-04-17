@@ -1,6 +1,6 @@
 package com.github.sef24sp4.common.entities;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.vector.Coordinates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
