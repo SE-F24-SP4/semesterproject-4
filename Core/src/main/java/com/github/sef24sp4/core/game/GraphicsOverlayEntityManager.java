@@ -7,7 +7,7 @@ import com.github.sef24sp4.core.interfaces.EntityToGraphicsMapper;
 public class GraphicsOverlayEntityManager extends EntityManager {
 	private final EntityToGraphicsMapper<IEntity, ?> graphicsMapping;
 
-	GraphicsOverlayEntityManager(EntityToGraphicsMapper<IEntity, ?> graphicsMapping) {
+	GraphicsOverlayEntityManager(final EntityToGraphicsMapper<IEntity, ?> graphicsMapping) {
 		this.graphicsMapping = graphicsMapping;
 	}
 
@@ -19,13 +19,13 @@ public class GraphicsOverlayEntityManager extends EntityManager {
 	}
 
 	@Override
-	public boolean addEntity(IEntity entity) {
+	public boolean addEntity(final IEntity entity) {
 		this.graphicsMapping.add(entity);
 		return super.addEntity(entity);
 	}
 
 	@Override
-	public boolean removeEntity(IEntity entity) {
+	public boolean removeEntity(final IEntity entity) {
 		this.graphicsMapping.remove(entity);
 		return super.removeEntity(entity);
 	}

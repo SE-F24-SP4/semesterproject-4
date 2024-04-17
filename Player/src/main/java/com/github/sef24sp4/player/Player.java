@@ -1,6 +1,6 @@
 package com.github.sef24sp4.player;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
@@ -85,7 +85,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 *
 	 * @param entityManager The games entityManager.
 	 */
-	public void kill(IEntityManager entityManager) {
+	private void kill(IEntityManager entityManager) {
 		entityManager.removeEntity(this);
 	}
 
@@ -95,12 +95,22 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @param damage        The damage of the attacking entity. Has to be positive.
 	 * @param entityManager The games entityManager.
 	 */
-	public void takeDamage(double damage, IEntityManager entityManager) {
+	private void takeDamage(double damage, IEntityManager entityManager) {
 			if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
 			this.health -= damage;
 			if (this.health <= 0) {
 				this.kill(entityManager);
 			}
+	}
+	/**
+	 * Takes the entity's health and subtracts the damage.
+	 *
+	 * @param amount The amount the player is healed. Has to be positive.
+	 */
+	private void heal(double amount) {
+		if (amount < 0) throw new IllegalArgumentException("Amount has to be positive");
+		this.health += amount;
+		if (this.health >= this.maxHealth) this.health = this.maxHealth;
 	}
 
 	@Override
