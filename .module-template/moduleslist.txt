@@ -16,6 +16,6 @@ Inventory
 Player
 PolygonEnemy
 WorldMap
-WaveGenerator
+WaveManager
 WeaponPack
 ItemPack
