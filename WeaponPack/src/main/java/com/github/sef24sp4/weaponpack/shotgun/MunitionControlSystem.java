@@ -7,7 +7,6 @@ import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import com.github.sef24sp4.common.projectile.ProjectileSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-import com.github.sef24sp4.weaponpack.machinegun.Bullet;
 
 public class MunitionControlSystem implements IEntityProcessingService, ProjectileSPI {
 	private final double munitionSpeed = 20.0;
