@@ -3,6 +3,7 @@ package com.github.sef24sp4.astarai;
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.interfaces.IVector;
 
@@ -13,7 +14,9 @@ import java.util.Optional;
 import static java.lang.Double.MAX_VALUE;
 
 public class AStar implements IPathfindingProvider {
-	private Node[][] node;
+	private Node[][] nodes;
+
+	private Node node;
 	private Node startNode;
 	private Node goalNode;
 	private Node currentNode;
@@ -25,6 +28,10 @@ public class AStar implements IPathfindingProvider {
 	private List<Node> pathList = new ArrayList<>(); //Is PriorityQueue good when removing specific element - LL is best for 1st element?
 
 	private IGameSettings gameSettings;
+	
+
+	public AStar() {
+	}
 
 
 	//Explaination
@@ -39,14 +46,20 @@ public class AStar implements IPathfindingProvider {
 	@Override
 	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
 		//set goalNode based on targetCoordinate
+		setNodes();
+
 		int targetX = (int) Math.round(targetCoordinate.getX()); //round to nearest int (so 3.9 is 4 instead of 3)
 		int targetY = (int) Math.round(targetCoordinate.getY());
-		this.goalNode = this.node[targetX][targetY]; //does this work?
+		System.out.println(targetX);
+		System.out.println(targetY);
+		System.out.println(getNodes());
+
+		setGoalNode(nodes[targetX][targetY]);
 
 		//set startNode based on entity
 		int startX = (int) Math.round(entity.getX());
 		int startY = (int) Math.round(entity.getY());
-		this.startNode = this.node[startX][startY];
+		//setStartNode(new Node(startX,startY));
 
 		this.search();
 
@@ -56,6 +69,21 @@ public class AStar implements IPathfindingProvider {
 			return new Coordinates(nextNode.getX(), nextNode.getY());
 		}
 		return entity.getCoordinates();
+	}
+
+
+	private void setNodes() { //public?
+		int width = Math.round(this.gameSettings.getDisplayWidth());
+		int height = Math.round(this.gameSettings.getDisplayHeight());
+
+		this.nodes = new Node[width][height];
+
+		for (int x = 0; x < width - 1; x++) {
+			for (int y = 0; y < height - 1; y++) {
+				this.nodes[x][y] = new Node(x, y);
+				//set some nodes to solid?
+			}
+		}
 	}
 
 	private Optional<Node> getNextStep() { //returns the next Node in the pathList
@@ -202,35 +230,35 @@ public class AStar implements IPathfindingProvider {
 		int y = theCurrentNode.getY();
 
 		if (x - 1 >= 0) { //is this correct?
-			this.openNode(this.node[x - 1][y]);
+			this.openNode(this.nodes[x - 1][y]);
 		}
 		//open right neighbor
 		if (x + 1 < this.gameSettings.getDisplayWidth()) {
-			this.openNode(this.node[x + 1][y]);
+			this.openNode(this.nodes[x + 1][y]);
 		}
 		//open top neighbor
 		if (y - 1 >= 0) {
-			this.openNode(this.node[x][y - 1]);
+			this.openNode(this.nodes[x][y - 1]);
 		}
 		//open bottom neighbor
 		if (y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.node[x][y + 1]);
+			this.openNode(this.nodes[x][y + 1]);
 		}
 		//topleft
 		if (x - 1 >= 0 && y - 1 >= 0) {
-			this.openNode(this.node[x - 1][y - 1]);
+			this.openNode(this.nodes[x - 1][y - 1]);
 		}
 		//topright
 		if (x + 1 < this.gameSettings.getDisplayWidth() && y - 1 >= 0) {
-			this.openNode(this.node[x + 1][y - 1]);
+			this.openNode(this.nodes[x + 1][y - 1]);
 		}
 		//bottomleft
 		if (x - 1 >= 0 && y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.node[x - 1][y + 1]);
+			this.openNode(this.nodes[x - 1][y + 1]);
 		}
 		//bottomright
 		if (x + 1 < this.gameSettings.getDisplayWidth() && y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.node[x + 1][y + 1]);
+			this.openNode(this.nodes[x + 1][y + 1]);
 		}
 	}
 
@@ -249,8 +277,10 @@ public class AStar implements IPathfindingProvider {
 	}
 
 	//getters and setters
-	public Node[][] getNode() {
-		return this.node;
+
+
+	public Node[][] getNodes() {
+		return this.nodes;
 	}
 
 	public Node getStartNode() {
@@ -281,8 +311,8 @@ public class AStar implements IPathfindingProvider {
 		return this.pathList;
 	}
 
-	public void setNode(Node[][] node) {
-		this.node = node;
+	public void setNodes(Node[][] nodes) {
+		this.nodes = nodes;
 	}
 
 	public void setStartNode(Node startNode) {
