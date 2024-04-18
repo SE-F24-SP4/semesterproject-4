@@ -1,46 +1,56 @@
 package com.github.sef24sp4.polygonenemy;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
-import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.enemy.EnemySPI;
+import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.interfaces.IVector;
+import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-import com.github.sef24sp4.player.Player;
+import com.github.sef24sp4.common.vector.BasicVector;
+import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.Optional;
 import java.util.ServiceLoader;
 
 public class PolygonEnemyControlSystem implements IEntityProcessingService, EnemySPI {
 	private final Optional<IPathfindingProvider> optionalAIPathProvider = ServiceLoader.load(IPathfindingProvider.class).findFirst();
+	private IEntity player;
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
+		// Pre-fetch and cache the player once
+		if (this.player == null) {
+			entityManager.getEntitiesByClass(ICollidableEntity.class).forEach(entity -> {
+				if (entity.getType() == GameElementType.PLAYER) {
+					this.player = entity;
+				}
+			});
+		}
+		// Early exit if player has not been initialized yet
+		if (this.player == null) return;
+		IVector playerCoordinates = this.player.getCoordinates();
+
+		// loop through all polygon enemies
 		entityManager.getEntitiesByClass(PolygonEnemy.class).forEach(polygonEnemy -> {
 			// standard value, so will always go towards the player.
-			IVector pointToGo = Player.getPlayer().getCoordinates();
-			// will overwrite if pathfinding provider is available, to find a better path to player.
+			IVector pointToGo = playerCoordinates;
+
+			// will overwrite pointToGo if pathfinding provider is available, to find a better path to player.
 			if (this.optionalAIPathProvider.isPresent()) {
 				pointToGo = this.optionalAIPathProvider.get().nextCoordinateInPath(polygonEnemy, pointToGo);
 			}
+			// find directionVector
+			BasicVector directionVector = (BasicVector) polygonEnemy.getCoordinates().getVectorTo(pointToGo);
 
-			IVector directionVector = polygonEnemy.getCoordinates().getVectorTo(pointToGo);
+			// create a movementVector by normalizing and scaling the directionVector
+			BasicVector movementVector = (BasicVector) directionVector.getNormalizedVector();
+			movementVector.scale(polygonEnemy.getSpeed());
 
-			// check if the enemy is already at the target position to avoid division by zero.
-			double norm = directionVector.getNorm();
-			if (norm > 0) {
-				// normalize and scale the direction vector
-				IVector movementVector = new Coordinates(
-						(directionVector.getX() / norm) * polygonEnemy.getSpeed(), // Normalize then scale
-						(directionVector.getY() / norm) * polygonEnemy.getSpeed() // Normalize then scale
-				);
+			// move enemyPolygon a certain distance depending on movementVector.
+			polygonEnemy.getCoordinates().add(movementVector);
 
-				// move enemyPolygon a certain distance depending on movementVector.
-				polygonEnemy.setX(polygonEnemy.getX() + movementVector.getX());
-				polygonEnemy.setY(polygonEnemy.getY() + movementVector.getY());
-			}
 		});
 	}
 

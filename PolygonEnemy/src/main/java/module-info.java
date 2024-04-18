@@ -8,7 +8,6 @@ module PolygonEnemy {
 	uses com.github.sef24sp4.common.ai.IPathfindingProvider;
 	requires Common;
 	requires CommonEnemy;
-	requires Player;
 	requires CommonAI;
 	provides IGamePluginService with PolygonEnemyPlugin;
 	provides EnemySPI with PolygonEnemyControlSystem;
