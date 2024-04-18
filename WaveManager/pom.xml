@@ -8,7 +8,7 @@
 		<artifactId>shapewar</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>WaveGenerator</artifactId>
+	<artifactId>WaveManager</artifactId>
 
 	<dependencies>
 	</dependencies>

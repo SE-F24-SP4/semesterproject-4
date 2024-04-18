@@ -28,7 +28,7 @@
 		<module>Inventory</module>
 		<module>Player</module>
 		<module>PolygonEnemy</module>
-		<module>WaveGenerator</module>
+		<module>WaveManager</module>
 		<module>WorldMap</module>
 		<module>WeaponPack</module>
 		<module>ItemPack</module>
