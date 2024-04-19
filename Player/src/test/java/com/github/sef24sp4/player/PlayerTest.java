@@ -4,19 +4,17 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.lang.reflect.Field;
 
 public class PlayerTest {
-	private Player p;
 	private final IEntityManager em = new EntityManager();
 
 	@BeforeEach
 	void setUp() {
-		this.p = Player.getPlayer();
+		Player player = mock(Player.class);
 	}
 
 	@AfterEach
@@ -25,17 +23,17 @@ public class PlayerTest {
 
 	@Test
 	void getPlayer() {
+		Player p = Player.getPlayer();
 		assertEquals(p, Player.getPlayer());
 	}
-	/**
-	 * Need to implement healing
 	@Test
 	void getHealth() {
+		Player p = Player.getPlayer();
 		assertEquals(p.getMaxHealth(), p.getHealth());
 	}
-	 **/
 	@Test
 	void setWalkSpeed() {
+		Player p = Player.getPlayer();
 		p.setWalkSpeed(100);
 		assertEquals(100, p.getWalkSpeed());
 		p.setWalkSpeed(10);
@@ -43,12 +41,14 @@ public class PlayerTest {
 	}
 	@Test
 	void takeDamage() {
+		Player p = Player.getPlayer();
 		assertEquals(p.getMaxHealth(), p.getHealth());
 		p.takeDamage(5, em);
 		assertEquals(p.getMaxHealth()-5, p.getHealth());
 	}
 	@Test
 	void kill() {
+		Player p = Player.getPlayer();
 		em.addEntity(p);
 		assertEquals(1, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
 		p.kill(em);
@@ -56,6 +56,7 @@ public class PlayerTest {
 	}
 	@Test
 	void takeDamageAndKill() {
+		Player p = Player.getPlayer();
 		em.addEntity(p);
 		assertEquals(1, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
 		p.takeDamage(1000, em);
