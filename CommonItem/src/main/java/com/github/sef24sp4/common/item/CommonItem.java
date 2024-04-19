@@ -7,8 +7,8 @@ import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 public abstract class CommonItem extends CommonEntity implements ICollidableEntity {
 	private final IGameMetadata metadata;
-	protected CommonItem(String identifier, String value) {
-		this.metadata = new MetadataBuilder(GameElementType.ITEM).setProperty(identifier, value).getMetadata();
+	protected CommonItem() {
+		this.metadata = new MetadataBuilder(GameElementType.ITEM).getMetadata();
 	}
 	@Override
 	public IGameMetadata getMetadata() {
