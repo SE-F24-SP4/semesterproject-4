@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.vector.Coordinates;
 
 import java.util.List;
 
-public class CommonEntity implements IEntity {
+public abstract class CommonEntity implements IEntity {
 	private Coordinates coordinates;
 
 	private Coordinates[] polygonCoordinates;

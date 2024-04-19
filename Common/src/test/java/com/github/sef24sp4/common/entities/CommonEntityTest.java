@@ -1,5 +1,8 @@
 package com.github.sef24sp4.common.entities;
 
+import com.github.sef24sp4.common.metadata.GameElementType;
+import com.github.sef24sp4.common.metadata.IGameMetadata;
+import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import com.github.sef24sp4.common.vector.Coordinates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +18,12 @@ class CommonEntityTest {
 
 	@BeforeEach
 	void setUp() {
-		this.entity = new CommonEntity();
+		this.entity = new CommonEntity() {
+			@Override
+			public IGameMetadata getMetadata() {
+				return new MetadataBuilder(GameElementType.OTHER).getMetadata();
+			}
+		};
 	}
 
 	@Test
