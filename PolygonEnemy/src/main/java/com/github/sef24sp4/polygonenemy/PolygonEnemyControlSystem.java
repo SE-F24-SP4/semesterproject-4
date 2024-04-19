@@ -2,7 +2,6 @@ package com.github.sef24sp4.polygonenemy;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.enemy.EnemySPI;
-import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
@@ -22,14 +21,13 @@ public class PolygonEnemyControlSystem implements IEntityProcessingService, Enem
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		// Pre-fetch and cache the player once
 		if (this.player == null) {
-			entityManager.getEntitiesByClass(ICollidableEntity.class).forEach(entity -> {
-				if (entity.getType() == GameElementType.PLAYER) {
-					this.player = entity;
-				}
+			entityManager.getEntitiesByGameElementType(GameElementType.PLAYER).stream().findFirst().ifPresent(entity -> {
+				this.player = entity;
 			});
+			// Early exit if player has not been initialized yet
+			if (this.player == null) return;
 		}
-		// Early exit if player has not been initialized yet
-		if (this.player == null) return;
+
 		IVector playerCoordinates = this.player.getCoordinates();
 
 		// loop through all polygon enemies
