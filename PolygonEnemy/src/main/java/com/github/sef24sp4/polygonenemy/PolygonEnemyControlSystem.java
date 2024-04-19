@@ -42,10 +42,10 @@ public class PolygonEnemyControlSystem implements IEntityProcessingService, Enem
 				pointToGo = this.optionalAIPathProvider.get().nextCoordinateInPath(polygonEnemy, pointToGo);
 			}
 			// find directionVector
-			BasicVector directionVector = (BasicVector) polygonEnemy.getCoordinates().getVectorTo(pointToGo);
+			BasicVector directionVector = polygonEnemy.getCoordinates().getVectorTo(pointToGo);
 
 			// create a movementVector by normalizing and scaling the directionVector
-			BasicVector movementVector = (BasicVector) directionVector.getNormalizedVector();
+			BasicVector movementVector = directionVector.getNormalizedVector();
 			movementVector.scale(polygonEnemy.getSpeed());
 
 			// move enemyPolygon a certain distance depending on movementVector.
