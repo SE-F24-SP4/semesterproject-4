@@ -1,9 +1,8 @@
 package com.github.sef24sp4.common.entities;
 
 import com.github.sef24sp4.common.interfaces.IEntityManager;
-import com.github.sef24sp4.common.metadata.IGameElement;
 
-public interface ICollidableEntity extends IEntity, IGameElement {
+public interface ICollidableEntity extends IEntity {
 	/**
 	 * Called when entity collides with another collidable entity.
 	 * Do NOT call `collide` method on `otherEntity`, this will be done automatically by CollisionProcessor

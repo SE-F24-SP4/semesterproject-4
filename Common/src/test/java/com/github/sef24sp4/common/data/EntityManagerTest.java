@@ -2,6 +2,9 @@ package com.github.sef24sp4.common.data;
 
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.metadata.GameElementType;
+import com.github.sef24sp4.common.metadata.IGameMetadata;
+import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +23,7 @@ class EntityManagerTest {
 
 	@Test
 	void addEntity() {
-		final IEntity entity = new CommonEntity();
+		final IEntity entity = new TestEntityA();
 		assertTrue(this.entityManager.addEntity(entity));
 		assertFalse(this.entityManager.addEntity(entity));
 
@@ -31,8 +34,8 @@ class EntityManagerTest {
 
 	@Test
 	void removeEntity() {
-		final IEntity entity1 = new CommonEntity();
-		final IEntity entity2 = new CommonEntity();
+		final IEntity entity1 = new TestEntityA();
+		final IEntity entity2 = new TestEntityA();
 
 		assertTrue(this.entityManager.addEntity(entity1));
 		assertTrue(this.entityManager.addEntity(entity2));
@@ -50,7 +53,7 @@ class EntityManagerTest {
 
 	@Test
 	void getAllEntities() {
-		final IEntity entity = new CommonEntity();
+		final IEntity entity = new TestEntityA();
 		assertTrue(this.entityManager.addEntity(entity));
 
 		final Collection<IEntity> collection = this.entityManager.getAllEntities();
@@ -58,7 +61,7 @@ class EntityManagerTest {
 		assertTrue(collection.contains(entity));
 
 		assertThrows(UnsupportedOperationException.class, () -> {
-			collection.add(new CommonEntity());
+			collection.add(new TestEntityA());
 		});
 		assertThrows(UnsupportedOperationException.class, () -> {
 			collection.remove(entity);
@@ -114,9 +117,31 @@ class EntityManagerTest {
 		assertTrue(this.entityManager.getAllEntities().contains(entityB));
 	}
 
+	@Test
+	void getEntitiesByGameElementType() {
+		final IEntity entityA = new TestEntityA();
+		final IEntity entityB = new TestEntityB();
+
+		assertTrue(this.entityManager.addEntity(entityA));
+		assertTrue(this.entityManager.addEntity(entityB));
+
+		final Collection<IEntity> filtered = this.entityManager.getEntitiesByGameElementType(GameElementType.OTHER);
+
+		assertTrue(filtered.contains(entityA));
+		assertFalse(filtered.contains(entityB));
+	}
+
 	private static final class TestEntityA extends CommonEntity {
+		@Override
+		public IGameMetadata getMetadata() {
+			return new MetadataBuilder(GameElementType.OTHER).getMetadata();
+		}
 	}
 
 	private static final class TestEntityB extends CommonEntity {
+		@Override
+		public IGameMetadata getMetadata() {
+			return new MetadataBuilder(GameElementType.ENEMY).getMetadata();
+		}
 	}
 }
