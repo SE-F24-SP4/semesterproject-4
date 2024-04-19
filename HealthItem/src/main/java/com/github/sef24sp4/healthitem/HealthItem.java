@@ -1,10 +1,6 @@
 package com.github.sef24sp4.healthitem;
 
-
-import com.github.sef24sp4.common.data.EntityManager;
-import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
-import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.entities.IHealingEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.item.CommonItem;
