@@ -93,14 +93,6 @@ public class AStar implements IPathfindingProvider {
 		return Optional.empty();
 	}
 
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	//TODO: Calculate costs
 	public void getCost(Node aNode) {
 		//gCost (maybe it should be all parent nodes to startnode to get accurate cost)
 		double gCostX = (double) aNode.getX() - (double) this.startNode.getX();
@@ -141,8 +133,6 @@ public class AStar implements IPathfindingProvider {
 					}
 				}
 			}
-			//step++? to avoid it calculates the whole way, when enemy is far away.
-			//Could be based on the distance of Heuristics.
 
 			if (this.openList.isEmpty()) {
 				break;
