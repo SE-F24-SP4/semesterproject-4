@@ -61,7 +61,7 @@ public interface IVector {
 	 * Unless current vector is a zero vector, then a new zero vector is returned.
 	 * @see <a href="https://stackoverflow.com/a/722087">Stackoverflow: How do you normalize a zero vector</a>
 	 */
-	public default IVector getNormalizedVector() {
+	public default BasicVector getNormalizedVector() {
 		final double norm = this.getNorm();
 		if (norm == 0) return new BasicVector();
 		return new BasicVector(this.getX() / norm, this.getY() / norm);
@@ -74,7 +74,7 @@ public interface IVector {
 	 *
 	 * @return The negative vector.
 	 */
-	public default IVector getNegative() {
+	public default BasicVector getNegative() {
 		return new BasicVector(-this.getX(), -this.getY());
 	}
 }

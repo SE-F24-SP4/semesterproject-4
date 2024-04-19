@@ -17,10 +17,10 @@ public class Coordinates extends BasicVector implements Cloneable {
 	 * @param coordinates The other coordinates. Maybe any type of vector.
 	 * @return A vector between the two coordinates.
 	 */
-	public IVector getVectorTo(final IVector coordinates) {
+	public BasicVector getVectorTo(final IVector coordinates) {
 		final double deltaX = coordinates.getX() - this.getX();
 		final double deltaY = coordinates.getY() - this.getY();
-		return new Coordinates(deltaX, deltaY);
+		return new BasicVector(deltaX, deltaY);
 	}
 
 	/**
