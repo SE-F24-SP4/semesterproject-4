@@ -114,65 +114,10 @@ public class AStar implements IPathfindingProvider {
 		//fCost
 		aNode.setFCost(gDistance + hDistance);
 	}
-	/*
-	public boolean search() { //could i add parameter nodes?
-		//at first current node is the same as startnode
-		this.currentNode = this.startNode;
-
-		while (!this.goalReached) { // and step =?
-
-			int x = this.currentNode.getX();
-			int y = this.currentNode.getY();
-
-			//to do: need to specify currentNode?
-			this.currentNode.setChecked(true);
-
-	//method for getting distance (hCost) from current node to goalNode Enemy -> player.
-			this.openList.remove(this.currentNode);
-
-			checkNeighborNodes(currentNode);
-
-			int bestNode = 0; //best node in index
-			double bestFCost = MAX_VALUE; //so far best fCost close to infinity.
-
-			//find best node with loop though openList, comparing fCost.
-			for (int i = 0; i < this.openList.size(); i++) {
-				getCost(this.openList.get(i)); //calculate its cost.
-				if (this.openList.get(i).getFCost() < bestFCost) {
-					bestNode = i;
-					bestFCost = this.openList.get(i).getFCost();
-				}
-				else if (this.openList.get(i).getFCost() == bestFCost) {
-					if (this.openList.get(i).getGCost() < openList.get(bestNode).getGCost()){
-						bestNode = i;
-					}
-				}
-			}
-			//If there is no elements in openlist, end loop.
-			if (this.openList.isEmpty()) {
-				break;
-			}
-
-			this.currentNode = this.openList.get(bestNode);
-
-			if (this.currentNode.equals(this.goalNode)) {
-				this.goalReached = true;
-
-				//when goal reached : track the path by adding all parent node from goalNode to startNode.
-				trackPath();
-			}
-			//step++? to avoid it calculates the whole way, when enemy is far away.
-			//Could be based on the distance of Heuristics.
-
-		}
-		return this.goalReached; //return if goal is reached or not.
-	}
-
-	 */
 
 	private void search() { //method
-		//at first current node is the same as startnode
-		this.currentNode = this.startNode;
+
+		this.currentNode = this.startNode; //at first current node is the same as startnode
 
 		while (!this.goalReached) { // and step =?
 
