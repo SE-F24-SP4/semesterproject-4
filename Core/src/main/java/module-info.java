@@ -8,6 +8,7 @@ module Core {
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires Common;
+	requires CommonCollisionSystem;
 	opens com.github.sef24sp4.core to javafx.fxml, javafx.graphics;
 	opens com.github.sef24sp4.core.scenes to javafx.fxml, javafx.graphics;
 	provides LabelProvider with JavaFxLabelProvider;
