@@ -20,8 +20,7 @@ jobs:
   linting:
     # The type of runner that the job will run on
     runs-on: 
-      - self-hosted
-      - docker
+      - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
 
@@ -49,8 +48,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: 
-      - self-hosted
-      - docker
+      - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
 
@@ -78,8 +76,7 @@ jobs:
   unit-tests:
     # The type of runner that the job will run on
     runs-on: 
-      - self-hosted
-      - docker
+      - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
     needs:
