@@ -32,6 +32,8 @@
 		<module>WorldMap</module>
 		<module>WeaponPack</module>
 		<module>ItemPack</module>
+		<module>CommonLootTable</module>
+		<module>LootTable</module>
 	</modules>
 
 	<properties>
