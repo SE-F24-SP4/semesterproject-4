@@ -29,9 +29,9 @@ public class AStarTest {
 		AStar aStar = new AStar();
 		aStar.setNodes(new Node[mapWidth][mapHeight]);
 
-		CommonEntity enemy = new CommonEntity();
-		enemy.setX(1);
-		enemy.setY(1);
+		//CommonEntity enemy = new CommonEntity();
+		//enemy.setX(1);
+		//enemy.setY(1);
 
 		IVector goalNodeCoordinates = new Coordinates(8, 8);
 
