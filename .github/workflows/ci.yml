@@ -71,7 +71,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Compile project
-        run: mvn -T 2C compile
+        run: mvn -T 2C clean compile
 
   unit-tests:
     # The type of runner that the job will run on
