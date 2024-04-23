@@ -1,11 +1,12 @@
 package com.github.sef24sp4.astarai;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.ai.map.Map;
 import com.github.sef24sp4.common.entities.IEntity;
-import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.interfaces.IVector;
+import com.github.sef24sp4.common.ai.map.MapNode;
+import com.github.sef24sp4.common.vector.Coordinates;
+import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,6 @@ import static java.lang.Double.MAX_VALUE;
 
 public class AStar implements IPathfindingProvider {
 	private Node[][] nodes;
-
-	private Node node;
 	private Node startNode;
 	private Node goalNode;
 	private Node currentNode;
@@ -27,12 +26,13 @@ public class AStar implements IPathfindingProvider {
 	private List<Node> closedList = new ArrayList<>(); //do i even use this?
 	private List<Node> pathList = new ArrayList<>(); //Is PriorityQueue good when removing specific element - LL is best for 1st element?
 
+	private MapNode mapNode;
+	private Map map;
+
 	private IGameSettings gameSettings;
-	
 
 	public AStar() {
 	}
-
 
 	//Explaination
 	//startNode is where the entity using AI is.
@@ -43,23 +43,16 @@ public class AStar implements IPathfindingProvider {
 	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
 	//set nodes for whole map?
 
-	@Override
-	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
-		//set goalNode based on targetCoordinate
-		setNodes();
+	public Coordinates nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
 
-		int targetX = (int) Math.round(targetCoordinate.getX()); //round to nearest int (so 3.9 is 4 instead of 3)
+		int targetX = (int) Math.round(targetCoordinate.getX());
 		int targetY = (int) Math.round(targetCoordinate.getY());
 		System.out.println(targetX);
 		System.out.println(targetY);
-		System.out.println(getNodes());
 
-		setGoalNode(nodes[targetX][targetY]);
+		this.goalNode = new Node(map.getNodeContaining(targetCoordinate).get());
 
-		//set startNode based on entity
-		int startX = (int) Math.round(entity.getX());
-		int startY = (int) Math.round(entity.getY());
-		//setStartNode(new Node(startX,startY));
+		this.startNode = new Node(map.getNodeContaining(entity.getCoordinates()).get());
 
 		this.search();
 
@@ -68,22 +61,8 @@ public class AStar implements IPathfindingProvider {
 			Node nextNode = nextStep.get();
 			return new Coordinates(nextNode.getX(), nextNode.getY());
 		}
+
 		return entity.getCoordinates();
-	}
-
-
-	private void setNodes() { //public?
-		int width = Math.round(this.gameSettings.getDisplayWidth());
-		int height = Math.round(this.gameSettings.getDisplayHeight());
-
-		this.nodes = new Node[width][height];
-
-		for (int x = 0; x < width - 1; x++) {
-			for (int y = 0; y < height - 1; y++) {
-				this.nodes[x][y] = new Node(x, y);
-				//set some nodes to solid?
-			}
-		}
 	}
 
 	private Optional<Node> getNextStep() { //returns the next Node in the pathList
@@ -94,35 +73,34 @@ public class AStar implements IPathfindingProvider {
 	}
 
 	public void getCost(Node aNode) {
-		//gCost (maybe it should be all parent nodes to startnode to get accurate cost)
-		double gCostX = (double) aNode.getX() - (double) this.startNode.getX();
-		double gCostY = (double) aNode.getY() - (double) this.startNode.getY();
-		double gDistance = Math.sqrt(gCostX * gCostX + gCostY * gCostY);
-		aNode.setGCost(gDistance);
+		//gCost
+		double distanceSoFar = aNode.getGCost();
 		//hCost
-		double hCostX = (double) aNode.getX() - (double) this.goalNode.getX();
-		double hCostY = (double) aNode.getY() - (double) this.goalNode.getY();
-		double hDistance = Math.sqrt(hCostX * hCostX + hCostY * hCostY);
+		double heuristics = aNode.getMapNode().calculateHeuristicsFor(goalNode.getMapNode());
 		//fCost
-		aNode.setFCost(gDistance + hDistance);
+		aNode.setFCost(distanceSoFar + heuristics);
 	}
 
 	private void search() { //method
 
 		this.currentNode = this.startNode; //at first current node is the same as startnode
-
+		this.currentNode.setGCost(0);
 		while (!this.goalReached) { // and step =?
 
 			this.currentNode.setChecked(true);
-			this.openList.remove(this.currentNode); //what if it is not in list?
+			this.openList.remove(this.currentNode);
 
-			this.checkNeighborNodes(this.currentNode); //neighbors added to openlist if possible.
+			this.currentNode.getNeighboringNodes();
+			for (Node nodes: currentNode.getNeighboringNodes()) {
+				nodes.setGCost(currentNode.getGCost() + 1);
+			}
 
 			int bestNode = 0; //best node in index
 			double bestFCost = MAX_VALUE; //so far best fCost close to infinity.
 
 			//find best node with loop though openList, comparing fCost.
 			for (int i = 0; i < this.openList.size(); i++) {
+
 				this.getCost(this.openList.get(i)); //calculate its cost.
 				if (this.openList.get(i).getFCost() < bestFCost) {
 					bestNode = i;
@@ -149,53 +127,14 @@ public class AStar implements IPathfindingProvider {
 	}
 
 	private void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
-		Node endNode = this.goalNode;
 
 		while (this.currentNode != this.startNode) {
 			this.pathList.add(0, this.currentNode);
 			this.currentNode = this.currentNode.getParent(); //parent to currentnode, is the next on path.
-
-			// track the path with color?
 		}
 	}
 
-	private void checkNeighborNodes(Node theCurrentNode) {
-		//open left neighbor
-		int x = theCurrentNode.getX();
-		int y = theCurrentNode.getY();
 
-		if (x - 1 >= 0) { //is this correct?
-			this.openNode(this.nodes[x - 1][y]);
-		}
-		//open right neighbor
-		if (x + 1 < this.gameSettings.getDisplayWidth()) {
-			this.openNode(this.nodes[x + 1][y]);
-		}
-		//open top neighbor
-		if (y - 1 >= 0) {
-			this.openNode(this.nodes[x][y - 1]);
-		}
-		//open bottom neighbor
-		if (y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.nodes[x][y + 1]);
-		}
-		//topleft
-		if (x - 1 >= 0 && y - 1 >= 0) {
-			this.openNode(this.nodes[x - 1][y - 1]);
-		}
-		//topright
-		if (x + 1 < this.gameSettings.getDisplayWidth() && y - 1 >= 0) {
-			this.openNode(this.nodes[x + 1][y - 1]);
-		}
-		//bottomleft
-		if (x - 1 >= 0 && y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.nodes[x - 1][y + 1]);
-		}
-		//bottomright
-		if (x + 1 < this.gameSettings.getDisplayWidth() && y + 1 < this.gameSettings.getDisplayHeight()) {
-			this.openNode(this.nodes[x + 1][y + 1]);
-		}
-	}
 
 	//Method for open nodes if: not open, not checked and not solid : open it.
 	private void openNode(Node aNode) {
@@ -205,7 +144,10 @@ public class AStar implements IPathfindingProvider {
 			aNode.setOpen(true);
 
 			aNode.setParent(this.currentNode); //set currentnode as parent
-
+			//if a node is direct nighbor gcost = current.node + 1
+			aNode.setGCost(this.currentNode.getGCost() + 1);
+			//if a node is diagonal neighbor gcost = current.node + root(2)
+			aNode.setGCost(this.currentNode.getGCost() + Math.sqrt(2));
 			this.openList.add(aNode);
 
 		}

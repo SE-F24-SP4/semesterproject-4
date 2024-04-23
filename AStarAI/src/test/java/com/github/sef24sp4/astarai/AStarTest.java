@@ -1,11 +1,11 @@
 package com.github.sef24sp4.astarai;
 
-import com.github.sef24sp4.common.data.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.interfaces.IVector;
 import com.github.sef24sp4.common.services.IGamePluginService;
+import com.github.sef24sp4.common.vector.Coordinates;
+import com.github.sef24sp4.common.vector.IVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +71,6 @@ public class AStarTest {
 		CommonEntity enemy = new CommonEntity();
 		enemy.setX(1);
 		enemy.setY(1);
-
 
 		IVector goalNodeCoordinates = new Coordinates(8, 8);
 
