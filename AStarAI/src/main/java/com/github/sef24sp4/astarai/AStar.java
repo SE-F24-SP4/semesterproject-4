@@ -63,9 +63,9 @@ public class AStar implements IPathfindingProvider {
 		System.out.println(targetX);
 		System.out.println(targetY);
 
-		this.goalNode = new Node(map.getNodeContaining(targetCoordinate).get());
+		this.goalNode = new Node(this.map.getNodeContaining(targetCoordinate).get());
 
-		this.startNode = new Node(map.getNodeContaining(entity.getCoordinates()).get());
+		this.startNode = new Node(this.map.getNodeContaining(entity.getCoordinates()).get());
 
 		this.search();
 
@@ -130,7 +130,7 @@ public class AStar implements IPathfindingProvider {
 		//gCost
 		double distanceSoFar = aNode.getGCost();
 		//hCost
-		double heuristics = aNode.getMapNode().calculateHeuristicsFor(goalNode.getMapNode());
+		double heuristics = aNode.getMapNode().calculateHeuristicsFor(this.goalNode.getMapNode());
 		//fCost
 		aNode.setFCost(distanceSoFar + heuristics);
 	}
@@ -145,9 +145,10 @@ public class AStar implements IPathfindingProvider {
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode);
 
-			int bestNode = 0;
-			int bestFCost = 999;
-			this.checkNeighborNodes(this.currentNode); //neighbors added to openlist if possible.
+			this.currentNode.getNeighboringNodes();
+			for (Node eachNode : this.currentNode.getNeighboringNodes()) {
+				this.openNode(eachNode);
+			}
 
 			int bestNode = 0; //best node in index
 			double bestFCost = MAX_VALUE; //so far best fCost close to infinity.
@@ -190,7 +191,6 @@ public class AStar implements IPathfindingProvider {
 		}
 		return this.goalReached; //return if goal is reached or not.
 	}
-
 
 
 	//Method for open nodes if: not open, not checked and not solid : open it.

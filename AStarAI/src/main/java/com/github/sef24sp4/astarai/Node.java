@@ -4,9 +4,8 @@ package com.github.sef24sp4.astarai;
 import com.github.sef24sp4.common.ai.map.MapNode;
 
 import java.util.Collection;
-import java.util.Optional;
 
-public class Node{
+public class Node {
 	private Node parent;
 	private int x;
 	private int y;
@@ -23,12 +22,12 @@ public class Node{
 		this.mapNode = mapNode;
 	}
 
-	public Collection<Node>  getNeighboringNodes() {
+	public Collection<Node> getNeighboringNodes() {
 		return this.mapNode.getNeighboringNodes().stream().map(Node::new).toList();
 
 	}
 
-	public double getHeuristicForNode(Node targetNode){
+	public double getHeuristicForNode(Node targetNode) {
 		return this.mapNode.calculateHeuristicsFor(targetNode.getMapNode());
 	}
 
