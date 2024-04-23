@@ -1,6 +1,5 @@
 package com.github.sef24sp4.astarai;
 
-import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
