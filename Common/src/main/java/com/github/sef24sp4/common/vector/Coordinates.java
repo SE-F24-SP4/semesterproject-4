@@ -12,15 +12,13 @@ public class Coordinates extends BasicVector implements Cloneable {
 	}
 
 	/**
-	 * Get a vector between current coordinates and the passed in coordinates.
+	 * Constructs a new {@link Coordinates} using the values from generic {@link IVector vector}.
 	 *
-	 * @param coordinates The other coordinates. Maybe any type of vector.
-	 * @return A vector between the two coordinates.
+	 * @param vector The {@link IVector} to construct from.
+	 * @return The newly constructed {@link Coordinates}.
 	 */
-	public BasicVector getVectorTo(final IVector coordinates) {
-		final double deltaX = coordinates.getX() - this.getX();
-		final double deltaY = coordinates.getY() - this.getY();
-		return new BasicVector(deltaX, deltaY);
+	public static Coordinates valuesOf(final IVector vector) {
+		return new Coordinates(vector.getX(), vector.getY());
 	}
 
 	/**

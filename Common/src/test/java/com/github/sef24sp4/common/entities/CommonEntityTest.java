@@ -3,7 +3,9 @@ package com.github.sef24sp4.common.entities;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
+import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.Coordinates;
+import com.github.sef24sp4.common.vector.IVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,34 +49,34 @@ class CommonEntityTest {
 
 	@Test
 	void setPolygonCoordinates() {
-		final Coordinates c1 = new Coordinates(3, 4);
-		final Coordinates c2 = new Coordinates(2, -7);
-		List<Coordinates> testCoordinates = new ArrayList<>();
+		final IVector c1 = new BasicVector(3, 4);
+		final IVector c2 = new BasicVector(2, -7);
+		List<IVector> testCoordinates = new ArrayList<>();
 		testCoordinates.add(c1);
 		testCoordinates.add(c2);
 
-		final Coordinates[] actualCoordinates = new Coordinates[]{c1, c2};
+		final IVector[] actualCoordinates = new IVector[]{c1, c2};
 		this.entity.setPolygonCoordinates(testCoordinates);
 		assertArrayEquals(actualCoordinates, this.entity.getPolygonCoordinates());
 	}
 
 	@Test
 	void setPolygonCoordinatesVarargs() {
-		final Coordinates c1 = new Coordinates(3, 4);
-		final Coordinates c2 = new Coordinates(2, -7);
+		final IVector c1 = new BasicVector(3, 4);
+		final IVector c2 = new BasicVector(2, -7);
 		this.entity.setPolygonCoordinates(
 				c1,
 				c2
 		);
-		final Coordinates[] actualCoordinates = new Coordinates[]{c1, c2};
+		final IVector[] actualCoordinates = new IVector[]{c1, c2};
 		assertArrayEquals(actualCoordinates, this.entity.getPolygonCoordinates());
 	}
 
 
 	@Test
 	void getPolygonValuesArray() {
-		final Coordinates c1 = new Coordinates(3, 4);
-		final Coordinates c2 = new Coordinates(2, -7);
+		final IVector c1 = new BasicVector(3, 4);
+		final IVector c2 = new BasicVector(2, -7);
 		this.entity.setPolygonCoordinates(
 				c1,
 				c2
