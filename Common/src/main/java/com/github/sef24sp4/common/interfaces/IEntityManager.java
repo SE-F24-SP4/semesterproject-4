@@ -1,6 +1,7 @@
 package com.github.sef24sp4.common.interfaces;
 
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.metadata.GameElementType;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -64,5 +65,31 @@ public interface IEntityManager {
 		final Collection<E> entities = this.getEntitiesByClass(entityType);
 		entities.forEach(this::removeEntity);
 		return entities;
+	}
+
+	/**
+	 * Get all entities which match a specified {@link GameElementType} and has a specific class type {@code T}.
+	 *
+	 * @param <T>         The {@code classType} that is queried for.
+	 * @param elementType The {@link GameElementType} to query for.
+	 * @param classType   The classType to match.
+	 * @return A {@link Collection} with all {@link IEntity entities} which match the two conditions.
+	 * @see #getEntitiesByGameElementType(GameElementType)
+	 */
+	public default <T extends IEntity> Collection<T> getEntitiesByGameElementType(final GameElementType elementType, final Class<T> classType) {
+		return this.getEntitiesByClass(classType).stream().filter(e -> e.getType() == elementType).toList();
+	}
+
+	/**
+	 * Get all entities which match a specified {@link GameElementType} among all {@link IEntity entities}.
+	 * <p/>
+	 * It is the same as calling {@link #getEntitiesByGameElementType(GameElementType, Class) getEntitiesByGameElementType(GameElementType, IEntity.class)}.
+	 *
+	 * @param elementType The {@link GameElementType} to query for.
+	 * @return A {@link Collection} with all {@link IEntity entities} which match the {@code elementType}.
+	 * @see #getEntitiesByGameElementType(GameElementType, Class)
+	 */
+	public default Collection<IEntity> getEntitiesByGameElementType(final GameElementType elementType) {
+		return this.getEntitiesByGameElementType(elementType, IEntity.class);
 	}
 }

@@ -1,11 +1,12 @@
 package com.github.sef24sp4.common.entities;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.metadata.IGameElement;
+import com.github.sef24sp4.common.vector.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IEntity {
+public interface IEntity extends IGameElement {
 
 	public Coordinates[] getPolygonCoordinates();
 
