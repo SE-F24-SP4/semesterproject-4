@@ -14,7 +14,7 @@ import java.util.ServiceLoader;
 public final class LootTable implements LootTableSPI {
 	/**
 	 * Used to get decide what rarity of item is dropped. Can also be null.
-	 * @return Returns Optional<ItemRarity> or null.
+	 * @return Returns {@link Optional}<{@link ItemRarity}> or null.
 	 */
 	public Optional<ItemRarity> chooseRarity() {
 		double random = Math.random();
@@ -32,10 +32,10 @@ public final class LootTable implements LootTableSPI {
 
 	/**
 	 * Picks a random rarity with chooseRarity() method and afterward picks an item of that rarity.
-	 * @return Returns Optional<CommonItem>.
+	 * @return Returns {@link Optional}<{@link CommonItem}>.
 	 */
 	public Optional<CommonItem> getItem() {
-		Optional<ItemRarity> chosenRarity = chooseRarity();
+		Optional<ItemRarity> chosenRarity = this.chooseRarity();
 		if (chosenRarity.isPresent()) {
 			ServiceLoader<ItemSPI> itemProviders = ServiceLoader.load(ItemSPI.class);
 			List<ItemSPI> itemSPIList = new ArrayList<>();
