@@ -1,12 +1,8 @@
 package com.github.sef24sp4.astarai;
 
-import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.*;
 
 public class AStarTest {
 
