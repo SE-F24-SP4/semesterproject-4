@@ -3,8 +3,6 @@ package com.github.sef24sp4.astarai;
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.ai.map.Map;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
-import com.github.sef24sp4.common.entities.IEntity;
-import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.ai.map.MapNode;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
@@ -24,16 +22,11 @@ public class AStar implements IPathfindingProvider {
 	private boolean goalReached = false;
 
 	private List<Node> openList = new ArrayList<>(); //best for random access
-	private List<Node> closedList = new ArrayList<>(); //do i even use this?
 	private List<Node> pathList = new ArrayList<>(); //Is PriorityQueue good when removing specific element - LL is best for 1st element?
 
 	private MapNode mapNode;
 	private Map map;
 
-	private IGameSettings gameSettings;
-
-	public AStar() {
-	}
 
 	private ArrayList<Node> openList = new ArrayList<>();
 	private ArrayList<Node> closedList = new ArrayList<>();
@@ -53,12 +46,13 @@ public class AStar implements IPathfindingProvider {
 		System.out.println(targetX);
 		System.out.println(targetY);
 
-		if(this.map.getNodeContaining(targetCoordinate).isPresent()) {
-			this.goalNode = new Node(this.map.getNodeContaining(targetCoordinate).get());
-		}
-		if(this.map.getNodeContaining(entity.getCoordinates()).isPresent()){
-			this.startNode = new Node(this.map.getNodeContaining(entity.getCoordinates()).get());
-		}
+		final Optional<MapNode> goalNode = this.map.getNodeContaining(targetCoordinate);
+		goalNode.ifPresent(node -> this.goalNode = new Node(targetCoordinate, node));
+
+		this.map.getNodeContaining(entity.getCoordinates()).ifPresent(node -> {
+			this.startNode = new Node(entity.getCoordinates(), node);
+		});
+
 
 		this.search(entity);
 
@@ -139,9 +133,9 @@ public class AStar implements IPathfindingProvider {
 			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode);
 
-			this.currentNode.getNeighboringNodes();
+			//get neighbors and open nodes.
 			for (Node eachNode : this.currentNode.getNeighboringNodes()) {
-				this.openNode(eachNode);
+				this.openNode(entity, eachNode);
 			}
 
 			int bestNode = 0; //best node in index
@@ -186,25 +180,35 @@ public class AStar implements IPathfindingProvider {
 		return this.goalReached; //return if goal is reached or not.
 	}
 
-
 	//Method for open nodes if: not open, not checked and not solid : open it.
 	private void openNode(ICollidableEntity entity, Node aNode) {
+		if (this.openList.contains(aNode)) return;
 
-		if (!aNode.isOpen() && !aNode.isChecked() && !aNode.isSolid()) {
+		aNode.setParent(this.currentNode); //set currentnode as parent
 
-			aNode.setOpen(true);
+		//how far can the entity go into the aNode.
+		Optional<IVector> currentCoordinates = aNode.getMapNode().getSafeCoordinatesForEntity(entity, currentNode.getCoordinates());
 
-			aNode.setParent(this.currentNode); //set currentnode as parent
-			mapNode.getSafeCoordinatesForEntity(entity,map.getNodeContaining(currentNode.getMapNode()).get());
+		if (currentCoordinates.isEmpty()){
+			return;
+		}
+		else {
 
-			//if a node is direct nighbor gcost = current.node + 1
 			aNode.setGCost(this.currentNode.getGCost() + 1);
-			//if a node is diagonal neighbor gcost = current.node + root(2)
-			aNode.setGCost(this.currentNode.getGCost() + Math.sqrt(2));
-
-			this.openList.add(aNode);
 
 		}
+
+		//if empty = solid node.
+		//if not empty. Coodinate to openlist.
+
+		//c1.getvectorto(c2).getnorm) = distance
+
+		//if a node is direct nighbor gcost = current.node + 1
+		//if a node is diagonal neighbor gcost = current.node + root(2)
+		aNode.setGCost(this.currentNode.getGCost() + Math.sqrt(2));
+
+		this.openList.add(aNode);
+
 	}
 
 	//getters and setters
@@ -232,10 +236,6 @@ public class AStar implements IPathfindingProvider {
 
 	public List<Node> getOpenList() {
 		return this.openList;
-	}
-
-	public List<Node> getClosedList() {
-		return this.closedList;
 	}
 
 	public List<Node> getPathList() {
@@ -266,9 +266,6 @@ public class AStar implements IPathfindingProvider {
 		this.openList = openList;
 	}
 
-	public void setClosedList(ArrayList<Node> closedList) {
-		this.closedList = closedList;
-	}
 
 	public void setPathList(ArrayList<Node> pathList) {
 		this.pathList = pathList;

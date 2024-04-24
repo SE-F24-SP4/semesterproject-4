@@ -14,18 +14,17 @@ public class Node {
 	private double gCost;
 	private double hCost;
 	private double fCost;
-	private boolean solid;
-	private boolean open;
-	private boolean checked;
+	private final IVector coordinates;
 
 	private final MapNode mapNode;
 
-	public Node(MapNode mapNode) {
+	public Node(IVector coordinates, MapNode mapNode) {
+		this.coordinates = coordinates;
 		this.mapNode = mapNode;
 	}
 
 	public Collection<Node> getNeighboringNodes() {
-		return this.mapNode.getNeighboringNodes().stream().map(Node::new).toList();
+		return this.mapNode.getNeighboringNodes().stream().map(mapNode1 -> new Node(coordinates, mapNode1)).toList();
 
 	}
 
@@ -34,6 +33,10 @@ public class Node {
 	}
 	public Optional<IVector> getSafeCoordinatesForEntity(){
 		mapNode.getSafeCoordinatesForEntity()
+	}
+
+	public IVector getCoordinates() {
+		return this.coordinates;
 	}
 
 	public MapNode getMapNode() {
