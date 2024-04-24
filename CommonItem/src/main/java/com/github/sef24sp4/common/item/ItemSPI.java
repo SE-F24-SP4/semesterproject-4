@@ -2,14 +2,16 @@ package com.github.sef24sp4.common.item;
 
 public interface ItemSPI {
 	/**
-	 *
-	 * @return Returns the Item.
+	 * Get the item from the provider.
+	 * @return Returns the Item of type {@link CommonItem}
+	 * @see CommonItem
 	 */
 	public CommonItem getItem();
 
 	/**
-	 *
-	 * @return Returns the rarity of the item from ItemRarity enum.
+	 * Fetch the rarity of the item.
+	 * @return Returns the rarity of the item from {@link ItemRarity}.
+	 * @see ItemRarity
 	 */
 	public ItemRarity getRarity();
 }
