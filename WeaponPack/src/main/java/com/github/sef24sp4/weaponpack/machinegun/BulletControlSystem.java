@@ -11,6 +11,7 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 public class BulletControlSystem implements IEntityProcessingService, ProjectileSPI {
 	private final double bulletSpeed = 10.0;
 
+	//This method creates the look of the projectile and defines direction for the projectile, based on the shooter.
 	@Override
 	public CommonProjectile createProjectile(IEntity shooter) {
 		Bullet bullet = new Bullet(shooter);
@@ -21,11 +22,13 @@ public class BulletControlSystem implements IEntityProcessingService, Projectile
 				new Coordinates(2, 2)
 		);
 
+		//Here is the direction of the polygon shoot-aim defined.
 		bullet.setCoordinates(shooter.getCoordinates().clone());
 		bullet.setRotation(shooter.getRotation());
 		return bullet;
 	}
 
+	//This method defines the projectiles placement inside the map-frame.
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		for (Bullet bullet : entityManager.removeEntitiesByClass(Bullet.class)) {

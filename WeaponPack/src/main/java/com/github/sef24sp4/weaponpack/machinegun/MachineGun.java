@@ -13,6 +13,10 @@ public class MachineGun implements WeaponSPI {
 	private long timeOfLastShot;
 
 	public MachineGun() {
+		/*
+		 * Allow shooting as soon the MachineGun is loaded.
+		 * This works by artificially setting the timeOfLastShot to before {@code now - maxCoolDownTicks}.
+		 */
 		this.timeOfLastShot = System.nanoTime() - this.maxCountDownTicks;
 	}
 
@@ -27,11 +31,19 @@ public class MachineGun implements WeaponSPI {
 		return true;
 	}
 
+	/**
+	 * Gets the amount of ammunition.
+	 * @return The value of ammunition.
+	 */
 	@Override
 	public int getAmmoCount() {
 		return this.ammoCount;
 	}
 
+	/**
+	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
+	 * @return The value of remainingCoolDownTicks.
+	 */
 	@Override
 	public long getRemainingCoolDownTicks() {
 		final long remainingCoolDownTicks = this.maxCountDownTicks - (System.nanoTime() - this.timeOfLastShot);

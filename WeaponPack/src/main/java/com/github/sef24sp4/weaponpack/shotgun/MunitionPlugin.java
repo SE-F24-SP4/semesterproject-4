@@ -15,6 +15,7 @@ public class MunitionPlugin implements IGamePluginService {
 
 	}
 
+	//This method ensures, that the BaseProjectile is removed when the game stops.
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
 		entityManager.removeEntitiesByClass(Munition.class);

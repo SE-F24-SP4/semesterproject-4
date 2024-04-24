@@ -7,13 +7,17 @@ import com.github.sef24sp4.weaponpack.machinegun.BulletControlSystem;
 
 public class ShotGun implements WeaponSPI {
 	//Variables defined for ammoCount and projectiles.
-	private int ammoCount = 500;
+	private int ammoCount = 25;
 	private final BulletControlSystem bulletControlSystem = new BulletControlSystem();
 
 	private final long maxCountDownTicks = 1_000_000_000 / 16;
 	private long timeOfLastShot;
 
 	public ShotGun() {
+		/*
+		 * Allow shooting as soon the MachineGun is loaded.
+		 * This works by artificially setting the timeOfLastShot to before {@code now - maxCoolDownTicks}.
+		 */
 		this.timeOfLastShot = System.nanoTime() - this.maxCountDownTicks;
 	}
 
@@ -28,11 +32,19 @@ public class ShotGun implements WeaponSPI {
 		return true;
 	}
 
+	/**
+	 * Gets the amount of ammunition.
+	 * @return The value of ammunition.
+	 */
 	@Override
 	public int getAmmoCount() {
 		return this.ammoCount;
 	}
 
+	/**
+	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
+	 * @return The value of remainingCoolDownTicks.
+	 */
 	@Override
 	public long getRemainingCoolDownTicks() {
 		final long remainingCoolDownTicks = this.maxCountDownTicks - (System.nanoTime() - this.timeOfLastShot);

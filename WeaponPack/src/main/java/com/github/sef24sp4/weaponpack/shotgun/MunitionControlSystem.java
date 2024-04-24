@@ -11,6 +11,7 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 public class MunitionControlSystem implements IEntityProcessingService, ProjectileSPI {
 	private final double munitionSpeed = 20.0;
 
+	//This method creates the look of the projectile and defines direction for the projectile, based on the shooter.
 	@Override
 	public CommonProjectile createProjectile(IEntity shooter) {
 		Munition munition = new Munition(shooter);
@@ -21,6 +22,7 @@ public class MunitionControlSystem implements IEntityProcessingService, Projecti
 				new Coordinates(3, 3)
 		);
 
+		//Here is the direction of the polygon shoot-aim defined.
 		munition.setCoordinates(shooter.getCoordinates().clone());
 		munition.setRotation(shooter.getRotation());
 		return munition;

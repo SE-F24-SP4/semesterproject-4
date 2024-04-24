@@ -29,11 +29,19 @@ public class BaseWeapon implements WeaponSPI {
 		return true;
 	}
 
+	/**
+	 * Gets the amount of ammunition.
+	 * @return The value of ammunition.
+	 */
 	@Override
 	public int getAmmoCount() {
 		return this.ammoCount;
 	}
 
+	/**
+	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
+	 * @return The value of remainingCoolDownTicks.
+	 */
 	@Override
 	public long getRemainingCoolDownTicks() {
 		final long remainingCoolDownTicks = this.maxCoolDownTicks - (System.nanoTime() - this.timeOfLastShot);
