@@ -72,6 +72,8 @@ public class AStar implements IPathfindingProvider {
 		Optional<Node> nextStep = this.getNextStep();
 		if (nextStep.isPresent()) {
 			Node nextNode = nextStep.get();
+			//return mapNode.getSafeCoordinatesForEntity(entity,new Coordinates(nextNode.getX(), nextNode.getY()));
+
 			return new Coordinates(nextNode.getX(), nextNode.getY());
 		}
 

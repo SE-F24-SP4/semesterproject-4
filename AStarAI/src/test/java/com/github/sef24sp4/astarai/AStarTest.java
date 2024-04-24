@@ -10,14 +10,6 @@ import static org.mockito.Mockito.*;
 
 public class AStarTest {
 
-	private IGameSettings gameSettings;
-
-
-	@BeforeEach
-	public void setup() {
-		this.gameSettings = mock(IGameSettings.class);
-	}
-
 
 	@Test
 	void aStarNavigateTest() {
