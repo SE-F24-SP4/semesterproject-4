@@ -2,6 +2,7 @@ package com.github.sef24sp4.astarai;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.ai.map.Map;
+import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.ai.map.MapNode;
@@ -42,19 +43,8 @@ public class AStar implements IPathfindingProvider {
 	//startNode is where the entity using AI is.
 	//goalNode is the position of the targetGoal
 	//currentNode, is used when calculating next node to open.
-
-
-	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
-	//set nodes for whole map?
-
 	@Override
-	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
-		//TODO: targetCoordinate = location of player = goalnode?
-		int y = (int) targetCoordinate.getY(); //does it cause problems that it casts to int?
-		int x = (int) targetCoordinate.getX();
-	public IVector nextCoordinateInPath(IEntity entity, IVector targetCoordinate) {
-		//set goalNode based on targetCoordinate
-		setNodes();
+	public Coordinates nextCoordinateInPath(ICollidableEntity entity, IVector targetCoordinate) {
 
 	//make nodes for the map?
 	//check if node i solid?
@@ -63,17 +53,19 @@ public class AStar implements IPathfindingProvider {
 		System.out.println(targetX);
 		System.out.println(targetY);
 
-		this.goalNode = new Node(this.map.getNodeContaining(targetCoordinate).get());
+		if(this.map.getNodeContaining(targetCoordinate).isPresent()) {
+			this.goalNode = new Node(this.map.getNodeContaining(targetCoordinate).get());
+		}
+		if(this.map.getNodeContaining(entity.getCoordinates()).isPresent()){
+			this.startNode = new Node(this.map.getNodeContaining(entity.getCoordinates()).get());
+		}
 
-		this.startNode = new Node(this.map.getNodeContaining(entity.getCoordinates()).get());
-
-		this.search();
+		this.search(entity);
 
 		Optional<Node> nextStep = this.getNextStep();
 		if (nextStep.isPresent()) {
 			Node nextNode = nextStep.get();
 			//return mapNode.getSafeCoordinatesForEntity(entity,new Coordinates(nextNode.getX(), nextNode.getY()));
-
 			return new Coordinates(nextNode.getX(), nextNode.getY());
 		}
 
@@ -137,11 +129,11 @@ public class AStar implements IPathfindingProvider {
 		aNode.setFCost(distanceSoFar + heuristics);
 	}
 
-	private void search() { //method
+	private void search(ICollidableEntity entity) {
 
 		this.currentNode = this.startNode; //at first current node is the same as startnode
 		this.currentNode.setGCost(0);
-		while (!this.goalReached) { // and step =?
+		while (!this.goalReached) {
 
 			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
@@ -196,17 +188,20 @@ public class AStar implements IPathfindingProvider {
 
 
 	//Method for open nodes if: not open, not checked and not solid : open it.
-	private void openNode(Node aNode) {
+	private void openNode(ICollidableEntity entity, Node aNode) {
 
 		if (!aNode.isOpen() && !aNode.isChecked() && !aNode.isSolid()) {
 
 			aNode.setOpen(true);
 
 			aNode.setParent(this.currentNode); //set currentnode as parent
+			mapNode.getSafeCoordinatesForEntity(entity,map.getNodeContaining(currentNode.getMapNode()).get());
+
 			//if a node is direct nighbor gcost = current.node + 1
 			aNode.setGCost(this.currentNode.getGCost() + 1);
 			//if a node is diagonal neighbor gcost = current.node + root(2)
 			aNode.setGCost(this.currentNode.getGCost() + Math.sqrt(2));
+
 			this.openList.add(aNode);
 
 		}

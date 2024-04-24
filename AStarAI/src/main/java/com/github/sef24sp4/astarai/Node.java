@@ -2,8 +2,10 @@ package com.github.sef24sp4.astarai;
 
 
 import com.github.sef24sp4.common.ai.map.MapNode;
+import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class Node {
 	private Node parent;
@@ -29,6 +31,9 @@ public class Node {
 
 	public double getHeuristicForNode(Node targetNode) {
 		return this.mapNode.calculateHeuristicsFor(targetNode.getMapNode());
+	}
+	public Optional<IVector> getSafeCoordinatesForEntity(){
+		mapNode.getSafeCoordinatesForEntity()
 	}
 
 	public MapNode getMapNode() {
