@@ -8,6 +8,7 @@ import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,10 +22,8 @@ public class AStar implements IPathfindingProvider {
 
 	private boolean goalReached = false;
 
-	private List<Node> openList = new ArrayList<>(); //best for random access
-	private List<Node> pathList = new ArrayList<>(); //Is PriorityQueue good when removing specific element - LL is best for 1st element?
-
-	private MapNode mapNode;
+	private List<Node> openList = new ArrayList<>();
+	private List<Node> pathList = new LinkedList<>();
 	private Map map;
 
 
@@ -216,66 +215,6 @@ public class AStar implements IPathfindingProvider {
 
 		this.openList.add(aNode);
 
-	}
-
-	//getters and setters
-
-
-	public Node[][] getNodes() {
-		return this.nodes;
-	}
-
-	public Node getStartNode() {
-		return this.startNode;
-	}
-
-	public Node getGoalNode() {
-		return this.goalNode;
-	}
-
-	public Node getCurrentNode() {
-		return this.currentNode;
-	}
-
-	public boolean isGoalReached() {
-		return this.goalReached;
-	}
-
-	public List<Node> getOpenList() {
-		return this.openList;
-	}
-
-	public List<Node> getPathList() {
-		return this.pathList;
-	}
-
-	public void setNodes(Node[][] nodes) {
-		this.nodes = nodes;
-	}
-
-	public void setStartNode(Node startNode) {
-		this.startNode = startNode;
-	}
-
-	public void setGoalNode(Node goalNode) {
-		this.goalNode = goalNode;
-	}
-
-	public void setCurrentNode(Node currentNode) {
-		this.currentNode = currentNode;
-	}
-
-	public void setGoalReached(boolean goalReached) {
-		this.goalReached = goalReached;
-	}
-
-	public void setOpenList(ArrayList<Node> openList) {
-		this.openList = openList;
-	}
-
-
-	public void setPathList(ArrayList<Node> pathList) {
-		this.pathList = pathList;
 	}
 
 }
