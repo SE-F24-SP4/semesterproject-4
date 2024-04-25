@@ -5,7 +5,6 @@ import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.metadata.GameElementType;
-import com.github.sef24sp4.common.projectile.CommonProjectile;
 import com.github.sef24sp4.weaponpack.WeaponDamageLevel;
 
 public class Munition extends WeaponDamageLevel implements ICollidableEntity, IAttackingEntity {

@@ -4,18 +4,18 @@ import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 
 public abstract class WeaponDamageLevel extends CommonProjectile {
-	int damageMachineGun = 2;
-	int damageShotGun = 3;
+	private int damageMachineGun = 2;
+	private int damageShotGun = 3;
 
 	protected WeaponDamageLevel(final IEntity shooter) {
 		super(shooter);
 	}
 
 	public int getDamageMachineGun() {
-		return damageMachineGun;
+		return this.damageMachineGun;
 	}
 
 	public int getDamageShotGun() {
-		return damageShotGun;
+		return this.damageShotGun;
 	}
 }

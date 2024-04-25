@@ -2,13 +2,15 @@ package com.github.sef24sp4.weaponpack.shotgun;
 
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
-import com.github.sef24sp4.weaponpack.machinegun.BulletControlSystem;
+
+import java.util.Random;
 
 public class ShotGun implements WeaponSPI {
 	//Variables defined for ammoCount and projectiles.
 	private int ammoCount = 25;
-	private final BulletControlSystem bulletControlSystem = new BulletControlSystem();
+	private final MunitionControlSystem munitionControlSystem = new MunitionControlSystem();
 
 	private final long maxCountDownTicks = 1_000_000_000 / 16;
 	private long timeOfLastShot;
@@ -27,13 +29,23 @@ public class ShotGun implements WeaponSPI {
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
 		if (this.ammoCount <= 0 || this.getRemainingCoolDownTicks() > 0) return false;
 		this.timeOfLastShot = System.nanoTime();
-		entityManager.addEntity(this.bulletControlSystem.createProjectile(shooter));
+		entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
 		this.ammoCount--;
 		return true;
 	}
 
+	public IEntity projectileGenerator(IEntityManager entityManager, IEntity shooter) {
+		Random random = new Random();
+		int duplication = random.nextInt(0, 25);
+		for (int i = 0; i < duplication; i++) {
+			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
+		}
+		return shooter;
+	}
+
 	/**
 	 * Gets the amount of ammunition.
+	 *
 	 * @return The value of ammunition.
 	 */
 	@Override
@@ -43,6 +55,7 @@ public class ShotGun implements WeaponSPI {
 
 	/**
 	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
+	 *
 	 * @return The value of remainingCoolDownTicks.
 	 */
 	@Override
