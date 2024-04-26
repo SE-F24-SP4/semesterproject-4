@@ -43,6 +43,7 @@ public class ShotGun implements WeaponSPI {
 		return shooter;
 	}
 
+
 	/**
 	 * Gets the amount of ammunition.
 	 *
