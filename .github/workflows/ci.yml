@@ -20,8 +20,7 @@ jobs:
   linting:
     # The type of runner that the job will run on
     runs-on: 
-      - self-hosted
-      - docker
+      - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
 
@@ -46,44 +45,14 @@ jobs:
       - name: Check code style
         run: mvn -T 2C checkstyle:check
 
-  build:
-    # The type of runner that the job will run on
-    runs-on: 
-      - self-hosted
-      - docker
-    container:
-      image: docker.io/maven:3-eclipse-temurin-21-jammy
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-
-      - name: Cache Maven repository
-        uses: actions/cache@v4
-        with:
-          path: |
-            /root/.m2/repository
-            ./libs/
-            **/target
-          key: ${{ runner.os }}-maven-${{ github.job }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-${{ github.job }}-
-            ${{ runner.os }}-maven-
-
-      # Runs a single command using the runners shell
-      - name: Compile project
-        run: mvn -T 2C compile
-
   unit-tests:
     # The type of runner that the job will run on
     runs-on: 
-      - self-hosted
-      - docker
+      - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
     needs:
-      - build
+      - linting
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -102,6 +71,8 @@ jobs:
             ${{ runner.os }}-maven-${{ github.job }}-
             ${{ runner.os }}-maven-
 
+      - name: Compile project
+        run: mvn -T 2C clean compile
       # Runs a single command using the runners shell
       - name: Running unit tests
         run: mvn test

@@ -28,11 +28,11 @@ public interface MapNode {
 
 	/**
 	 * Calculates heuristics given a {@link MapNode target node}.
-	 * Returns an arbitrary {@link Integer} describing some sort of distance to a target node from the calling node.
+	 * Returns an arbitrary {@link Double} describing some sort of distance to a target node from the calling node.
 	 *
 	 * @param target The {@link MapNode node} to calculate heuristics with.
-	 * @return The heuristics as a positive {@link Integer}.
+	 * @return The heuristics as a positive {@link Double}.
 	 * {@code 0} if the {@code target} and the calling node is the same.
 	 */
-	public int calculateHeuristicsFor(final MapNode target);
+	public double calculateHeuristicsFor(final MapNode target);
 }

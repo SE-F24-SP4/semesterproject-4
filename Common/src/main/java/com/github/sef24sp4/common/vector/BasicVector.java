@@ -25,7 +25,7 @@ public class BasicVector implements IVector, Cloneable {
 	 * @param vector The {@link IVector} to construct from.
 	 * @return The newly constructed {@link BasicVector}.
 	 */
-	public static BasicVector from(final IVector vector) {
+	public static BasicVector valuesOf(final IVector vector) {
 		return new BasicVector(vector.getX(), vector.getY());
 	}
 
