@@ -13,13 +13,6 @@ public class HealthItemPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStart(IEntityManager entityManager, IGameSettings gameSettings) {
-		int x = gameSettings.getDisplayWidth() / 2;
-		int y = gameSettings.getDisplayHeight() / 2;
-		HealthItem healthItem = new HealthItem();
-		healthItem.setX(x);
-		healthItem.setY(y);
-		entityManager.addEntity(healthItem);
-		System.out.println("Health item added " + healthItem.getRarity());
 	}
 
 	@Override
