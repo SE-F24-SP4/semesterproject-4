@@ -118,7 +118,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
 		if (otherEntity instanceof IHealingEntity healingEntity) {
-			heal(healingEntity.getHealingAmount());
+			this.heal(healingEntity.getHealingAmount());
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);

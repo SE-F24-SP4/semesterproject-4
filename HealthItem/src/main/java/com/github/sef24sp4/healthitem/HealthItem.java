@@ -46,6 +46,6 @@ public class HealthItem extends CommonItem implements ItemSPI, IHealingEntity {
 
 	@Override
 	public ItemRarity getRarity() {
-		return rarity;
+		return this.rarity;
 	}
 }
