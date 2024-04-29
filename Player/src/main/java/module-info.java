@@ -4,6 +4,7 @@ import com.github.sef24sp4.player.PlayerControl;
 import com.github.sef24sp4.player.PlayerPlugin;
 
 module Player {
+	exports com.github.sef24sp4.player;
 	uses com.github.sef24sp4.common.weapon.WeaponSPI;
 	requires Common;
 	requires CommonWeapon;
