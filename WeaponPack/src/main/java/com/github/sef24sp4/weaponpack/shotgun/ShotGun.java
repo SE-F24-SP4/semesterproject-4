@@ -11,7 +11,6 @@ public class ShotGun implements WeaponSPI {
 	//Variables defined for ammoCount and projectiles.
 	private int ammoCount = 25;
 	private final MunitionControlSystem munitionControlSystem = new MunitionControlSystem();
-
 	private final long maxCountDownTicks = 1_000_000_000 / 16;
 	private long timeOfLastShot;
 
@@ -34,15 +33,21 @@ public class ShotGun implements WeaponSPI {
 		return true;
 	}
 
-	public IEntity projectileGenerator(IEntityManager entityManager, IEntity shooter) {
+	public void projectileSpreader(IEntityManager entityManager, IEntity shooter) {
+		double staggeredValue = Math.PI / 4;
 		Random random = new Random();
-		int duplication = random.nextInt(0, 25);
-		for (int i = 0; i < duplication; i++) {
-			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
+		double spreadValue = random.nextDouble(0, 25);
+		for (double i = 0; i < spreadValue; i++) {
+			double staggeredPosition = staggeredProjectiles(staggeredValue);
+			double changedRotation = shooter.getRotation() + staggeredPosition;
+			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter, changedRotation));
 		}
-		return shooter;
 	}
 
+	public double staggeredProjectiles(double staggeredValue) {
+		Random randomly = new Random();
+		return (randomly.nextDouble()+1) * staggeredValue;
+	}
 
 	/**
 	 * Gets the amount of ammunition.

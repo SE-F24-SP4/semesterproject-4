@@ -90,7 +90,6 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 			Coordinates point = new Coordinates(x, y);
 			polygonCoordinates.add(point);
 		}
-
 		return polygonCoordinates;
 	}
 
