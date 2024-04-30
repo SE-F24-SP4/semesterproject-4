@@ -2,7 +2,6 @@ package com.github.sef24sp4.weaponpack.shotgun;
 
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
-import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 
 import java.util.Random;
@@ -33,15 +32,17 @@ public class ShotGun implements WeaponSPI {
 		return true;
 	}
 
-	public void projectileSpreader(IEntityManager entityManager, IEntity shooter) {
+	public IEntity projectileSpreader(IEntityManager entityManager, IEntity shooter) {
 		double staggeredValue = Math.PI / 4;
 		Random random = new Random();
-		double spreadValue = random.nextDouble(0, 25);
-		for (double i = 0; i < spreadValue; i++) {
+		double spreadValue = random.nextInt(0, 25);
+		for (int i = 0; i < spreadValue; i++) {
 			double staggeredPosition = staggeredProjectiles(staggeredValue);
-			double changedRotation = shooter.getRotation() + staggeredPosition;
-			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter, changedRotation));
+			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition/2, staggeredPosition);
+			shooter.setRotation(changedRotation);
+			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
 		}
+		return shooter;
 	}
 
 	public double staggeredProjectiles(double staggeredValue) {

@@ -21,8 +21,10 @@ public interface IEntity extends IGameElement {
 	}
 
 	public double getRotation();
+	public void setRotation(double rotation);
 
 	public Coordinates getCoordinates();
+	public void setCoordinates(Coordinates coordinates);
 
 	public default double getX() {
 		return this.getCoordinates().getX();
