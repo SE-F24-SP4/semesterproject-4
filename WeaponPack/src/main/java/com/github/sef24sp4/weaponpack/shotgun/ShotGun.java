@@ -3,32 +3,25 @@ package com.github.sef24sp4.weaponpack.shotgun;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
+import com.github.sef24sp4.weaponpack.AbstractWeapon;
 
+import java.util.List;
 import java.util.Random;
 
-public class ShotGun implements WeaponSPI {
+public class ShotGun extends AbstractWeapon {
 	//Variables defined for ammoCount and projectiles.
-	private int ammoCount = 25;
-	private final MunitionControlSystem munitionControlSystem = new MunitionControlSystem();
-	private final long maxCountDownTicks = 1_000_000_000 / 16;
-	private long timeOfLastShot;
+	private final ShotGunBulletControlSystem shotGunBulletControlSystem = new ShotGunBulletControlSystem();
 
 	public ShotGun() {
-		/*
-		 * Allow shooting as soon the MachineGun is loaded.
-		 * This works by artificially setting the timeOfLastShot to before {@code now - maxCoolDownTicks}.
-		 */
-		this.timeOfLastShot = System.nanoTime() - this.maxCountDownTicks;
+		super(1_000_000_000 / 16, 25);
 	}
 
 	//Shoot-method ensures, that if the ticks are high, and if there is no ammunition, then the gun cannot continue.
 	//But if this statement needs to be true, then we need to add a bullet, which decreases based on the ammoCount--;
 	@Override
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
-		if (this.ammoCount <= 0 || this.getRemainingCoolDownTicks() > 0) return false;
-		this.timeOfLastShot = System.nanoTime();
-		entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
-		this.ammoCount--;
+		if (!this.prepareShootIfPossible()) return false;
+		entityManager.addEntity(this.shotGunBulletControlSystem.createProjectile(shooter));
 		return true;
 	}
 
@@ -36,20 +29,20 @@ public class ShotGun implements WeaponSPI {
 	public IEntity projectileSpreader(IEntityManager entityManager, IEntity shooter) {
 		//StaggeredValue fortæller, hvordan vores projektiler er forskudte fra hinanden.
 		//Dette er en eksperiment.
-		Munition munition = new Munition(shooter);
+		ShotGunBullet shotGunBullet = new ShotGunBullet(shooter);
 		double staggeredValue = Math.PI / 4;
 		//Random er brugt til at fortælle, at der skal skyde/spawne 25 projektiler når vi skyder.
 		Random random = new Random();
-		double spreadValue = random.nextInt(0, 25);
+		double spreadValue = random.nextInt(0, 5);
 		for (int i = 0; i < spreadValue; i++) {
 			//Mening med staggeredPosition er at skabe afvigelsen af positionen af projektilerne.
 			double staggeredPosition = this.staggeredProjectiles(staggeredValue);
 			//Efter skaber vi changedRotation, hvor vi forsøger at definere den nye changedRotation.
 			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition / 2, staggeredPosition);
 			//Denne her er meget sjov, fordi her sætter jeg shooterens rotation selvom det burde være projektilet.
-			munition.setRotation(changedRotation);
+			shotGunBullet.setRotation(changedRotation);
 			//Projektilet er tilføjet og det gør at vi skyder.
-			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
+			entityManager.addEntity(this.shotGunBulletControlSystem.createProjectile(shooter));
 		}
 		return shooter;
 	}
@@ -62,25 +55,6 @@ public class ShotGun implements WeaponSPI {
 		return (randomly.nextDouble() + 1) * staggeredValue;
 	}
 
-	/**
-	 * Gets the amount of ammunition.
-	 *
-	 * @return The value of ammunition.
-	 */
-	@Override
-	public int getAmmoCount() {
-		return this.ammoCount;
-	}
+	//private List<ShotGunBullet>
 
-	/**
-	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
-	 *
-	 * @return The value of remainingCoolDownTicks.
-	 */
-	@Override
-	public long getRemainingCoolDownTicks() {
-		final long remainingCoolDownTicks = this.maxCountDownTicks - (System.nanoTime() - this.timeOfLastShot);
-		if (remainingCoolDownTicks <= 0) return 0;
-		return remainingCoolDownTicks;
-	}
 }
