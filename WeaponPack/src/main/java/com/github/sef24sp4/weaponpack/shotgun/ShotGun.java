@@ -32,6 +32,7 @@ public class ShotGun implements WeaponSPI {
 		return true;
 	}
 
+	//ProjectileSpreader method
 	public IEntity projectileSpreader(IEntityManager entityManager, IEntity shooter) {
 		//StaggeredValue fortæller, hvordan vores projektiler er forskudte fra hinanden.
 		//Dette er en eksperiment.
@@ -53,6 +54,7 @@ public class ShotGun implements WeaponSPI {
 		return shooter;
 	}
 
+	//staggeredProjectiles method
 	public double staggeredProjectiles(double staggeredValue) {
 		Random randomly = new Random();
 		//Hensigten med return-statement er at kunne skabe forskydningen således at vi kan danne et interval.
