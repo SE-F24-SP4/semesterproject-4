@@ -37,8 +37,8 @@ public class ShotGun implements WeaponSPI {
 		Random random = new Random();
 		double spreadValue = random.nextInt(0, 25);
 		for (int i = 0; i < spreadValue; i++) {
-			double staggeredPosition = staggeredProjectiles(staggeredValue);
-			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition/2, staggeredPosition);
+			double staggeredPosition = this.staggeredProjectiles(staggeredValue);
+			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition / 2, staggeredPosition);
 			shooter.setRotation(changedRotation);
 			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
 		}
@@ -47,7 +47,7 @@ public class ShotGun implements WeaponSPI {
 
 	public double staggeredProjectiles(double staggeredValue) {
 		Random randomly = new Random();
-		return (randomly.nextDouble()+1) * staggeredValue;
+		return (randomly.nextDouble() + 1) * staggeredValue;
 	}
 
 	/**
