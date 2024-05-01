@@ -35,6 +35,7 @@ public class ShotGun implements WeaponSPI {
 	public IEntity projectileSpreader(IEntityManager entityManager, IEntity shooter) {
 		//StaggeredValue fortæller, hvordan vores projektiler er forskudte fra hinanden.
 		//Dette er en eksperiment.
+		Munition munition = new Munition(shooter);
 		double staggeredValue = Math.PI / 4;
 		//Random er brugt til at fortælle, at der skal skyde/spawne 25 projektiler når vi skyder.
 		Random random = new Random();
@@ -45,7 +46,7 @@ public class ShotGun implements WeaponSPI {
 			//Efter skaber vi changedRotation, hvor vi forsøger at definere den nye changedRotation.
 			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition / 2, staggeredPosition);
 			//Denne her er meget sjov, fordi her sætter jeg shooterens rotation selvom det burde være projektilet.
-			shooter.setRotation(changedRotation);
+			munition.setRotation(changedRotation);
 			//Projektilet er tilføjet og det gør at vi skyder.
 			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
 		}
