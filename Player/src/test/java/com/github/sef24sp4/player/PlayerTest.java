@@ -1,65 +1,91 @@
 package com.github.sef24sp4.player;
-import com.github.sef24sp4.common.data.EntityManager;
+import com.github.sef24sp4.common.entities.IAttackingEntity;
+import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
-import org.junit.jupiter.api.AfterEach;
+import com.github.sef24sp4.common.projectile.CommonProjectile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class PlayerTest {
-	private final IEntityManager em = new EntityManager();
+	private Player player;
+	private IEntityManager mockEntityManager;
 
 	@BeforeEach
-	void setUp() {
-		Player player = mock(Player.class);
-	}
+	void setUp() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+		final Constructor<Player> constructor = Player.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		this.player = constructor.newInstance();
 
-	@AfterEach
-	void tearDown() {
+		this.mockEntityManager = mock(IEntityManager.class);
 	}
 
 	@Test
 	void getPlayer() {
-		Player p = Player.getPlayer();
-		assertEquals(p, Player.getPlayer());
+		assertInstanceOf(Player.class, Player.getPlayer());
 	}
 	@Test
 	void getHealth() {
-		Player p = Player.getPlayer();
-		assertEquals(p.getMaxHealth(), p.getHealth());
+		assertEquals(10, this.player.getHealth());
+	}
+	@Test
+	void getMaxHealth() {
+		assertEquals(10, this.player.getMaxHealth());
 	}
 	@Test
 	void setWalkSpeed() {
-		Player p = Player.getPlayer();
-		p.setWalkSpeed(100);
-		assertEquals(100, p.getWalkSpeed());
-		p.setWalkSpeed(10);
-		assertEquals(10, p.getWalkSpeed());
+		this.player.setWalkSpeed(100);
+		assertEquals(100, this.player.getWalkSpeed());
+		this.player.setWalkSpeed(10);
+		assertEquals(10, this.player.getWalkSpeed());
 	}
 	@Test
 	void takeDamage() {
-		Player p = Player.getPlayer();
-		assertEquals(p.getMaxHealth(), p.getHealth());
-		p.takeDamage(5, em);
-		assertEquals(p.getMaxHealth()-5, p.getHealth());
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+		this.player.takeDamage(5, this.mockEntityManager);
+		assertEquals(this.player.getMaxHealth() - 5, this.player.getHealth());
 	}
 	@Test
 	void kill() {
-		Player p = Player.getPlayer();
-		em.addEntity(p);
-		assertEquals(1, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
-		p.kill(em);
-		assertEquals(0, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
+		this.mockEntityManager.addEntity(this.player);
+		this.player.kill(this.mockEntityManager);
+		verify(this.mockEntityManager).removeEntity(this.player);
 	}
 	@Test
 	void takeDamageAndKill() {
-		Player p = Player.getPlayer();
-		em.addEntity(p);
-		assertEquals(1, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
-		p.takeDamage(1000, em);
-		assertEquals(0, em.getAllEntities().stream().filter(e -> e instanceof Player).toList().size());
+		this.mockEntityManager.addEntity(this.player);
+		this.player.takeDamage(1000, this.mockEntityManager);
+		verify(this.mockEntityManager).removeEntity(this.player);
+	}
+	@Test
+	void collideWithAttackingEntity() {
+    //Setup
+    ICollidableEntity mockCollidableEntity = mock(ICollidableEntity.class, withSettings().extraInterfaces(IAttackingEntity.class));
+    IAttackingEntity mockAttackingEntity = (IAttackingEntity) mockCollidableEntity;
+    when(mockAttackingEntity.getAttackDamage()).thenReturn(10.0);
+
+    //Method call
+    this.player.collide(this.mockEntityManager, mockCollidableEntity);
+
+    //Verify
+    verify(mockAttackingEntity).getAttackDamage();
+	}
+	@Test
+	void collideWithOwnBullet() {
+    //Setup
+	CommonProjectile mockCommonProjectile = mock(CommonProjectile.class, withSettings().extraInterfaces(ICollidableEntity.class));
+    when(mockCommonProjectile.getShooter()).thenReturn(this.player);
+
+    //Method call
+    this.player.collide(this.mockEntityManager, mockCommonProjectile);
+
+    //Verify
+	verify(mockCommonProjectile).getShooter();
+    verifyNoMoreInteractions(this.mockEntityManager, mockCommonProjectile);
 	}
 }
