@@ -28,7 +28,6 @@ public abstract class CommonEntity implements IEntity {
 		return this.coordinates;
 	}
 
-	@Override
 	public void setCoordinates(Coordinates coordinates) {
 		this.coordinates = coordinates;
 	}
@@ -51,7 +50,6 @@ public abstract class CommonEntity implements IEntity {
 		return this.rotation;
 	}
 
-	@Override
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
 	}
