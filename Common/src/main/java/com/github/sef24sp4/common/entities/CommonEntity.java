@@ -1,13 +1,14 @@
 package com.github.sef24sp4.common.entities;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.vector.Coordinates;
+import com.github.sef24sp4.common.vector.IVector;
 
-import java.util.List;
+import java.util.Collection;
 
-public class CommonEntity implements IEntity {
+public abstract class CommonEntity implements IEntity {
 	private Coordinates coordinates;
 
-	private Coordinates[] polygonCoordinates;
+	private IVector[] polygonCoordinates;
 
 	private double rotation;
 
@@ -15,11 +16,11 @@ public class CommonEntity implements IEntity {
 		this.coordinates = new Coordinates();
 	}
 
-	public void setX(double x) {
+	public void setX(final double x) {
 		this.getCoordinates().setX(x);
 	}
 
-	public void setY(double y) {
+	public void setY(final double y) {
 		this.getCoordinates().setY(y);
 	}
 
@@ -28,20 +29,24 @@ public class CommonEntity implements IEntity {
 		return this.coordinates;
 	}
 
-	public void setCoordinates(Coordinates coordinates) {
+	public void setCoordinates(final Coordinates coordinates) {
 		this.coordinates = coordinates;
 	}
 
+	public void setCoordinates(final IVector coordinates) {
+		this.setCoordinates(Coordinates.valuesOf(coordinates));
+	}
+
 	@Override
-	public Coordinates[] getPolygonCoordinates() {
+	public IVector[] getPolygonCoordinates() {
 		return this.polygonCoordinates;
 	}
 
-	public void setPolygonCoordinates(List<Coordinates> polygonCoordinates) {
-		this.polygonCoordinates = polygonCoordinates.toArray(new Coordinates[0]);
+	public void setPolygonCoordinates(final Collection<? extends IVector> polygonCoordinates) {
+		this.setPolygonCoordinates(polygonCoordinates.toArray(new IVector[0]));
 	}
 
-	public void setPolygonCoordinates(Coordinates... polygonCoordinates) {
+	public final void setPolygonCoordinates(final IVector... polygonCoordinates) {
 		this.polygonCoordinates = polygonCoordinates;
 	}
 
@@ -50,7 +55,7 @@ public class CommonEntity implements IEntity {
 		return this.rotation;
 	}
 
-	public void setRotation(double rotation) {
+	public void setRotation(final double rotation) {
 		this.rotation = rotation;
 	}
 }

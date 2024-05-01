@@ -5,8 +5,8 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Constructor;
@@ -49,6 +49,24 @@ public class PlayerTest {
 		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
 		this.player.takeDamage(5, this.mockEntityManager);
 		assertEquals(this.player.getMaxHealth() - 5, this.player.getHealth());
+	}
+	@Test
+	void heal() {
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+		this.player.takeDamage(5, this.mockEntityManager);
+		assertEquals(this.player.getMaxHealth() - 5, this.player.getHealth());
+		this.player.heal(5);
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+	}
+	@Test
+	void testHealNegativeAmount() {
+		assertThrows(IllegalArgumentException.class, () -> this.player.heal(-10.0));
+	}
+	@Test
+	void testHealExceedsMaxHealth() {
+		double maxHealth = this.player.getMaxHealth();
+		this.player.heal(maxHealth + 10.0);
+		assertEquals(maxHealth, this.player.getHealth());
 	}
 	@Test
 	void kill() {

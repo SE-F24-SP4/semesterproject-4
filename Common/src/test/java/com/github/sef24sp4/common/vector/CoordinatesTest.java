@@ -1,4 +1,4 @@
-package com.github.sef24sp4.common.data;
+package com.github.sef24sp4.common.vector;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,23 +34,38 @@ class CoordinatesTest {
 	}
 
 	@Test
-	void getVectorTo() {
-		assertEquals(new Coordinates(2, 4), this.coordinates.getVectorTo(this.otherCoordinates));
-	}
-
-	@Test
 	void getRelativeRotationTo() {
 		assertEquals(1.1071487177940904, this.coordinates.getRelativeRotationTo(this.otherCoordinates));
 	}
 
 	@Test
+	void valuesOf() {
+		final Coordinates actual = new Coordinates(42, 12);
+		final IVector testVector = new IVector() {
+			@Override
+			public double getX() {
+				return 42;
+			}
+
+			@Override
+			public double getY() {
+				return 12;
+			}
+		};
+		assertNotEquals(actual, testVector);
+		assertEquals(actual, Coordinates.valuesOf(testVector));
+	}
+
+	@Test
 	void testEquals() {
 		assertEquals(new Coordinates(3, 4), this.coordinates);
+		assertNotEquals(new Coordinates(9, 4), this.coordinates);
 	}
 
 	@Test
 	void testHashCode() {
 		assertEquals(new Coordinates(3, 4).hashCode(), this.coordinates.hashCode());
+		assertNotEquals(new Coordinates(42, 42).hashCode(), this.coordinates.hashCode());
 	}
 
 	@Test

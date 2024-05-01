@@ -1,6 +1,6 @@
 package com.github.sef24sp4.polygonenemy;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
@@ -17,6 +17,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	private final double damage;
 	private final double maxHealth;
 	private double health;
+	private double speed;
 	private final IGameMetadata metadata;
 
 	/**
@@ -28,13 +29,12 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	 * @throws IllegalArgumentException if the amount of edges is below 3
 	 */
 	public PolygonEnemy(int edges) {
-		if (edges < 3) {
-			throw new IllegalArgumentException("edges must be larger or equal to 3");
-		}
+		if (edges < 3) throw new IllegalArgumentException("edges must be larger or equal to 3");
 		this.edges = edges;
 		this.health = edges;
 		this.damage = edges;
 		this.maxHealth = edges;
+		this.speed = 1.0 / Math.log(1.0 + (edges - 2));
 		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
 				getMetadata();
 		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
@@ -62,6 +62,15 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	 */
 	public double getHealth() {
 		return this.health;
+	}
+
+	public double getSpeed() {
+		return this.speed;
+	}
+
+	public void setSpeed(double speed) {
+		if (speed < 0) throw new IllegalArgumentException("speed is negative");
+		this.speed = speed;
 	}
 
 	@Override

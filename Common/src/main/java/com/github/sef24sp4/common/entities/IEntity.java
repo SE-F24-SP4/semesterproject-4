@@ -1,17 +1,19 @@
 package com.github.sef24sp4.common.entities;
 
-import com.github.sef24sp4.common.data.Coordinates;
+import com.github.sef24sp4.common.metadata.IGameElement;
+import com.github.sef24sp4.common.vector.Coordinates;
+import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-public interface IEntity {
+public interface IEntity extends IGameElement {
 
-	public Coordinates[] getPolygonCoordinates();
+	public IVector[] getPolygonCoordinates();
 
 	public default double[] getPolygonValuesArray() {
-		List<Double> output = new ArrayList<>(this.getPolygonCoordinates().length * 2);
-		for (Coordinates coordinates : this.getPolygonCoordinates()) {
+		final Collection<Double> output = new ArrayList<>(this.getPolygonCoordinates().length * 2);
+		for (final IVector coordinates : this.getPolygonCoordinates()) {
 			output.add(coordinates.getX());
 			output.add(coordinates.getY());
 		}
