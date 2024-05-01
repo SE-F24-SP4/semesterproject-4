@@ -4,7 +4,7 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IGamePluginService;
 
-public class BulletPlugin implements IGamePluginService {
+public class MachineGunBulletPlugin implements IGamePluginService {
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
 
@@ -18,6 +18,6 @@ public class BulletPlugin implements IGamePluginService {
 	//This method ensures, that the BaseProjectile is removed when the game stops.
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
-		entityManager.removeEntitiesByClass(Bullet.class);
+		entityManager.removeEntitiesByClass(MachineGunBullet.class);
 	}
 }
