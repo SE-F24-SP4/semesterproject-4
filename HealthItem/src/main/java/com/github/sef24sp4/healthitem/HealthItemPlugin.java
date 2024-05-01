@@ -17,8 +17,6 @@ public class HealthItemPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStop(IEntityManager entityManager, IGameSettings gameSettings) {
-		for (IEntity healthItem:entityManager.getEntitiesByClass(HealthItem.class)) {
-			entityManager.removeEntity(healthItem);
-		}
+		entityManager.removeEntitiesByClass(HealthItem.class);
 	}
 }

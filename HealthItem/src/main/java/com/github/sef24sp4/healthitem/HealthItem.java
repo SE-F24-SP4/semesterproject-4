@@ -7,12 +7,11 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.item.CommonItem;
 import com.github.sef24sp4.common.item.ItemRarity;
 import com.github.sef24sp4.common.item.ItemSPI;
+import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.vector.Coordinates;
-import com.github.sef24sp4.player.Player;
 
-public class HealthItem extends CommonItem implements ItemSPI, IHealingEntity {
+public class HealthItem extends CommonItem implements IHealingEntity {
 	private final double healAmount = 10;
-	private  final  ItemRarity rarity = ItemRarity.COMMON;
 	public HealthItem() {
 		this.setRotation(3.14159265);
 		this.setPolygonCoordinates(
@@ -29,7 +28,7 @@ public class HealthItem extends CommonItem implements ItemSPI, IHealingEntity {
 
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
-		if (otherEntity instanceof Player) {
+		if (otherEntity.getType() == GameElementType.PLAYER) {
 			entityManager.removeEntity(this);
 		}
 	}
@@ -37,15 +36,5 @@ public class HealthItem extends CommonItem implements ItemSPI, IHealingEntity {
 	@Override
 	public double getHealingAmount() {
 		return this.healAmount;
-	}
-
-	@Override
-	public CommonItem getItem() {
-		return this;
-	}
-
-	@Override
-	public ItemRarity getRarity() {
-		return this.rarity;
 	}
 }

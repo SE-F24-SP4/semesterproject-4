@@ -4,7 +4,6 @@ import com.github.sef24sp4.healthitem.HealthItemPlugin;
 module HealthItem {
 	exports com.github.sef24sp4.healthitem;
 	requires Common;
-	requires Player;
 	requires CommonItem;
 	provides IGamePluginService with HealthItemPlugin;
 }
