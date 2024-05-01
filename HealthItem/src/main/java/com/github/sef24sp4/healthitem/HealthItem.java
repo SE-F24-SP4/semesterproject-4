@@ -5,8 +5,6 @@ import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IHealingEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.item.CommonItem;
-import com.github.sef24sp4.common.item.ItemRarity;
-import com.github.sef24sp4.common.item.ItemSPI;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.vector.Coordinates;
 
