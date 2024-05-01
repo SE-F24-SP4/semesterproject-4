@@ -33,13 +33,20 @@ public class ShotGun implements WeaponSPI {
 	}
 
 	public IEntity projectileSpreader(IEntityManager entityManager, IEntity shooter) {
+		//StaggeredValue fortæller, hvordan vores projektiler er forskudte fra hinanden.
+		//Dette er en eksperiment.
 		double staggeredValue = Math.PI / 4;
+		//Random er brugt til at fortælle, at der skal skyde/spawne 25 projektiler når vi skyder.
 		Random random = new Random();
 		double spreadValue = random.nextInt(0, 25);
 		for (int i = 0; i < spreadValue; i++) {
+			//Mening med staggeredPosition er at skabe afvigelsen af positionen af projektilerne.
 			double staggeredPosition = this.staggeredProjectiles(staggeredValue);
+			//Efter skaber vi changedRotation, hvor vi forsøger at definere den nye changedRotation.
 			double changedRotation = shooter.getRotation() + random.nextDouble(staggeredPosition / 2, staggeredPosition);
+			//Denne her er meget sjov, fordi her sætter jeg shooterens rotation selvom det burde være projektilet.
 			shooter.setRotation(changedRotation);
+			//Projektilet er tilføjet og det gør at vi skyder.
 			entityManager.addEntity(this.munitionControlSystem.createProjectile(shooter));
 		}
 		return shooter;
@@ -47,6 +54,8 @@ public class ShotGun implements WeaponSPI {
 
 	public double staggeredProjectiles(double staggeredValue) {
 		Random randomly = new Random();
+		//Hensigten med return-statement er at kunne skabe forskydningen således at vi kan danne et interval.
+		//Arbejdet er stadigvæk igang.
 		return (randomly.nextDouble() + 1) * staggeredValue;
 	}
 
