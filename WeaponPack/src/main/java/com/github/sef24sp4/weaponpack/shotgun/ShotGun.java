@@ -10,6 +10,9 @@ import java.util.Random;
 
 public class ShotGun extends AbstractWeapon {
 	//Variables defined for ammoCount and projectiles.
+	private final Random random = new Random();
+	private final double maxDeviationFromRotation = 5;
+	private final int ammountOfBulletsPerShot = 7;
 	private final ShotGunBulletControlSystem shotGunBulletControlSystem = new ShotGunBulletControlSystem();
 
 	public ShotGun() {
@@ -55,6 +58,16 @@ public class ShotGun extends AbstractWeapon {
 		return (randomly.nextDouble() + 1) * staggeredValue;
 	}
 
-	//private List<ShotGunBullet>
+	private List<ShotGunBullet> createBullets(final IEntity shooter){
+		//Genererering flere projektiler på samme tid.
+		//Derefter anvend metoden fra getRandomRotation således, at der er afvigelse mellem projektilerne.
+		//Derefter lav en liste således, at du kan gemme projektilerne på.
+	}
+
+	private double getRandomRotation(final IEntity shooter){
+		//Brug random.getDouble med minimum og maximum således at du kan bestemme hvordan afvigelsen er.
+		//Det betyder, at shooter.getRotation()-1 for venstre og shooter.getRotation()+1 for højre.
+		//Her bestemmes hvordan afvigelsen er mellem projektilerne.
+	}
 
 }
