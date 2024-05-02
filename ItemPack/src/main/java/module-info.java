@@ -6,7 +6,6 @@ import com.github.sef24sp4.itempack.ItemPackPlugin;
 module ItemPack {
 	exports com.github.sef24sp4.itempack;
 	requires CommonItem;
-	requires Player;
 	requires Common;
 	provides IGamePluginService with ItemPackPlugin;
 }

@@ -16,6 +16,6 @@ public class ItemPackPlugin implements IGamePluginService {
 
 	@Override
 	public void gameStop(final IEntityManager entityManager, final IGameSettings gameSettings) {
-
+		entityManager.removeEntitiesByClass(SpeedItem.class);
 	}
 }
