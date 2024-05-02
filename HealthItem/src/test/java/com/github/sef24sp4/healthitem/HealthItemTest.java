@@ -17,45 +17,46 @@ class HealthItemTest {
 	@Mock
 	private ICollidableEntity mockEntity = mock(ICollidableEntity.class);
 
+	@Mock
+	private HealthItem healthItem = new HealthItem();
+
+	@Mock
+	private HealthItemProvider healthItemProvider = new HealthItemProvider();
+
 	@Test
 	void collide() {
 		//Setup
-		HealthItem healthItem = new HealthItem();
-		this.mockEntityManager.addEntity(healthItem);
+		this.mockEntityManager.addEntity(this.healthItem);
 		when(this.mockEntity.getType()).thenReturn(GameElementType.PLAYER);
 		//Method call
-		healthItem.collide(this.mockEntityManager, this.mockEntity);
+		this.healthItem.collide(this.mockEntityManager, this.mockEntity);
 		//Verification
-		verify(this.mockEntityManager).removeEntity(healthItem);
+		verify(this.mockEntityManager).removeEntity(this.healthItem);
 	}
 
 	@Test
 	void collideNotPlayer() {
-    //Setup
-    HealthItem healthItem = new HealthItem();
-		this.mockEntityManager.addEntity(healthItem);
-    when(this.mockEntity.getType()).thenReturn(GameElementType.ENEMY);
-    //Method call
-    healthItem.collide(this.mockEntityManager, this.mockEntity);
-    //Verification
-    verify(this.mockEntityManager, never()).removeEntity(healthItem);
-}
+	    //Setup
+	    this.mockEntityManager.addEntity(this.healthItem);
+		when(this.mockEntity.getType()).thenReturn(GameElementType.ENEMY);
+		//Method call
+		this.healthItem.collide(this.mockEntityManager, this.mockEntity);
+	    //Verification
+	    verify(this.mockEntityManager, never()).removeEntity(this.healthItem);
+	}
 
 	@Test
 	void getHealingAmount() {
-		HealthItem healthItem = new HealthItem();
-		assertEquals(healthItem.getHealingAmount(), 10);
+		assertEquals(this.healthItem.getHealingAmount(), 10);
 	}
 
 	@Test
 	void getItem() {
-		HealthItemProvider healthItemProvider = new HealthItemProvider();
-		assertInstanceOf(HealthItem.class, healthItemProvider.getItem());
+		assertInstanceOf(HealthItem.class, this.healthItemProvider.getItem());
 	}
 
 	@Test
 	void getRarity() {
-		HealthItemProvider healthItemProvider = new HealthItemProvider();
-		assertEquals(healthItemProvider.getRarity(), ItemRarity.COMMON);
+		assertEquals(this.healthItemProvider.getRarity(), ItemRarity.COMMON);
 	}
 }
