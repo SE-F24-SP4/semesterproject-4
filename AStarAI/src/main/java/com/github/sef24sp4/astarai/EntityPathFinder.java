@@ -21,15 +21,17 @@ public class EntityPathFinder implements IPathfindingProvider { //extend/imple?
 	@Override
 	public IVector nextCoordinateInPath(final ICollidableEntity entity, final IVector targetCoordinate) {
 		while (this.cachingMap.size() > MAX_CAPACITY) {
-			this.cachingMap.pollFirstEntry(); // Clear stale cache
+			this.cachingMap.pollFirstEntry(); // Clear oldest cache
 		}
 
 
 
 		// if cachingMap does not contain entity.
-		this.cachingMap.put(entity, new DumbCache(entity));
+		if(!cachingMap.containsKey(entity)){
+			this.cachingMap.put(entity, new DumbCache(entity));
+		}
 
-		return this.cachingMap.get(entity).getNextCoordinates(targetCoordinate);
+		return this.cachingMap.get(entity).getNextCoordinates(entity,targetCoordinate);
 
 		// TODO: sometimes invalidate all caches to avoid filling memory.
 	}
