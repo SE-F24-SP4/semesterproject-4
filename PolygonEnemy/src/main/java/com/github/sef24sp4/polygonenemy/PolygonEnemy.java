@@ -35,8 +35,7 @@ public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAtt
 		this.damage = edges;
 		this.maxHealth = edges;
 		this.speed = 1.0 / Math.log(1.0 + (edges - 2));
-		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
-				getMetadata();
+		this.metadata = new MetadataBuilder(GameElementType.ENEMY).getMetadata();
 		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
 	}
 	/**
@@ -76,6 +75,21 @@ public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAtt
 	@Override
 	public double getAttackDamage() {
 		return this.damage;
+	}
+
+	@Override
+	public IGameMetadata getMetadata() {
+		return this.metadata;
+	}
+
+	@Override
+	public long getDifficulty() {
+		return Math.round(this.damage * this.maxHealth);
+	}
+
+	@Override
+	public int getTier() {
+		return this.edges - 2;
 	}
 
 	private List<Coordinates> calculatePolygonCoordinates(int polygonEdges, double radius) {
@@ -126,15 +140,5 @@ public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAtt
 				}
 			}
 		}
-	}
-
-	@Override
-	public IGameMetadata getMetadata() {
-		return this.metadata;
-	}
-
-	@Override
-	public long getDifficulty() {
-		return Math.round(this.damage * this.maxHealth);
 	}
 }
