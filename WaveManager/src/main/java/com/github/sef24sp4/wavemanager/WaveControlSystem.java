@@ -13,7 +13,7 @@ public class WaveControlSystem implements IEntityProcessingService, IGamePluginS
 	private long timeOfLastCheck;
 
 	// used in waiting.
-	int lastTimeCheck;
+	private int lastTimeCheck;
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
@@ -40,8 +40,8 @@ public class WaveControlSystem implements IEntityProcessingService, IGamePluginS
 					this.waveManager.setWaveStatus(WaveStatus.READY);
 					// remove label or hide text
 
-				} else if (currentTimeUntilNextWave != lastTimeCheck) {
-					lastTimeCheck = currentTimeUntilNextWave;
+				} else if (currentTimeUntilNextWave != this.lastTimeCheck) {
+					this.lastTimeCheck = currentTimeUntilNextWave;
 					// update label countdown
 					System.out.println(currentTimeUntilNextWave);
 				}
