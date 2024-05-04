@@ -1,6 +1,6 @@
 package com.github.sef24sp4.player;
 
-import com.github.sef24sp4.common.entities.ISpeedModifyingEntity;
+import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
@@ -10,6 +10,10 @@ import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
@@ -117,8 +121,12 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
-		if (otherEntity instanceof ISpeedModifyingEntity speedModifyingEntity) {
-			this.walkSpeed += speedModifyingEntity.getSpeedAmount();
+		if (otherEntity instanceof ISpeedItem speedItem) {
+			this.walkSpeed += speedItem.getSpeedAmount();
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				this.walkSpeed = 2;
+			}, speedItem.getUseDuration(), TimeUnit.NANOSECONDS);
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);

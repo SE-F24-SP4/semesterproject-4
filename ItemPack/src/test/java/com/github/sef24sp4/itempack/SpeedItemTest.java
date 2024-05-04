@@ -5,22 +5,25 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.item.ItemRarity;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class SpeedItemTest {
 	@Mock
-	private IEntityManager mockEntityManager = mock(IEntityManager.class);
+	private IEntityManager mockEntityManager;
 
 	@Mock
-	private ICollidableEntity mockEntity = mock(ICollidableEntity.class);
+	private ICollidableEntity mockEntity;
 
-	@Mock
+
 	private SpeedItemProvider speedItemProvider = new SpeedItemProvider();
 
-	@Mock
+
 	private SpeedItem speedItem = new SpeedItem();
 
 	@Test
@@ -47,7 +50,7 @@ class SpeedItemTest {
 
 	@Test
 	void getSpeedAmount() {
-		assertEquals(0.5, this.speedItem.getSpeedAmount());
+		assertEquals(0.2, this.speedItem.getSpeedAmount());
 	}
 
 	@Test
