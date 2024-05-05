@@ -34,13 +34,28 @@ public interface MapNode {
 	/**
 	 * Calculate safe {@link IVector coordinates} for {@link ICollidableEntity entity}
 	 * given that the entity needs to traverse in a linear fashion from a start {@link IVector position}.
+	 * <p/>
+	 * If the returned {@link Optional} has some {@link IVector coordinates}, then it is guaranteed that
+	 * {@link #containsCoordinates(IVector) currentNode.containsCoordinates(returnedCoordinates) == true}.
 	 *
 	 * @param entity       To calculate safe coordinates for entity.
 	 * @param fromPosition The position from where the entity needs to traverse from in a linear fashion.
 	 * @return An {@link Optional} with an {@link IVector} describing safe coordinates for the {@code entity} if such coordinates exists.
 	 * Otherwise, returns an {@link Optional#empty empty Optional}.
+	 * @throws NotAdjacentNodeException if the implementation requires the node to be adjacent to the current node.
+	 *                                  It is implementation specific when a node is considered adjacent.
+	 * @see #isNodeAdjacent(MapNode)
 	 */
-	public Optional<IVector> getSafeCoordinatesForEntity(final ICollidableEntity entity, final IVector fromPosition);
+	public Optional<IVector> getSafeCoordinatesForEntity(final ICollidableEntity entity, final IVector fromPosition) throws NotAdjacentNodeException;
+
+	/**
+	 * Check if {@link MapNode node} is considered to be adjacent to the current node by the implementation.
+	 *
+	 * @param node The {@link MapNode} to check for.
+	 * @return {@code true} if the {@code node} is considered to be adjacent to the current node.
+	 * {@code false} otherwise.
+	 */
+	public boolean isNodeAdjacent(final MapNode node);
 
 	/**
 	 * Calculates heuristics given a {@link MapNode target node}.
