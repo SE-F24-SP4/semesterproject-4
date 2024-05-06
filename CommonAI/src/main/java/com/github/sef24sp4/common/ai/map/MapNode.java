@@ -9,6 +9,22 @@ import java.util.Optional;
 public interface MapNode {
 
 	/**
+	 * Get the center {@link IVector coordinates} for the current node.
+	 *
+	 * @return The {@link IVector coordinates} describing the center of the current node.
+	 */
+	public IVector getCenterCoordinates();
+
+	/**
+	 * Check if {@link IVector coordinates} are contained within the current node.
+	 *
+	 * @param coordinates The {@link IVector coordinates} to check for.
+	 * @return {@code true} if {@link IVector coordinates} are within the current node.
+	 * {@code false} otherwise.
+	 */
+	public boolean containsCoordinates(final IVector coordinates);
+
+	/**
 	 * Get all neighboring nodes to this node.
 	 *
 	 * @return A {@link Collection} of all neighboring nodes {@link MapNode MapNodes}.
@@ -21,7 +37,7 @@ public interface MapNode {
 	 *
 	 * @param entity       To calculate safe coordinates for entity.
 	 * @param fromPosition The position from where the entity needs to traverse from in a linear fashion.
-	 * @return An {@link Optional Optional} with an {@link IVector} describing safe coordinates for the {@code entity} if such coordinates exists.
+	 * @return An {@link Optional} with an {@link IVector} describing safe coordinates for the {@code entity} if such coordinates exists.
 	 * Otherwise, returns an {@link Optional#empty empty Optional}.
 	 */
 	public Optional<IVector> getSafeCoordinatesForEntity(final ICollidableEntity entity, final IVector fromPosition);

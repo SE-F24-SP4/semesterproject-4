@@ -11,6 +11,7 @@ public interface Map {
 	 * @param coordinates The coordinates to check for.
 	 * @return An {@link Optional} containing the {@link MapNode} containing {@code coordinates} if such node exists.
 	 * Otherwise, an {@link Optional#empty()}.
+	 * @see MapNode#containsCoordinates(IVector)
 	 */
-	public Optional<MapNode> getNodeContaining(IVector coordinates);
+	public Optional<MapNode> getNodeContaining(final IVector coordinates);
 }
