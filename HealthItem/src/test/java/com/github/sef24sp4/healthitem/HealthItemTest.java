@@ -9,20 +9,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HealthItemTest {
+	private final HealthItem healthItem = new HealthItem();
+	private final HealthItemProvider healthItemProvider = new HealthItemProvider();
 	@Mock
 	private IEntityManager mockEntityManager;
-
 	@Mock
 	private ICollidableEntity mockEntity;
-
-	private final HealthItem healthItem = new HealthItem();
-
-	private final HealthItemProvider healthItemProvider = new HealthItemProvider();
 
 	@Test
 	void collide() {
@@ -37,13 +35,13 @@ class HealthItemTest {
 
 	@Test
 	void collideNotPlayer() {
-	    //Setup
-	    this.mockEntityManager.addEntity(this.healthItem);
+		//Setup
+		this.mockEntityManager.addEntity(this.healthItem);
 		when(this.mockEntity.getType()).thenReturn(GameElementType.ENEMY);
 		//Method call
 		this.healthItem.collide(this.mockEntityManager, this.mockEntity);
-	    //Verification
-	    verify(this.mockEntityManager, never()).removeEntity(this.healthItem);
+		//Verification
+		verify(this.mockEntityManager, never()).removeEntity(this.healthItem);
 	}
 
 	@Test
