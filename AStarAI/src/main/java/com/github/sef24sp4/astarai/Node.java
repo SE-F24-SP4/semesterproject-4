@@ -24,10 +24,6 @@ public class Node {
 
 	}
 
-	public double getHeuristicForNode(Node targetNode) {
-		return this.mapNode.calculateHeuristicsFor(targetNode.getMapNode());
-	}
-
 	public IVector getCoordinates() {
 		return this.coordinates;
 	}

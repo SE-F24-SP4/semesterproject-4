@@ -8,14 +8,10 @@ import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.*;
 
-public class EntityPathFinder implements IPathfindingProvider { //extend/imple?
+public class EntityPathFinder implements IPathfindingProvider {
 	private static final int MAX_CAPACITY = 10;
 
-
-	// TODO: Idea, use a queue instead, and if larger than x clear old caches.
 	private final SequencedMap<ICollidableEntity, IPathCaching> cachingMap = new LinkedHashMap<>();
-
-
 
 
 	@Override
@@ -24,15 +20,13 @@ public class EntityPathFinder implements IPathfindingProvider { //extend/imple?
 			this.cachingMap.pollFirstEntry(); // Clear oldest cache
 		}
 
-
-
 		// if cachingMap does not contain entity.
-		if(!cachingMap.containsKey(entity)){
+		if (!this.cachingMap.containsKey(entity)) {
 			this.cachingMap.put(entity, new DumbCache(entity));
 		}
 
-		return this.cachingMap.get(entity).getNextCoordinates(entity,targetCoordinate);
+		return this.cachingMap.get(entity).getNextCoordinates(entity, targetCoordinate);
 
-		// TODO: sometimes invalidate all caches to avoid filling memory.
+		// sometimes invalidate all caches to avoid filling memory?
 	}
 }
