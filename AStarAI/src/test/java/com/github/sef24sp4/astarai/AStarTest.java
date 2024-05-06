@@ -8,6 +8,24 @@ public class AStarTest {
 	void aStarNavigateTest() {
 
 	}
+	@Test
+	void trackPathTest() {
+
+
+		final Node startNode = null;
+		final Node goalNode = null;
+		final Node middleNode = null;
+
+		AStar aStar = new AStar(startNode,goalNode);
+
+		middleNode.setParent(goalNode);
+		goalNode.setParent(middleNode);
+
+		
+
+	}
+
+
 
 }
 
