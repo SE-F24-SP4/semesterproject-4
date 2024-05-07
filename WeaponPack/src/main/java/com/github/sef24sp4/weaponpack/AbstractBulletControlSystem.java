@@ -1,11 +1,9 @@
 package com.github.sef24sp4.weaponpack;
 
-import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.projectile.ProjectileSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-import com.github.sef24sp4.weaponpack.shotgun.ShotGunBullet;
 
 public abstract class AbstractBulletControlSystem implements IEntityProcessingService, ProjectileSPI {
 	@Override

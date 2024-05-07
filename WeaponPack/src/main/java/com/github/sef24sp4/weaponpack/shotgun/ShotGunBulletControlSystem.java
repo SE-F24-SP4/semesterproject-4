@@ -1,6 +1,5 @@
 package com.github.sef24sp4.weaponpack.shotgun;
 
-import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import com.github.sef24sp4.weaponpack.AbstractBulletControlSystem;

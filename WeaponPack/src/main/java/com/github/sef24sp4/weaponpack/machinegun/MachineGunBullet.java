@@ -1,7 +1,5 @@
 package com.github.sef24sp4.weaponpack.machinegun;
 
-import com.github.sef24sp4.common.entities.IAttackingEntity;
-import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.weaponpack.AbstractProjectile;

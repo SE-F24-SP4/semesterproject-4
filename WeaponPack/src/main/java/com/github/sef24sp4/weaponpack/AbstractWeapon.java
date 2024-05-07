@@ -7,7 +7,7 @@ public abstract class AbstractWeapon implements WeaponSPI {
 	private int ammoCount;
 	private final long maxCoolDownTicks;
 
-	public AbstractWeapon(final long maxCoolDownTicks, final int ammoCount){
+	public AbstractWeapon(final long maxCoolDownTicks, final int ammoCount) {
 		this.maxCoolDownTicks = maxCoolDownTicks;
 		this.ammoCount = ammoCount;
 		/*
@@ -28,20 +28,20 @@ public abstract class AbstractWeapon implements WeaponSPI {
 		return remainingCoolDownTicks;
 	}
 
-	protected long getMaxCoolDownTicks(){
+	protected long getMaxCoolDownTicks() {
 		return this.maxCoolDownTicks;
 	}
 
-	protected long getTimeOfLastShot(){
+	protected long getTimeOfLastShot() {
 		return this.timeOfLastShot;
 	}
 
-	protected long resetTimeOfLastShot(){
+	protected long resetTimeOfLastShot() {
 		this.timeOfLastShot = System.nanoTime();
 		return this.timeOfLastShot;
 	}
 
-	protected boolean prepareShootIfPossible(){
+	protected boolean prepareShootIfPossible() {
 		if (this.ammoCount <= 0 || this.getRemainingCoolDownTicks() > 0) return false;
 		this.resetTimeOfLastShot();
 		this.ammoCount--;
