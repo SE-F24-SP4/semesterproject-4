@@ -88,4 +88,22 @@ class IVectorTest {
 		assertEquals(2, vectorTo.getX());
 		assertEquals(-1, vectorTo.getY());
 	}
+
+	@Test
+	void getOrthogonalVector() {
+		final IVector orthogonalVector = this.vector.getOrthogonalVector();
+		assertEquals(-4, orthogonalVector.getX());
+		assertEquals(3, orthogonalVector.getY());
+	}
+
+	@Test
+	void getNewVectorWithAngle() {
+		final double angle = 3;
+		final IVector newVector = this.vector.getNewVectorWithAngle(angle);
+
+		assertEquals(-3.5344575220408054, newVector.getX());
+		assertEquals(-3.53660996222218, newVector.getY());
+
+		assertEquals(angle, newVector.getAngleBetween(this.vector));
+	}
 }
