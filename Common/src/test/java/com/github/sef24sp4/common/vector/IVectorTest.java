@@ -81,4 +81,11 @@ class IVectorTest {
 		assertEquals(-3, negative.getX());
 		assertEquals(-4, negative.getY());
 	}
+
+	@Test
+	void getVectorTo() {
+		final IVector vectorTo = this.vector.getVectorTo(this.otherVector);
+		assertEquals(2, vectorTo.getX());
+		assertEquals(-1, vectorTo.getY());
+	}
 }

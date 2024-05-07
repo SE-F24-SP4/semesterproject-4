@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Check CI can pass" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Clean compile" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings">
         <MavenGeneralSettings>
@@ -30,7 +30,8 @@
           </option>
           <option name="goals">
             <list>
-              <option value="checkstyle:check" />
+              <option value="clean" />
+              <option value="compile" />
             </list>
           </option>
           <option name="multimoduleDir" />
@@ -46,8 +47,6 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Run Unit Tests" run_configuration_type="MavenRunConfiguration" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>

@@ -15,11 +15,11 @@ class BasicVectorTest {
 	}
 
 	@Test
-	void from() {
+	void valuesOf() {
 		final BasicVector actual = new BasicVector(42, 12);
 		final IVector testVector = new TestVector();
 		assertNotEquals(actual, testVector);
-		assertEquals(actual, BasicVector.from(testVector));
+		assertEquals(actual, BasicVector.valuesOf(testVector));
 	}
 
 	@Test

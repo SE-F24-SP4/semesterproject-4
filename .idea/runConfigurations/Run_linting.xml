@@ -1,7 +1,26 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run linting" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
-      <option name="myGeneralSettings" />
+      <option name="myGeneralSettings">
+        <MavenGeneralSettings>
+          <option name="alwaysUpdateSnapshots" value="false" />
+          <option name="checksumPolicy" value="NOT_SET" />
+          <option name="customMavenHome" />
+          <option name="emulateTerminal" value="false" />
+          <option name="failureBehavior" value="NOT_SET" />
+          <option name="localRepository" value="" />
+          <option name="mavenHome" value="Bundled (Maven 3)" />
+          <option name="mavenHomeTypeForPersistence" value="BUNDLED3" />
+          <option name="nonRecursive" value="false" />
+          <option name="outputLevel" value="INFO" />
+          <option name="printErrorStackTraces" value="false" />
+          <option name="showDialogWithAdvancedSettings" value="false" />
+          <option name="threads" value="2C" />
+          <option name="useMavenConfig" value="true" />
+          <option name="userSettingsFile" value="" />
+          <option name="workOffline" value="false" />
+        </MavenGeneralSettings>
+      </option>
       <option name="myRunnerSettings" />
       <option name="myRunnerParameters">
         <MavenRunnerParameters>
@@ -12,8 +31,6 @@
           <option name="goals">
             <list>
               <option value="checkstyle:checkstyle" />
-              <option value="-T" />
-              <option value="2C" />
             </list>
           </option>
           <option name="multimoduleDir" />

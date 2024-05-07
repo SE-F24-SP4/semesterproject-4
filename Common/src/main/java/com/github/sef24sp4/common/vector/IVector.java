@@ -77,4 +77,16 @@ public interface IVector {
 	public default BasicVector getNegative() {
 		return new BasicVector(-this.getX(), -this.getY());
 	}
+
+	/**
+	 * Get a vector between current otherVector and the passed in otherVector.
+	 *
+	 * @param otherVector The other otherVector. Maybe any type of vector.
+	 * @return A vector between the two otherVector.
+	 */
+	public default BasicVector getVectorTo(final IVector otherVector) {
+		final double deltaX = otherVector.getX() - this.getX();
+		final double deltaY = otherVector.getY() - this.getY();
+		return new BasicVector(deltaX, deltaY);
+	}
 }

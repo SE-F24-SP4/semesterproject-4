@@ -92,6 +92,7 @@
 		<module name="RequireThis">
 			<property name="validateOnlyOverlapping" value="false"/>
 		</module>
+		<module name="MissingOverride"/>
 
 		<!-- Checks for Javadoc comments.                     -->
 		<!-- See https://checkstyle.org/checks/javadoc/index.html -->
