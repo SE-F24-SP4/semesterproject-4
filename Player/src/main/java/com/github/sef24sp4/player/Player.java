@@ -12,16 +12,12 @@ import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
 	private double health = this.maxHealth;
-	private double walkSpeed = 2;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
+	private SpeedControl speedControl = new SpeedControl(2);
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
@@ -41,36 +37,6 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 */
 	public static Player getPlayer() {
 		return PLAYER;
-	}
-
-	/**
-	 * The amount the entity should move
-	 * in the X and Y coordinates per game tick.
-	 *
-	 * @return The walk speed
-	 */
-	public double getWalkSpeed() {
-		return this.walkSpeed;
-	}
-
-	/**
-	 * Sets the players movement speed to "speed".
-	 *
-	 * @param speed The amount the player should move per game tick. Needs to be positive.
-	 */
-	public void setWalkSpeed(double speed) {
-		if (speed < 0) throw new IllegalArgumentException("Speed has to be positive");
-		this.walkSpeed = speed;
-	}
-
-	/**
-	 * When walking diagonally, the X and Y coordinates
-	 * should change by the diagonal walk speed instead of the normal speed.
-	 *
-	 * @return The diagonal walk speed
-	 */
-	public double getDiagonalWalkSpeed() {
-		return this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
 	}
 
 	@Override
@@ -102,12 +68,13 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @param entityManager The games entityManager.
 	 */
 	private void takeDamage(double damage, IEntityManager entityManager) {
-			if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
-			this.health -= damage;
-			if (this.health <= 0) {
-				this.kill(entityManager);
-			}
+		if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
+		this.health -= damage;
+		if (this.health <= 0) {
+			this.kill(entityManager);
+		}
 	}
+
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
@@ -119,17 +86,18 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		if (this.health >= this.maxHealth) this.health = this.maxHealth;
 	}
 
+	public SpeedControl getSpeedControl() {
+		return this.speedControl;
+	}
+
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
 		if (otherEntity instanceof IHealingEntity healingEntity) {
 			this.heal(healingEntity.getHealingAmount());
+		}
 		if (otherEntity instanceof ISpeedItem speedItem) {
-			this.walkSpeed += speedItem.getSpeedAmount();
-			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-			executorService.schedule(() -> {
-				this.walkSpeed = 2;
-			}, speedItem.getUseDuration(), TimeUnit.NANOSECONDS);
+			this.speedControl.setSpeed(speedItem.getSpeedAmount(), speedItem.getUseDuration());
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
