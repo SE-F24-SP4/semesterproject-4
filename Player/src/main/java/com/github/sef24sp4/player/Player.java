@@ -17,7 +17,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	private double health = this.maxHealth;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
-	private SpeedControl speedControl = new SpeedControl(2);
+	private SpeedControl speedControl = new SpeedControl();
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
@@ -37,6 +37,26 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 */
 	public static Player getPlayer() {
 		return PLAYER;
+	}
+
+	/**
+	 * The amount the entity should move
+	 * in the X and Y coordinates per game tick.
+	 *
+	 * @return The walk speed
+	 */
+	public double getWalkSpeed() {
+		return this.speedControl.getSpeed();
+	}
+
+	/**
+	 * When walking diagonally, the X and Y coordinates
+	 * should change by the diagonal walk speed instead of the normal speed.
+	 *
+	 * @return The diagonal walk speed
+	 */
+	public double getDiagonalWalkSpeed() {
+		return this.speedControl.getDiagonalSpeed();
 	}
 
 	@Override
@@ -86,10 +106,6 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		if (this.health >= this.maxHealth) this.health = this.maxHealth;
 	}
 
-	public SpeedControl getSpeedControl() {
-		return this.speedControl;
-	}
-
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
@@ -97,7 +113,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 			this.heal(healingEntity.getHealingAmount());
 		}
 		if (otherEntity instanceof ISpeedItem speedItem) {
-			this.speedControl.setSpeed(speedItem.getSpeedAmount(), speedItem.getUseDuration());
+			this.speedControl.setSpeedBuff(speedItem);
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);

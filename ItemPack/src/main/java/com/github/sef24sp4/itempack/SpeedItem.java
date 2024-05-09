@@ -11,7 +11,7 @@ import com.github.sef24sp4.common.vector.Coordinates;
 public class SpeedItem extends CommonItem implements ISpeedItem {
 	private final ItemRarity rarity = ItemRarity.UNCOMMON;
 	private final double speed = 0.2;
-	private final long itemDuration = 1_000_000_000L * 10;
+	private final long itemDuration = 1000 * 10;
 
 	public SpeedItem() {
 		this.setRotation(3.14159265);

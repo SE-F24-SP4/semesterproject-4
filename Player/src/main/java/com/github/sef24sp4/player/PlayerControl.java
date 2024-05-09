@@ -9,14 +9,13 @@ import com.github.sef24sp4.common.services.IEntityProcessingService;
 import java.util.ServiceLoader;
 
 public class PlayerControl implements IEntityProcessingService {
+	private final Player player = Player.getPlayer();
+
 	private final ServiceLoader<WeaponSPI> weaponProviders = ServiceLoader.load(WeaponSPI.class);
-	private Player player = Player.getPlayer();
-	private SpeedControl speedControl = this.player.getSpeedControl();
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
-		this.speedControl.updateSpeed(System.nanoTime());
-		double speed = this.speedControl.getSpeed();
-		double diagonalSpeed = this.speedControl.getDiagonalSpeed();
+		double speed = this.player.getWalkSpeed();
+		double diagonalSpeed = this.player.getDiagonalWalkSpeed();
 		IGameInput keys = gameSettings.getKeys();
 		double playerX = this.player.getX();
 		double playerY = this.player.getY();

@@ -16,9 +16,9 @@ public interface ISpeedItem {
  	* Retrieves the duration for which this item's speed boost effect lasts.
 	* <p>
 	* This method is typically invoked after an entity has interacted with this item, to determine for how long the speed boost effect should be applied.
-	* The returned value represents the duration in nanoseconds.
+	* The returned value represents the duration in milliseconds.
 	*
-	* @return The duration of the speed boost effect in nanoseconds.
+	* @return The duration of the speed boost effect in milliseconds.
 	*/
 	public long getUseDuration();
 }
