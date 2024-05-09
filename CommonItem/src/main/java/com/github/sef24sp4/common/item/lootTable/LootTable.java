@@ -4,6 +4,7 @@ import com.github.sef24sp4.common.item.CommonItem;
 import com.github.sef24sp4.common.item.ItemRarity;
 import com.github.sef24sp4.common.item.ItemSPI;
 
+import javax.management.ListenerNotFoundException;
 import java.util.*;
 
 public class LootTable {
@@ -22,7 +23,7 @@ public class LootTable {
 		this.itemChances = itemChances;
 	}
 
-	private Optional<ItemRarity> chooseRarity() {
+	Optional<ItemRarity> chooseRarity() {
 		double random = Math.random();
 		double sum = 0;
 		for (Map.Entry<ItemRarity, Double> entry : itemChances.entrySet()) {
@@ -35,19 +36,20 @@ public class LootTable {
 		return Optional.empty();
 	}
 
-	public Optional<CommonItem> getItem() {
+	public Optional<CommonItem> getItem() throws Exception {
 		Optional<ItemRarity> chosenRarity = this.chooseRarity();
 		if (chosenRarity.isPresent()) {
 			List<ItemSPI> itemSPIList = new ArrayList<>();
 			itemProviders.forEach(itemSPI -> {
+				System.out.println("Found ItemSPI with rarity: " + itemSPI.getRarity());
 						if (itemSPI.getRarity() == chosenRarity.get()) {
 							itemSPIList.add(itemSPI);
 						}
 					}
 			);
+			if (itemSPIList.isEmpty()) throw new Exception("ItemSPIList is empty");
 			Random random = new Random();
 			int randomItem = random.nextInt(itemSPIList.size());
-
 			return Optional.ofNullable(itemSPIList.get(randomItem).getItem());
 		}
 		return Optional.empty();
