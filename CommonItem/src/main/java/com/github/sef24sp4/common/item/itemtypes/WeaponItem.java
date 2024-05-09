@@ -1,5 +1,6 @@
-package com.github.sef24sp4.common.item;
+package com.github.sef24sp4.common.item.itemtypes;
 
+import com.github.sef24sp4.common.item.CommonItem;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 
 public abstract class WeaponItem extends CommonItem {
