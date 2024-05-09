@@ -94,6 +94,13 @@
 		</module>
 		<module name="MissingOverride"/>
 
+		<module name="Regexp">
+			<!-- . matches any character, so we need to escape it and use \. to match dots. -->
+			<property name="format" value="System\.(out|err)\.print"/>
+			<property name="illegalPattern" value="true"/>
+			<property name="message" value="print statement"/>
+		</module>
+
 		<!-- Checks for Javadoc comments.                     -->
 		<!-- See https://checkstyle.org/checks/javadoc/index.html -->
 		<module name="InvalidJavadocPosition"/>

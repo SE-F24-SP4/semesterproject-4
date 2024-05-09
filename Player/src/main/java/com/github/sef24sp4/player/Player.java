@@ -1,5 +1,6 @@
 package com.github.sef24sp4.player;
 
+import com.github.sef24sp4.common.entities.IHealingEntity;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
@@ -116,6 +117,9 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
+		if (otherEntity instanceof IHealingEntity healingEntity) {
+			this.heal(healingEntity.getHealingAmount());
+		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
 		}
