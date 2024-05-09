@@ -15,13 +15,14 @@ import java.lang.reflect.InvocationTargetException;
 public class PlayerTest {
 	private Player player;
 	private IEntityManager mockEntityManager;
+	private SpeedControl speedControl;
 
 	@BeforeEach
 	void setUp() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
 		final Constructor<Player> constructor = Player.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		this.player = constructor.newInstance();
-
+		this.speedControl = new SpeedControl();
 		this.mockEntityManager = mock(IEntityManager.class);
 	}
 
@@ -37,13 +38,12 @@ public class PlayerTest {
 	void getMaxHealth() {
 		assertEquals(10, this.player.getMaxHealth());
 	}
+
 	@Test
-	void setWalkSpeed() {
-		this.player.setWalkSpeed(100);
-		assertEquals(100, this.player.getWalkSpeed());
-		this.player.setWalkSpeed(10);
-		assertEquals(10, this.player.getWalkSpeed());
+	void getWalkSpeed() {
+		assertEquals(this.speedControl.getDefaultSpeed(), this.player.getWalkSpeed());
 	}
+
 	@Test
 	void takeDamage() {
 		assertEquals(this.player.getMaxHealth(), this.player.getHealth());

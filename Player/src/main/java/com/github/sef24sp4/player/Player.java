@@ -97,11 +97,11 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @param entityManager The games entityManager.
 	 */
 	void takeDamage(double damage, IEntityManager entityManager) {
-			if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
-			this.health -= damage;
-			if (this.health <= 0) {
-				this.kill(entityManager);
-			}
+		if (damage < 0) throw new IllegalArgumentException("Damage has to be positive");
+		this.health -= damage;
+		if (this.health <= 0) {
+			this.kill(entityManager);
+		}
 	}
 	/**
 	 * Takes the entity's health and subtracts the damage.
