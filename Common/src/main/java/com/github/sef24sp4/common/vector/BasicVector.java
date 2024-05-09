@@ -101,4 +101,9 @@ public class BasicVector implements IVector, Cloneable {
 			throw new AssertionError("Clone operation failed for Class: " + this.getClass().getName());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return String.format("(%.2f, %.2f)", this.getX(), this.getY());
+	}
 }
