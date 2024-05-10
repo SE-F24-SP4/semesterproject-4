@@ -1,4 +1,4 @@
-package com.github.sef24sp4.common.item.lootTable;
+package com.github.sef24sp4.common.item.loottable;
 
 import com.github.sef24sp4.common.item.CommonItem;
 import com.github.sef24sp4.common.item.ItemRarity;
