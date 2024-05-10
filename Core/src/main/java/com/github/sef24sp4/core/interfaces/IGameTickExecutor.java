@@ -12,7 +12,7 @@ public interface IGameTickExecutor {
 	 *
 	 * @param gameTick The gameTick to be executed.
 	 */
-	public void setGameTick(IGameTick gameTick);
+	public void setGameTick(final IGameTick gameTick);
 
 
 	/**

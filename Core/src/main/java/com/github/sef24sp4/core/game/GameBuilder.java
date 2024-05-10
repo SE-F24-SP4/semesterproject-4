@@ -11,17 +11,17 @@ public class GameBuilder {
 
 	private IGameTickExecutor gameTickExecutor;
 
-	public GameBuilder setGameSettings(GameSettings gameSettings) {
+	public GameBuilder setGameSettings(final GameSettings gameSettings) {
 		this.gameSettings = gameSettings;
 		return this;
 	}
 
-	public GameBuilder setEntityEntityToGraphicsMapper(EntityToGraphicsMapper<IEntity, ?> entityEntityToGraphicsMapper) {
+	public GameBuilder setEntityEntityToGraphicsMapper(final EntityToGraphicsMapper<IEntity, ?> entityEntityToGraphicsMapper) {
 		this.entityEntityToGraphicsMapper = entityEntityToGraphicsMapper;
 		return this;
 	}
 
-	public GameBuilder setGameTickExecutor(IGameTickExecutor gameTickExecutor) {
+	public GameBuilder setGameTickExecutor(final IGameTickExecutor gameTickExecutor) {
 		this.gameTickExecutor = gameTickExecutor;
 		return this;
 	}

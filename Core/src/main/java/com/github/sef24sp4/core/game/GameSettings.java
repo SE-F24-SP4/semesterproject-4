@@ -7,7 +7,7 @@ public class GameSettings implements IGameSettings {
 	private int displayWidth;
 	private int displayHeight;
 
-	public GameSettings(GameInput gameInput) {
+	public GameSettings(final GameInput gameInput) {
 		this.gameInput = gameInput;
 	}
 
@@ -21,7 +21,7 @@ public class GameSettings implements IGameSettings {
 		return this.displayWidth;
 	}
 
-	public void setDisplayWidth(int displayWidth) {
+	public void setDisplayWidth(final int displayWidth) {
 		this.displayWidth = displayWidth;
 	}
 
@@ -30,7 +30,7 @@ public class GameSettings implements IGameSettings {
 		return this.displayHeight;
 	}
 
-	public void setDisplayHeight(int displayHeight) {
+	public void setDisplayHeight(final int displayHeight) {
 		this.displayHeight = displayHeight;
 	}
 }

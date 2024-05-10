@@ -13,14 +13,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public final class GameScene {
 	private GameScene() {
 	}
 
-	public static void load(Stage stage) {
-		Button button = new Button("Back to start");
-		Pane pane = new Pane(button);
+	public static void load(final Stage stage) {
+		final Button button = new Button("Back to start");
+		final Pane pane = new Pane(button);
 		final IGameProcessor gameProcessor = GameScene.getGameProcessor(pane);
 
 		button.addEventHandler(ActionEvent.ANY, event -> {
@@ -28,20 +29,20 @@ public final class GameScene {
 				gameProcessor.end();
 				StartMenu.load(stage);
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new UncheckedIOException(e);
 			}
 		});
 
-		Scene scene = new Scene(pane, stage.getScene().getWidth(), stage.getScene().getHeight());
+		final Scene scene = new Scene(pane, stage.getScene().getWidth(), stage.getScene().getHeight());
 		stage.setScene(scene);
 		gameProcessor.begin();
 		stage.show();
 	}
 
-	public static IGameProcessor getGameProcessor(Pane pane) {
-		GameSettings gameSettings = new GameSettings(JavaFxInputInitializer.init(pane));
-		gameSettings.setDisplayHeight((int) Math.round(pane.getHeight()));
-		gameSettings.setDisplayWidth((int) Math.round(pane.getWidth()));
+	public static IGameProcessor getGameProcessor(final Pane pane) {
+		final GameSettings gameSettings = new GameSettings(JavaFxInputInitializer.init(pane));
+		gameSettings.setDisplayHeight(Math.toIntExact(Math.round(pane.getHeight())));
+		gameSettings.setDisplayWidth(Math.toIntExact(Math.round(pane.getWidth())));
 
 		pane.widthProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayWidth(newValue.intValue())));
 		pane.heightProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayHeight(newValue.intValue())));
