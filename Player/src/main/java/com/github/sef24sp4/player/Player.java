@@ -1,6 +1,7 @@
 package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.entities.IHealingEntity;
+import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
@@ -14,9 +15,9 @@ import com.github.sef24sp4.common.projectile.CommonProjectile;
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
 	private double health = this.maxHealth;
-	private double walkSpeed = 2;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
+	private SpeedControl speedControl = new SpeedControl(2);
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
@@ -45,17 +46,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @return The walk speed
 	 */
 	public double getWalkSpeed() {
-		return this.walkSpeed;
-	}
-
-	/**
-	 * Sets the players movement speed to "speed".
-	 *
-	 * @param speed The amount the player should move per game tick. Needs to be positive.
-	 */
-	public void setWalkSpeed(double speed) {
-		if (speed < 0) throw new IllegalArgumentException("Speed has to be positive");
-		this.walkSpeed = speed;
+		return this.speedControl.getSpeed();
 	}
 
 	/**
@@ -65,7 +56,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @return The diagonal walk speed
 	 */
 	public double getDiagonalWalkSpeed() {
-		return this.walkSpeed * (this.walkSpeed / (Math.sqrt(2 * (this.walkSpeed * this.walkSpeed))));
+		return this.speedControl.getDiagonalSpeed();
 	}
 
 	@Override
@@ -103,6 +94,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 			this.kill(entityManager);
 		}
 	}
+
 	/**
 	 * Takes the entity's health and subtracts the damage.
 	 *
@@ -119,6 +111,9 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
 		if (otherEntity instanceof IHealingEntity healingEntity) {
 			this.heal(healingEntity.getHealingAmount());
+		}
+		if (otherEntity instanceof ISpeedItem speedItem) {
+			this.speedControl.setSpeedBuff(speedItem);
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
