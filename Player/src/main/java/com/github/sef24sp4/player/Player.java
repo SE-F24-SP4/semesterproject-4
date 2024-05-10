@@ -17,7 +17,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	private double health = this.maxHealth;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
-	private SpeedControl speedControl = new SpeedControl();
+	private SpeedControl speedControl = new SpeedControl(2);
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
