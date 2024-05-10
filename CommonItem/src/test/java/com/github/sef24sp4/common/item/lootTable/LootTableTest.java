@@ -18,10 +18,15 @@ class LootTableTest {
 	private LootTable lootTable;
 	private Map<ItemRarity, Double> rarityChances;
 
+	private ItemSPI mockItemSPI;
+	private CommonItem commonItem;
+
 	@BeforeEach
 	void setUp() {
 		this.rarityChances = new HashMap<>();
 		this.lootTable = new LootTable(this.rarityChances);
+		this.mockItemSPI = mock(ItemSPI.class);
+		this.commonItem = mock(CommonItem.class);
 	}
 
 	@Test
@@ -43,16 +48,48 @@ class LootTableTest {
 	}
 
 	@Test
+	void chooseRarity() {
+		Map<ItemRarity, Double> chances = new HashMap<>();
+		chances.put(ItemRarity.COMMON, 1.0);
+		this.lootTable = new LootTable(chances);
+		assertEquals(this.lootTable.chooseRarity(), Optional.of(ItemRarity.COMMON));
+	}
+	@Test
+	void testGetEmptyItem() throws Exception {
+		//Create LootTable with ItemSPI
+		List<ItemSPI> itemProviders = new ArrayList<>();
+		itemProviders.add(this.mockItemSPI);
+		Map<ItemRarity, Double> chances = new HashMap<>();
+		chances.put(ItemRarity.COMMON, 0.0);
+		LootTable lootTableWithSPI = new LootTable(chances, itemProviders);
+
+		// Call getItem() and assert the result
+		Optional<CommonItem> item = lootTableWithSPI.getItem();
+		assertTrue(item.isEmpty());
+	}
+
+	@Test
+	void testSPIListEmpty() throws Exception {
+		Exception emptyItemSPIList = new Exception("ItemSPIList is empty");
+		//Create LootTable with ItemSPI
+		List<ItemSPI> itemProviders = new ArrayList<>();
+		Map<ItemRarity, Double> chances = new HashMap<>();
+		chances.put(ItemRarity.COMMON, 1.0);
+		LootTable lootTableWithoutSPI = new LootTable(chances, itemProviders);
+
+		// Call getItem() and assert the result
+		assertThrows(Exception.class, lootTableWithoutSPI::getItem);
+	}
+
+	@Test
 	void testGetItem() throws Exception {
 		//Mock
-		ItemSPI mockItemSPI = mock(ItemSPI.class);
-		when(mockItemSPI.getRarity()).thenReturn(ItemRarity.COMMON);
-		CommonItem commonItem = mock(CommonItem.class);
-		when(mockItemSPI.getItem()).thenReturn(commonItem);
+		when(this.mockItemSPI.getRarity()).thenReturn(ItemRarity.COMMON);
+		when(this.mockItemSPI.getItem()).thenReturn(this.commonItem);
 
 		//Create LootTable with ItemSPI
 		List<ItemSPI> itemProviders = new ArrayList<>();
-		itemProviders.add(mockItemSPI);
+		itemProviders.add(this.mockItemSPI);
 		Map<ItemRarity, Double> chances = new HashMap<>();
 		chances.put(ItemRarity.COMMON, 1.0);
 		LootTable lootTableWithSPI = new LootTable(chances, itemProviders);
@@ -60,6 +97,6 @@ class LootTableTest {
 		// Call getItem() and assert the result
 		Optional<CommonItem> item = lootTableWithSPI.getItem();
 		assertTrue(item.isPresent());
-		assertSame(commonItem, item.get());
+		assertSame(this.commonItem, item.get());
 	}
 }
