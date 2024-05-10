@@ -22,7 +22,7 @@ public class PlayerTest {
 		final Constructor<Player> constructor = Player.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		this.player = constructor.newInstance();
-		this.speedControl = new SpeedControl();
+		this.speedControl = new SpeedControl(2);
 		this.mockEntityManager = mock(IEntityManager.class);
 	}
 
@@ -82,28 +82,28 @@ public class PlayerTest {
 	}
 	@Test
 	void collideWithAttackingEntity() {
-    //Setup
-    ICollidableEntity mockCollidableEntity = mock(ICollidableEntity.class, withSettings().extraInterfaces(IAttackingEntity.class));
-    IAttackingEntity mockAttackingEntity = (IAttackingEntity) mockCollidableEntity;
-    when(mockAttackingEntity.getAttackDamage()).thenReturn(10.0);
+		//Setup
+		ICollidableEntity mockCollidableEntity = mock(ICollidableEntity.class, withSettings().extraInterfaces(IAttackingEntity.class));
+		IAttackingEntity mockAttackingEntity = (IAttackingEntity) mockCollidableEntity;
+		when(mockAttackingEntity.getAttackDamage()).thenReturn(10.0);
 
-    //Method call
-    this.player.collide(this.mockEntityManager, mockCollidableEntity);
+		//Method call
+		this.player.collide(this.mockEntityManager, mockCollidableEntity);
 
-    //Verify
-    verify(mockAttackingEntity).getAttackDamage();
+		//Verify
+		verify(mockAttackingEntity).getAttackDamage();
 	}
 	@Test
 	void collideWithOwnBullet() {
-    //Setup
-	CommonProjectile mockCommonProjectile = mock(CommonProjectile.class, withSettings().extraInterfaces(ICollidableEntity.class));
-    when(mockCommonProjectile.getShooter()).thenReturn(this.player);
+		//Setup
+		CommonProjectile mockCommonProjectile = mock(CommonProjectile.class, withSettings().extraInterfaces(ICollidableEntity.class));
+		when(mockCommonProjectile.getShooter()).thenReturn(this.player);
 
-    //Method call
-    this.player.collide(this.mockEntityManager, mockCommonProjectile);
+		//Method call
+		this.player.collide(this.mockEntityManager, mockCommonProjectile);
 
-    //Verify
-	verify(mockCommonProjectile).getShooter();
-    verifyNoMoreInteractions(this.mockEntityManager, mockCommonProjectile);
+		//Verify
+		verify(mockCommonProjectile).getShooter();
+		verifyNoMoreInteractions(this.mockEntityManager, mockCommonProjectile);
 	}
 }

@@ -12,7 +12,7 @@ class SpeedControlTest {
 
 	@BeforeEach
 	void setUp() {
-		this.speedControl = new SpeedControl();
+		this.speedControl = new SpeedControl(2);
 
 		// Initialize a mock ISpeedItem
 		this.speedItem = new ISpeedItem() {
