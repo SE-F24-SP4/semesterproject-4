@@ -3,11 +3,13 @@ package com.github.sef24sp4.player;
 import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 
 public class SpeedControl {
-	private final double defaultSpeed = 2;
-	private double speed = this.defaultSpeed;
+	private final double defaultSpeed;
+	private double speed;
+
 	private long expireTime;
 
-	SpeedControl(double defaultSpeed) {
+	SpeedControl(final double defaultSpeed) {
+		this.defaultSpeed = defaultSpeed;
 		this.speed = defaultSpeed;
 	}
 
