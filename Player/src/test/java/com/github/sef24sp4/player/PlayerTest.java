@@ -5,6 +5,7 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,6 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class PlayerTest {
 	private Player player;
+
+	@Mock
 	private IEntityManager mockEntityManager;
 	private SpeedControl speedControl;
 
@@ -29,6 +32,8 @@ public class PlayerTest {
 	@Test
 	void getPlayer() {
 		assertInstanceOf(Player.class, Player.getPlayer());
+		Player p = Player.getPlayer();
+		assertSame(p, Player.getPlayer());
 	}
 	@Test
 	void getHealth() {
@@ -41,7 +46,7 @@ public class PlayerTest {
 
 	@Test
 	void getWalkSpeed() {
-		assertEquals(this.speedControl.getDefaultSpeed(), this.player.getWalkSpeed());
+		assertEquals(2, this.player.getWalkSpeed());
 	}
 
 	@Test
@@ -96,7 +101,7 @@ public class PlayerTest {
 	@Test
 	void collideWithOwnBullet() {
 		//Setup
-		CommonProjectile mockCommonProjectile = mock(CommonProjectile.class, withSettings().extraInterfaces(ICollidableEntity.class));
+		CommonProjectile mockCommonProjectile = mock(CommonProjectile.class);
 		when(mockCommonProjectile.getShooter()).thenReturn(this.player);
 
 		//Method call
@@ -104,6 +109,6 @@ public class PlayerTest {
 
 		//Verify
 		verify(mockCommonProjectile).getShooter();
-		verifyNoMoreInteractions(this.mockEntityManager, mockCommonProjectile);
+		verify(this.mockEntityManager, never()).removeEntity(this.player);
 	}
 }

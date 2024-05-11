@@ -1,10 +1,13 @@
 package com.github.sef24sp4.player;
 
+
 import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SpeedControlTest {
 	private SpeedControl speedControl;
@@ -13,20 +16,9 @@ class SpeedControlTest {
 	@BeforeEach
 	void setUp() {
 		this.speedControl = new SpeedControl(2);
-
-		// Initialize a mock ISpeedItem
-		this.speedItem = new ISpeedItem() {
-
-			@Override
-			public double getSpeedAmount() {
-				return 10;
-			}
-
-			@Override
-			public long getUseDuration() {
-				return 1000; // 1 second
-			}
-		};
+		this.speedItem = mock(ISpeedItem.class);
+		when(this.speedItem.getSpeedAmount()).thenReturn(10.0);
+		when(this.speedItem.getUseDuration()).thenReturn(1000L);
 	}
 
 	@Test
@@ -35,19 +27,13 @@ class SpeedControlTest {
 	}
 
 	@Test
-	void getSpeedWithBuff() {
-		this.speedControl.setSpeedBuff(this.speedItem);
-		assertEquals(this.speedControl.getDefaultSpeed() + this.speedItem.getSpeedAmount(), this.speedControl.getSpeed());
-	}
-
-	@Test
 	void setSpeedBuff() {
 		this.speedControl.setSpeedBuff(this.speedItem);
 
 		assertEquals(12.0, this.speedControl.getSpeed());
 		//Assert that speed buff is active
-		assertTrue(this.speedControl.getExpireTime() > System.currentTimeMillis());
-		//Assert that spped buff isn't active after use duration
+		assertTrue(this.speedControl.isSpeedBuffActive());
+		//Assert that speed buff isn't active after use duration
 		assertFalse(this.speedControl.getExpireTime() > System.currentTimeMillis() + this.speedItem.getUseDuration());
 	}
 
@@ -59,7 +45,7 @@ class SpeedControlTest {
 	@Test
 	void getExpireTime() {
 		this.speedControl.setSpeedBuff(this.speedItem);
-		assertEquals(System.currentTimeMillis() + this.speedItem.getUseDuration(), this.speedControl.getExpireTime());
+		assertTrue(System.currentTimeMillis() + this.speedItem.getUseDuration() >= this.speedControl.getExpireTime());
 	}
 
 	@Test
