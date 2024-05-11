@@ -8,12 +8,7 @@ import java.util.*;
 
 public class LootTable {
 	private final Map<ItemRarity, Double> itemChances;
-	private final Collection<ItemSPI> itemProviders;
-	private final Exception emptyItemSPIList = new Exception("ItemSPIList is empty");
-	/*
-	 * then call in constructor
-	 * this.itemProviders = generateItemProvidersMap(...);
-	 */
+	private final Map<ItemRarity, Collection<ItemSPI>> providers;
 
 	private static Map<ItemRarity, Collection<ItemSPI>> generateItemProvidersMap(final Collection<ItemSPI> providers) {
 		final Map<ItemRarity, Collection<ItemSPI>> map = new HashMap<>();
@@ -43,15 +38,15 @@ public class LootTable {
 	 * @see ItemRarity
 	 */
 	LootTable(Map<ItemRarity, Double> itemChances, final Collection<ItemSPI> itemProviders) {
-		this.itemProviders = itemProviders;
+		this.providers = generateItemProvidersMap(itemProviders);
 		double sumChance = 0;
 		for (Map.Entry<ItemRarity, Double> entry : itemChances.entrySet()) {
 			double chance = entry.getValue();
-			if (chance < 0) throw new IllegalArgumentException();
-			if (chance > 1) throw new IllegalArgumentException();
+			if (chance < 0) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is negative");
+			if (chance > 1) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is greater than 1");
 			sumChance += chance;
 		}
-		if (sumChance > 1) throw new IllegalArgumentException();
+		if (sumChance > 1) throw new IllegalArgumentException("The sum of " + itemChances.keySet() + " is greater than 1");
 		this.itemChances = itemChances;
 	}
 
@@ -84,15 +79,11 @@ public class LootTable {
 	 */
 	public Optional<CommonItem> getItem() throws Exception {
 		Optional<ItemRarity> chosenRarity = this.chooseRarity();
-		if (chosenRarity.isEmpty()) return Optional.empty();
-		List<ItemSPI> itemSPIList = new ArrayList<>();
-		Map<ItemRarity, Collection<ItemSPI>> provider = generateItemProvidersMap(this.itemProviders);
-		provider.forEach((itemRarity, itemSPIS) -> {
-			if (itemRarity.equals(chosenRarity.get())) itemSPIList.addAll(itemSPIS);
-		});
-		if (itemSPIList.isEmpty()) throw this.emptyItemSPIList;
+		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return Optional.empty();
+
+		List<ItemSPI> itemSPIList = this.providers.get(chosenRarity.get()).stream().toList();
 		Random random = new Random();
-		int randomItem = random.nextInt(itemSPIList.size());
-		return Optional.ofNullable(itemSPIList.get(randomItem).getItem());
+		int randomInt = random.nextInt(itemSPIList.size());
+		return Optional.ofNullable(itemSPIList.get(randomInt).getItem());
 	}
 }

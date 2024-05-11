@@ -6,71 +6,99 @@ import com.github.sef24sp4.common.item.ItemSPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class LootTableTest {
-	private LootTable lootTable;
-	private Map<ItemRarity, Double> rarityChances;
-
+	@Mock
 	private ItemSPI mockItemSPI;
+	@Mock
 	private CommonItem commonItem;
+
+	private Map<ItemRarity, Double> rarityChances;
 
 	@BeforeEach
 	void setUp() {
-		this.rarityChances = new HashMap<>();
-		this.lootTable = new LootTable(this.rarityChances);
 		this.mockItemSPI = mock(ItemSPI.class);
 		this.commonItem = mock(CommonItem.class);
+		this.rarityChances = new HashMap<>();
+	}
+
+	/**
+	 * Argument source for {@link #testConstructorWithInvalidArguments(Map<ItemRarity, Double>)}.
+	 *
+	 * @return The test arguments.
+	 * @see ParameterizedTest
+	 * @see MethodSource
+	 */
+	public static Stream<Arguments> testConstructorWithInvalidArguments() {
+		return Stream.of(
+				Arguments.of(Map.ofEntries(// TEST CASE 1
+						Map.entry(ItemRarity.COMMON, 1.2)
+				)),
+				Arguments.of(Map.ofEntries(// TEST CASE 2
+						Map.entry(ItemRarity.COMMON, 0.5),
+						Map.entry(ItemRarity.RARE, -0.1)
+				)),
+				Arguments.of(Map.ofEntries(// TEST CASE 3
+						Map.entry(ItemRarity.UNCOMMON, 0.2),
+						Map.entry(ItemRarity.COMMON, 0.5),
+						Map.entry(ItemRarity.RARE, 0.4)
+				))
+		);
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void testConstructorWithInvalidArguments(final Map<ItemRarity, Double> map) {
+		assertThrows(IllegalArgumentException.class, () -> new LootTable(map));
 	}
 
 	@Test
-	void testConstructorWithInvalidArguments() {
-		this.rarityChances.put(ItemRarity.COMMON, -0.1);
-		assertThrows(IllegalArgumentException.class, () -> new LootTable(this.rarityChances));
-		this.rarityChances.put(ItemRarity.UNCOMMON, 1.1);
-		assertThrows(IllegalArgumentException.class, () -> new LootTable(this.rarityChances));
-		this.rarityChances.put(ItemRarity.RARE, 0.6);
-		assertThrows(IllegalArgumentException.class, () -> new LootTable(this.rarityChances));
+	void validConstructor() {
+		assertDoesNotThrow(() -> new LootTable(this.rarityChances));
 	}
 
 	@Test
 	void emptyChooseRarity() {
 		Map<ItemRarity, Double> chances = new HashMap<>();
 		chances.put(ItemRarity.COMMON, 0.0);
-		this.lootTable = new LootTable(chances);
-		assertEquals(this.lootTable.chooseRarity(), Optional.empty());
+		LootTable lootTable = new LootTable(chances);
+		assertTrue(lootTable.chooseRarity().isEmpty());
 	}
 
 	@Test
 	void chooseRarity() {
 		Map<ItemRarity, Double> chances = new HashMap<>();
 		chances.put(ItemRarity.COMMON, 1.0);
-		this.lootTable = new LootTable(chances);
-		assertEquals(this.lootTable.chooseRarity(), Optional.of(ItemRarity.COMMON));
+		LootTable lootTable = new LootTable(chances);
+		lootTable = new LootTable(chances);
+		assertEquals(lootTable.chooseRarity(), Optional.of(ItemRarity.COMMON));
 	}
 	@Test
 	void testGetEmptyItem() throws Exception {
-		//Create LootTable with ItemSPI
-		List<ItemSPI> itemProviders = new ArrayList<>();
-		itemProviders.add(this.mockItemSPI);
+		//Create LootTable
 		Map<ItemRarity, Double> chances = new HashMap<>();
 		chances.put(ItemRarity.COMMON, 0.0);
-		LootTable lootTableWithSPI = new LootTable(chances, itemProviders);
+		LootTable lootTable = new LootTable(chances);
 
 		// Call getItem() and assert the result
-		Optional<CommonItem> item = lootTableWithSPI.getItem();
+		Optional<CommonItem> item = lootTable.getItem();
 		assertTrue(item.isEmpty());
 	}
 
 	@Test
 	void testSPIListEmpty() throws Exception {
-		Exception emptyItemSPIList = new Exception("ItemSPIList is empty");
 		//Create LootTable with ItemSPI
 		List<ItemSPI> itemProviders = new ArrayList<>();
 		Map<ItemRarity, Double> chances = new HashMap<>();
@@ -78,7 +106,7 @@ class LootTableTest {
 		LootTable lootTableWithoutSPI = new LootTable(chances, itemProviders);
 
 		// Call getItem() and assert the result
-		assertThrows(Exception.class, lootTableWithoutSPI::getItem);
+		assertTrue(lootTableWithoutSPI.getItem().isEmpty());
 	}
 
 	@Test
