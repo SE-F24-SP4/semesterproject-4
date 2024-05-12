@@ -5,7 +5,9 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -13,20 +15,18 @@ import static org.mockito.Mockito.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+@ExtendWith(MockitoExtension.class)
 public class PlayerTest {
 	private Player player;
 
 	@Mock
 	private IEntityManager mockEntityManager;
-	private SpeedControl speedControl;
 
 	@BeforeEach
 	void setUp() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
 		final Constructor<Player> constructor = Player.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		this.player = constructor.newInstance();
-		this.speedControl = new SpeedControl(2);
-		this.mockEntityManager = mock(IEntityManager.class);
 	}
 
 	@Test
