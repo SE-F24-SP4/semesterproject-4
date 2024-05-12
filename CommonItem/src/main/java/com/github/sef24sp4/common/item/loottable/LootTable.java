@@ -10,6 +10,12 @@ public class LootTable {
 	private final Map<ItemRarity, Double> itemChances;
 	private final Map<ItemRarity, Collection<ItemSPI>> providers;
 
+	/**
+	 * Generates a map from {@link ItemRarity} to a collection of {@link ItemSPI} instances.
+	 *
+	 * @param providers A collection of item providers.
+	 * @return A map from {@link ItemRarity} to a collection of {@link ItemSPI} instances.
+	 */
 	private static Map<ItemRarity, Collection<ItemSPI>> generateItemProvidersMap(final Collection<ItemSPI> providers) {
 		final Map<ItemRarity, Collection<ItemSPI>> map = new HashMap<>();
 		for (ItemSPI provider : providers) {
@@ -17,6 +23,24 @@ public class LootTable {
 		}
 		return Collections.unmodifiableMap(map);
 	}
+
+	/**
+	 * Validates the itemChances map to ensure that all chances are between or equal to 0 and 1 and that the sum of all chances does not exceed 1.
+	 *
+	 * @param itemChances A map where the keys are {@link ItemRarity} instances and the values are the chances (as doubles) associated with each rarity.
+	 * @throws IllegalArgumentException If any chance is less than 0, greater than 1, or if the sum of all chances is greater than 1.
+	 */
+	private static void itemChanceValidation(Map<ItemRarity, Double> itemChances) {
+		double sumChance = 0;
+		for (Map.Entry<ItemRarity, Double> entry : itemChances.entrySet()) {
+			double chance = entry.getValue();
+			if (chance < 0) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is negative");
+			if (chance > 1) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is greater than 1");
+			sumChance += chance;
+		}
+		if (sumChance > 1) throw new IllegalArgumentException("The sum of " + itemChances.keySet() + " is greater than 1");
+	}
+
 	/**
 	 * Constructs a new LootTable with the given item chances.
 	 * The item providers are loaded using the ServiceLoader mechanism.
@@ -38,15 +62,8 @@ public class LootTable {
 	 * @see ItemRarity
 	 */
 	LootTable(Map<ItemRarity, Double> itemChances, final Collection<ItemSPI> itemProviders) {
+		itemChanceValidation(itemChances);
 		this.providers = generateItemProvidersMap(itemProviders);
-		double sumChance = 0;
-		for (Map.Entry<ItemRarity, Double> entry : itemChances.entrySet()) {
-			double chance = entry.getValue();
-			if (chance < 0) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is negative");
-			if (chance > 1) throw new IllegalArgumentException("The chance of " + entry.getKey() + " is greater than 1");
-			sumChance += chance;
-		}
-		if (sumChance > 1) throw new IllegalArgumentException("The sum of " + itemChances.keySet() + " is greater than 1");
 		this.itemChances = itemChances;
 	}
 
@@ -77,13 +94,16 @@ public class LootTable {
 	 * @see #chooseRarity()
 	 * @see Optional
 	 */
-	public Optional<CommonItem> getItem() throws Exception {
+	public Optional<CommonItem> getItem() {
 		Optional<ItemRarity> chosenRarity = this.chooseRarity();
 		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return Optional.empty();
 
-		List<ItemSPI> itemSPIList = this.providers.get(chosenRarity.get()).stream().toList();
-		Random random = new Random();
-		int randomInt = random.nextInt(itemSPIList.size());
-		return Optional.ofNullable(itemSPIList.get(randomInt).getItem());
+		Collection<ItemSPI> itemSPIs = this.providers.get(chosenRarity.get());
+		int randomInt = new Random().nextInt(itemSPIs.size());
+		Iterator<ItemSPI> iterator = itemSPIs.iterator();
+		for (int i = 0; i < randomInt; i++) {
+			iterator.next();
+		}
+		return Optional.ofNullable(iterator.next().getItem());
 	}
 }
