@@ -12,7 +12,7 @@ public interface IGridMap extends Map, IEntityCollection {
 	 * @param node
 	 * @return
 	 */
-	public Collection<MapNode> getNeighboursTo(final INode node, final int radius);
+	public Collection<INode> getNeighboursTo(final INode node, final int radius);
 
 	/**
 	 * TODO:

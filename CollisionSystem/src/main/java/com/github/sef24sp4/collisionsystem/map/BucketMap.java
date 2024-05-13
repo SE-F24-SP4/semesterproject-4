@@ -66,21 +66,29 @@ public final class BucketMap implements IGridMap {
 		return Math.floorDiv(Double.valueOf(y).intValue(), this.nodeSize);
 	}
 
-	@Override
-	public Optional<MapNode> getNodeContaining(final IVector coordinates) {
+	private INode getNodeContainingDirectly(final IVector coordinates) throws CoordinatesOutOfBoundsException {
 		final int columnNumber = this.getColumnNumberFromContinues(coordinates.getX());
 		final int rowNumber = this.getRowNumberFromContinues(coordinates.getY());
 
-		// System.out.printf("requested (%.2f, %.2f) [%d, %d]\n", coordinates.getX(), coordinates.getY(), columnNumber, rowNumber); //TODO: REMOVE
-		if (columnNumber < 0 || rowNumber < 0) return Optional.empty();
-		if (columnNumber >= this.getColumnSize() || rowNumber >= this.getRowSize()) return Optional.empty();
+		if (columnNumber < 0 || rowNumber < 0 || columnNumber >= this.getColumnSize() || rowNumber >= this.getRowSize()) {
+			throw new CoordinatesOutOfBoundsException(coordinates);
+		}
 
-		return Optional.of(this.grid[columnNumber][rowNumber]);
+		return this.grid[columnNumber][rowNumber];
 	}
 
 	@Override
-	public Collection<MapNode> getNeighboursTo(final INode node, final int radius) {
-		final Collection<MapNode> neighbours = new ArrayList<>();
+	public Optional<MapNode> getNodeContaining(final IVector coordinates) {
+		try {
+			return Optional.of(this.getNodeContainingDirectly(coordinates));
+		} catch (final CoordinatesOutOfBoundsException e) {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public Collection<INode> getNeighboursTo(final INode node, final int radius) {
+		final Collection<INode> neighbours = new HashSet<>();
 		// for (int x = Math.max(0, node.getColumn() - 1); x < Math.min(node.getColumn() + 1, this.getColumnSize()); x++) { //TODO: REMOVE
 
 		for (final INode[] subRow : Arrays.asList(grid).subList(Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius + 1, this.getColumnSize()))) {

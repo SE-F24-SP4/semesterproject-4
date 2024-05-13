@@ -6,10 +6,8 @@ import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.IVector;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Bucket implements INode {
 	private final Collection<CollidableEntityContainer> entities = new HashSet<>();
@@ -112,7 +110,7 @@ public class Bucket implements INode {
 
 	@Override
 	public Collection<MapNode> getNeighboringNodes() {
-		return parent.getNeighboursTo(this, 1);
+		return new HashSet<>(this.parent.getNeighboursTo(this, 1));
 	}
 
 	/**
