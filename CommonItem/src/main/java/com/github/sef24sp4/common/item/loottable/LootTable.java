@@ -8,7 +8,7 @@ import java.util.*;
 
 public class LootTable {
 	private final Map<ItemRarity, Double> itemChances;
-	private final Map<ItemRarity, Collection<ItemSPI>> providers;
+	private final Map<ItemRarity, List<ItemSPI>> providers;
 
 	/**
 	 * Generates a map from {@link ItemRarity} to a collection of {@link ItemSPI} instances.
@@ -16,8 +16,8 @@ public class LootTable {
 	 * @param providers A collection of item providers.
 	 * @return A map from {@link ItemRarity} to a collection of {@link ItemSPI} instances.
 	 */
-	private static Map<ItemRarity, Collection<ItemSPI>> generateItemProvidersMap(final Collection<ItemSPI> providers) {
-		final Map<ItemRarity, Collection<ItemSPI>> map = new HashMap<>();
+	private static Map<ItemRarity, List<ItemSPI>> generateItemProvidersMap(final List<ItemSPI> providers) {
+		final Map<ItemRarity, List<ItemSPI>> map = new HashMap<>();
 		for (ItemSPI provider : providers) {
 			map.computeIfAbsent(provider.getRarity(), k -> new ArrayList<>()).add(provider);
 		}
@@ -61,7 +61,7 @@ public class LootTable {
 	 * @throws IllegalArgumentException if the sum of the chances is greater than 1, or any chance is negative or greater than 1
 	 * @see ItemRarity
 	 */
-	LootTable(Map<ItemRarity, Double> itemChances, final Collection<ItemSPI> itemProviders) {
+	LootTable(Map<ItemRarity, Double> itemChances, final List<ItemSPI> itemProviders) {
 		itemChanceValidation(itemChances);
 		this.providers = generateItemProvidersMap(itemProviders);
 		this.itemChances = itemChances;
@@ -78,8 +78,8 @@ public class LootTable {
 		double random = Math.random();
 		double sum = 0;
 		for (Map.Entry<ItemRarity, Double> entry : this.itemChances.entrySet()) {
-			if (random < entry.getValue() + sum) return Optional.of(entry.getKey());
 			sum += entry.getValue();
+			if (random < sum) return Optional.of(entry.getKey());
 		}
 		return Optional.empty();
 	}
@@ -92,12 +92,12 @@ public class LootTable {
 	 * @return Returns an item or null if no item was chosen.
 	 * @see #chooseRarity()
 	 */
-	public CommonItem getItem() {
+	public Optional<CommonItem> getItem() {
 		Optional<ItemRarity> chosenRarity = this.chooseRarity();
-		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return null;
+		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return Optional.empty();
 
-		List<ItemSPI> itemSPIs = this.providers.get(chosenRarity.get()).stream().toList();
+		List<ItemSPI> itemSPIs = this.providers.get(chosenRarity.get());
 		int randomInt = new Random().nextInt(itemSPIs.size());
-		return itemSPIs.get(randomInt).getItem();
+		return Optional.of(itemSPIs.get(randomInt).getItem());
 	}
 }

@@ -3,7 +3,6 @@ package com.github.sef24sp4.common.item.loottable;
 import com.github.sef24sp4.common.item.CommonItem;
 import com.github.sef24sp4.common.item.ItemRarity;
 import com.github.sef24sp4.common.item.ItemSPI;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,16 +19,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class LootTableTest {
 
-
-	private Map<ItemRarity, Double> rarityChances;
-
-	@BeforeEach
-	void setUp() {
-		this.rarityChances = new HashMap<>();
-	}
-
 	/**
-	 * Argument source for {@link #testConstructorWithInvalidArguments(Map<ItemRarity, Double>)}.
+	 * Argument source for {@link #testConstructorWithInvalidArguments(Map)}.
 	 *
 	 * @return The test arguments.
 	 * @see ParameterizedTest
@@ -53,7 +44,7 @@ class LootTableTest {
 	}
 
 	/**
-	 * Argument source for {@link #testValidConstructor(<ItemRarity, Double>)}.
+	 * Argument source for {@link #testValidConstructor(Map)}.
 	 *
 	 * @return The test arguments.
 	 * @see ParameterizedTest
@@ -110,8 +101,8 @@ class LootTableTest {
 		LootTable lootTable = new LootTable(chances);
 
 		// Call getItem() and assert the result
-		CommonItem item = lootTable.getItem();
-		assertNull(item);
+		Optional<CommonItem> item = lootTable.getItem();
+		assertTrue(item.isEmpty());
 	}
 
 
@@ -131,8 +122,8 @@ class LootTableTest {
 		LootTable lootTableWithSPI = new LootTable(chances, itemProviders);
 
 		// Call getItem() and assert the result
-		CommonItem item = lootTableWithSPI.getItem();
-		assertNotNull(item);
-		assertSame(commonItem, item);
+		Optional<CommonItem> item = lootTableWithSPI.getItem();
+		assertTrue(item.isPresent());
+		assertSame(commonItem, item.get());
 	}
 }
