@@ -10,6 +10,7 @@ module WeaponPack {
 	requires Common;
 	requires CommonProjectile;
 	requires CommonWeapon;
+	requires CommonItem;
 	provides IGamePluginService with BulletPlugin;
 	provides WeaponSPI with MachineGun;
 	provides ProjectileSPI with MachineGunBulletControlSystem;
