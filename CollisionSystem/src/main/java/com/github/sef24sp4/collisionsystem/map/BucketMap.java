@@ -124,8 +124,11 @@ public final class BucketMap implements IGridMap {
 
 	@Override
 	public Collection<CollidableEntityContainer> getCollidingEntitiesFor(final CollidableEntityContainer entity) {
-		// TODO:
-		throw new UnsupportedOperationException();
+		return this.getPotentiallyOverlappingNodes(entity).parallelStream()
+				.<CollidableEntityContainer>mapMulti((node, output) -> node.getAllEntities().forEach(output))
+				.distinct()
+				.filter(entity::collidesWith)
+				.toList();
 	}
 
 	@Override

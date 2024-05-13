@@ -46,6 +46,9 @@ class BucketMapTest {
 				Arguments.of(new BasicVector(0, 0)),
 				Arguments.of(new BasicVector(5, 5)),
 				Arguments.of(new BasicVector(10, 10)),
+				Arguments.of(new BasicVector(6, 26)),
+				Arguments.of(new BasicVector(6, 260)),
+				Arguments.of(new BasicVector(60, 1)),
 				Arguments.of(new BasicVector(50, 50)),
 				Arguments.of(new BasicVector(100, 50)),
 				Arguments.of(new BasicVector(50, 100)),
@@ -109,6 +112,7 @@ class BucketMapTest {
 				entry(new BasicVector(0, 0), 13.0),
 				entry(new BasicVector(0, 1), 20.0),
 				entry(new BasicVector(1, 0), 15.0),
+				entry(new BasicVector(6, 26), 11.0),
 				entry(new BasicVector(1, 1), 50.0),
 				entry(new BasicVector(100, 1), 5.1),
 				entry(new BasicVector(1, HEIGHT), 100.0),
@@ -221,7 +225,43 @@ class BucketMapTest {
 
 	@Test
 	void getCollidingEntitiesFor() {
-		// TODO:
+		final Collection<CollidableEntityContainer> nonCollidingEntities = Stream.of(
+				entry(new BasicVector(2, 2), 13.0),
+				entry(new BasicVector(2, 2), 15.0),
+				entry(new BasicVector(8, 22), 6.0),
+				entry(new BasicVector(11, 12), 3.0),
+				entry(new BasicVector(5, 14), 8.0)
+		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+
+		final Collection<CollidableEntityContainer> collidingEntities = Stream.of(
+				entry(new BasicVector(13, 16), 2.0),
+				entry(new BasicVector(16, 18), 2.0),
+				entry(new BasicVector(6, 26), 11.0),
+				entry(new BasicVector(12, 28), 11.0),
+				entry(new BasicVector(18, 18), 11.0),
+				entry(new BasicVector(29, 26), 12.0),
+				entry(new BasicVector(21, 19), 3.0),
+				entry(new BasicVector(19.5, 10.5), 3.0),
+				entry(new BasicVector(11.5, 11.5), 3.0),
+				entry(new BasicVector(11, 12), 4.0),
+				entry(new BasicVector(5, 14), 9.0)
+		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+
+		nonCollidingEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e), String.format("Failed to add: %s", e)));
+		collidingEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e), String.format("Failed to add: %s", e)));
+
+		final CollidableEntityContainer otherEntity = EntityTestTools.getEntityContainerWithMockedEntities(new BasicVector(18, 16), 5);
+
+
+		final Collection<CollidableEntityContainer> collidedEntities = this.bucketMap.getCollidingEntitiesFor(otherEntity);
+
+		collidingEntities.forEach(e -> assertTrue(collidedEntities.contains(e), String.format("Failed to add: %s", e)));
+
+		assertEquals(collidingEntities.size(), collidedEntities.size());
+
+		assertTrue(collidedEntities.containsAll(collidingEntities));
+
+		assertFalse(collidedEntities.stream().anyMatch(nonCollidingEntities::contains));
 	}
 
 	@Test
