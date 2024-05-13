@@ -126,13 +126,18 @@ public final class BucketMap implements IGridMap {
 
 	@Override
 	public boolean containsEntity(final CollidableEntityContainer entityContainer) {
-		// TODO: Make intelligent approach based on coordinates.
-		for (final INode[] row : this.grid) {
-			for (final INode node : row) {
-				if (node.containsEntity(entityContainer)) return true;
-			}
+		return this.getPotentiallyOverlappingNodes(entityContainer).stream().anyMatch(n -> n.containsEntity(entityContainer));
+	}
+
+	private Collection<INode> getPotentiallyOverlappingNodes(final CollidableEntityContainer entity) {
+		try {
+			final INode centerNode = this.getNodeContainingDirectly(entity.getCoordinates());
+			final Collection<INode> nodes = this.getNeighboursTo(centerNode, Math.ceilDiv(Double.valueOf(entity.getRadius()).intValue(), this.getNodeSize()));
+			nodes.add(centerNode);
+			return nodes;
+		} catch (CoordinatesOutOfBoundsException e) {
+			return Set.of();
 		}
-		return false;
 	}
 
 	@Override
