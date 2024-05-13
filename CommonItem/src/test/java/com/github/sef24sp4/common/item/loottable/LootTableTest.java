@@ -110,8 +110,8 @@ class LootTableTest {
 		LootTable lootTable = new LootTable(chances);
 
 		// Call getItem() and assert the result
-		Optional<CommonItem> item = lootTable.getItem();
-		assertTrue(item.isEmpty());
+		CommonItem item = lootTable.getItem();
+		assertNull(item);
 	}
 
 
@@ -131,8 +131,8 @@ class LootTableTest {
 		LootTable lootTableWithSPI = new LootTable(chances, itemProviders);
 
 		// Call getItem() and assert the result
-		Optional<CommonItem> item = lootTableWithSPI.getItem();
-		assertTrue(item.isPresent());
-		assertSame(commonItem, item.get());
+		CommonItem item = lootTableWithSPI.getItem();
+		assertNotNull(item);
+		assertSame(commonItem, item);
 	}
 }

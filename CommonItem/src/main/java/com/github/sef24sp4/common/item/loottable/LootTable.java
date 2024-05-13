@@ -56,7 +56,7 @@ public class LootTable {
 	/**
 	 * Constructs a new LootTable with the given item chances and item providers. Only used for testing.
 	 *
-	 * @param itemChances a map from {@link ItemRarity} to their chances of type double.
+	 * @param itemChances   a map from {@link ItemRarity} to their chances of type double.
 	 * @param itemProviders a collection of item providers
 	 * @throws IllegalArgumentException if the sum of the chances is greater than 1, or any chance is negative or greater than 1
 	 * @see ItemRarity
@@ -87,23 +87,17 @@ public class LootTable {
 	/**
 	 * Gets an item from the loot table.
 	 * The rarity of the item is chosen using the item chances, and then an item of that rarity is chosen from the item providers.
-	 * If {@link #chooseRarity()} returns an Optional.empty(), this method will also return an Optional.empty().
+	 * If {@link #chooseRarity()} returns an Optional.empty() or there isn't an ItemSPI with the rarity of the {@link #chooseRarity()}, this method will also return null.
 	 *
-	 * @return an Optional containing the chosen item, or an empty Optional if no item was chosen.
-	 * @throws Exception if no item providers are available for the chosen rarity.
+	 * @return Returns an item or null if no item was chosen.
 	 * @see #chooseRarity()
-	 * @see Optional
 	 */
-	public Optional<CommonItem> getItem() {
+	public CommonItem getItem() {
 		Optional<ItemRarity> chosenRarity = this.chooseRarity();
-		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return Optional.empty();
+		if (chosenRarity.isEmpty() || this.providers.get(chosenRarity.get()) == null) return null;
 
-		Collection<ItemSPI> itemSPIs = this.providers.get(chosenRarity.get());
+		List<ItemSPI> itemSPIs = this.providers.get(chosenRarity.get()).stream().toList();
 		int randomInt = new Random().nextInt(itemSPIs.size());
-		Iterator<ItemSPI> iterator = itemSPIs.iterator();
-		for (int i = 0; i < randomInt; i++) {
-			iterator.next();
-		}
-		return Optional.ofNullable(iterator.next().getItem());
+		return itemSPIs.get(randomInt).getItem();
 	}
 }
