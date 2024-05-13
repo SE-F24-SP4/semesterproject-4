@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,8 +30,6 @@ class BucketMapTest {
 
 	@Mock
 	private IGameSettings gameSettings;
-
-	private CollidableEntityContainer entity1;
 
 	private BucketMap bucketMap;
 
@@ -96,14 +95,39 @@ class BucketMapTest {
 		);
 	}
 
+	/**
+	 * Argument source for {@link #addEntity(CollidableEntityContainer)}.
+	 *
+	 * @return The test arguments.
+	 * @see ParameterizedTest
+	 * @see MethodSource
+	 */
+	public static Stream<Arguments> addEntity() {
+		return Stream.of(
+				entry(new BasicVector(0, 0), 13.0),
+				entry(new BasicVector(0, 1), 20.0),
+				entry(new BasicVector(1, 0), 15.0),
+				entry(new BasicVector(1, 1), 50.0),
+				entry(new BasicVector(1, HEIGHT), 100.0),
+				entry(new BasicVector(15, 14), 0.0), // TODO: fix
+				entry(new BasicVector(14, 14), 1.0),
+				entry(new BasicVector(14, 14), 100.0),
+				entry(new BasicVector(14, 14), 5.0),
+				entry(new BasicVector(23.5, 23.5), 5.0),
+				entry(new BasicVector(29, 26), 11.5),
+				entry(new BasicVector(30, 40), 70.0),
+				entry(new BasicVector(34, 36), 25.0),
+				entry(new BasicVector(5, 14), 6.0),
+				entry(new BasicVector(WIDTH, 2), 15.0),
+				entry(new BasicVector(WIDTH, HEIGHT), 25.0)
+		).map(EntityTestTools::getEntityContainerWithMockedEntities).map(Arguments::of);
+	}
+
 	@BeforeEach
 	void setUp() {
 		Mockito.when(this.gameSettings.getDisplayWidth()).thenReturn(WIDTH);
 		Mockito.when(this.gameSettings.getDisplayHeight()).thenReturn(HEIGHT);
 		this.bucketMap = BucketMap.generate(this.gameSettings, SIZE);
-
-		// this.entity1 = EntityTestTools.getEntityContainerWithMockedEntities(new BasicVector(2, 3), 5);
-		//TODO: this.bucketMap.addEntity(this.entity1);
 	}
 
 	@Test
@@ -146,9 +170,12 @@ class BucketMapTest {
 		assertEquals(expectedNeighbours, neighbours.size());
 	}
 
-	@Test
-	void addEntity() {
-		// TODO:
+	@ParameterizedTest
+	@MethodSource
+	void addEntity(final CollidableEntityContainer entity) {
+		assertFalse(this.bucketMap.containsEntity(entity));
+		assertTrue(this.bucketMap.addEntity(entity));
+		assertTrue(this.bucketMap.containsEntity(entity));
 	}
 
 	@Test

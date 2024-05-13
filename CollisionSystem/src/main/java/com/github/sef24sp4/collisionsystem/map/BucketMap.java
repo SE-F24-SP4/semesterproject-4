@@ -92,7 +92,7 @@ public final class BucketMap implements IGridMap {
 		// for (int x = Math.max(0, node.getColumn() - 1); x < Math.min(node.getColumn() + 1, this.getColumnSize()); x++) { //TODO: REMOVE
 
 		for (final INode[] subRow : Arrays.asList(grid).subList(Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius + 1, this.getColumnSize()))) {
-			System.out.printf("Node %d,%d\nTotal size %d,%d\nRadius: %d\nMax/min %d/%d\n---\n", node.getColumn(), node.getRow(), this.getColumnSize(), this.getRowSize(), radius, Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius, this.getColumnSize())); //TODO: REMOVE
+			//System.out.printf("Node %d,%d\nTotal size %d,%d\nRadius: %d\nMax/min %d/%d\n---\n", node.getColumn(), node.getRow(), this.getColumnSize(), this.getRowSize(), radius, Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius, this.getColumnSize())); //TODO: REMOVE
 			neighbours.addAll(Arrays.asList(subRow).subList(Math.max(0, node.getRow() - radius), Math.min(node.getRow() + radius + 1, this.getRowSize())));
 		}
 
@@ -110,12 +110,16 @@ public final class BucketMap implements IGridMap {
 	 * <br/><br/>
 	 * {@link CollidableEntityContainer Entities} satisfy the conditions for being added
 	 * if its {@link CollidableEntityContainer#getCoordinates() coordinates} are within the bounding box of the current map.
-	 * And the current map contains at least one {@link INode node} which willing to accept the {@link CollidableEntityContainer entity}.
+	 * And the current map contains at least one {@link INode node} which is willing to accept the {@link CollidableEntityContainer entity}.
 	 */
 	@Override
 	public boolean addEntity(final CollidableEntityContainer entity) {
-		// TODO:
-		throw new UnsupportedOperationException();
+		boolean hasBeenAdded = false;
+		for (final INode node : this.getPotentiallyOverlappingNodes(entity)) {
+			if (node.addEntity(entity)) hasBeenAdded = true;
+			// Keep iterating, as we need to add entity to all overlapping nodes.
+		}
+		return hasBeenAdded;
 	}
 
 	@Override
