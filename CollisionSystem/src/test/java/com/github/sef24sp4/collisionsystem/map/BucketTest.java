@@ -122,7 +122,7 @@ class BucketTest {
 				entry(new BasicVector(34, 36), 25.0),
 				entry(new BasicVector(29, 26), 11.5),
 				entry(new BasicVector(5, 14), 6.0)
-		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue()));
+		).map(EntityTestTools::getEntityContainerWithMockedEntities);
 	}
 
 	@BeforeEach

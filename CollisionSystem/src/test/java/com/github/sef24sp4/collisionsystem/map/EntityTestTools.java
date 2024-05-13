@@ -7,6 +7,8 @@ import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 import org.mockito.Mockito;
 
+import static java.util.Map.Entry;
+
 /**
  * A Helper class which contains logic to create
  * test {@link com.github.sef24sp4.common.entities.ICollidableEntity entities}
@@ -25,5 +27,9 @@ public class EntityTestTools {
 		Mockito.when(entity.getCoordinates()).thenReturn(Coordinates.valuesOf(coordinates));
 		Mockito.when(entity.getPolygonCoordinates()).thenReturn(new IVector[]{new BasicVector(0, radius)});
 		return new CollidableEntityContainer(entity);
+	}
+
+	static CollidableEntityContainer getEntityContainerWithMockedEntities(final Entry<? extends IVector, Double> entry) {
+		return getEntityContainerWithMockedEntities(entry.getKey(), entry.getValue());
 	}
 }
