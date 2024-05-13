@@ -12,7 +12,7 @@ public class ShotGun extends AbstractWeapon {
 	//Variables defined for ammoCount and projectiles.
 	private final Random random = new Random();
 	private final double maxDeviationFromRotation = 5;
-	private final int ammountOfBulletsPerShot = 7;
+	private final int numberOfbulletsPerShot = 7;
 	private final ShotGunBulletControlSystem shotGunBulletControlSystem = new ShotGunBulletControlSystem();
 
 	public ShotGun() {
@@ -28,22 +28,25 @@ public class ShotGun extends AbstractWeapon {
 		return true;
 	}
 
-	private List<ShotGunBullet> createBullets(final IEntity shooter) {
+	//This method generates 7 bullets scattered in different rotations.
+	//This method is inspired by {@link Viveks AsteroidsFX Project}
+	private List<ShotGunBullet> createShotGunBullets(final IEntity shooter) {
 		List<ShotGunBullet> projectiles = new ArrayList<>();
-		for (int i = 0; i < this.ammountOfBulletsPerShot; i++) {
-			double changedRotation = this.getRandomRotation(shooter);
+		for (int i = 0; i < this.numberOfbulletsPerShot; i++) {
+			double deviatedRotation = this.getRandomDeviatedRotationBetweenBullets(shooter);
 			ShotGunBullet shotGunBullet = new ShotGunBullet(shooter);
-			shotGunBullet.setRotation(changedRotation);
+			shotGunBullet.setRotation(deviatedRotation);
 			projectiles.add(shotGunBullet);
 		}
 		return projectiles;
 	}
 
-	private double getRandomRotation(final IEntity shooter) {
-		double leftRotation = shooter.getRotation() - this.maxDeviationFromRotation;
-		double rightRotation = shooter.getRotation() + this.maxDeviationFromRotation;
-		double changedRotation = this.random.nextDouble(leftRotation, rightRotation);
-		return changedRotation;
-	}
 
+	//This method ensures, that there is a deviation between the projectiles when shot.
+	//return-statement has been a bit inspired from {@link https://stackoverflow.com/questions/22110772/how-do-i-get-a-random-double-within-a-specified-range}
+	private double getRandomDeviatedRotationBetweenBullets(final IEntity shooter) {
+		double leftMininumRotation = shooter.getRotation() - this.maxDeviationFromRotation;
+		double rightMaximumRotation = shooter.getRotation() + this.maxDeviationFromRotation;
+		return this.random.nextDouble(leftMininumRotation, rightMaximumRotation);
+	}
 }
