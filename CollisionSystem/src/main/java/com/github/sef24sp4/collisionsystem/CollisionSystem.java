@@ -1,9 +1,9 @@
 package com.github.sef24sp4.collisionsystem;
 
+import com.github.sef24sp4.collisionsystem.map.IGridMap;
 import com.github.sef24sp4.common.collisionsystem.CollisionSystemSPI;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
-import com.github.sef24sp4.common.interfaces.IGameSettings;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,11 +13,10 @@ public class CollisionSystem implements CollisionSystemSPI {
 	private final Collection<CollidableEntityContainer> collidableEntities = new HashSet<>();
 	private final Stack<CollidableEntityContainer> toBeAdded = new Stack<>();
 	private final Stack<CollidableEntityContainer> toBeRemoved = new Stack<>();
-	private final IGameSettings gameSettings;
+	private final IGridMap map;
 
-	CollisionSystem(final IGameSettings gameSettings) {
-		this.gameSettings = gameSettings;
-		gameSettings.getDisplayWidth();
+	CollisionSystem(final IGridMap map) {
+		this.map = map;
 	}
 
 	@Override
@@ -44,22 +43,23 @@ public class CollisionSystem implements CollisionSystemSPI {
 
 	@Override
 	public boolean processCollisions(final IEntityManager entityManager) {
-		/* TODO:
-		 * Add all to a grid and while adding do collision detection.
-		 *
-		 */
 		while (!this.toBeAdded.isEmpty()) {
 			final CollidableEntityContainer c = this.toBeAdded.pop();
 			if (this.toBeRemoved.contains(c)) continue;
 			this.collidableEntities.add(c);
 		}
-		for (final CollidableEntityContainer entity1 : this.collidableEntities) {
-			for (final CollidableEntityContainer entity2 : this.collidableEntities) {
-				if (entity1.doesCollideWith(entity2)) {
-					entity1.getEntity().collide(entityManager, entity2.getEntity());
-				}
-			}
+
+		this.map.clearEntities();
+
+		for (final CollidableEntityContainer entity : this.collidableEntities) {
+			this.map.addEntity(entity);
+
+			this.map.getCollidingEntitiesFor(entity).forEach(other -> {
+				entity.getEntity().collide(entityManager, other.getEntity());
+				other.getEntity().collide(entityManager, entity.getEntity());
+			});
 		}
+
 		while (!this.toBeRemoved.isEmpty()) {
 			this.collidableEntities.remove(this.toBeRemoved.pop());
 		}
