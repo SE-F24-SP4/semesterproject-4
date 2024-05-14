@@ -24,7 +24,7 @@ public class WaveManager implements IWaveManager {
 
 	private final int timeUntilNextWaveInSeconds;
 
-	private long timeOfLastCheck;
+	private long timeOfLastWaveStart;
 
 	private WaveStatus waveStatus = WaveStatus.ONGOING;
 
@@ -60,7 +60,7 @@ public class WaveManager implements IWaveManager {
 
 	@Override
 	public int getSecondsUntilNextWave() {
-		final long remainingTime = Math.multiplyFull(this.timeUntilNextWaveInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastCheck);
+		final long remainingTime = Math.multiplyFull(this.timeUntilNextWaveInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastWaveStart);
 		if (remainingTime <= 0) return 0;
 		return Math.toIntExact(Math.ceilDiv(remainingTime, 1000));
 	}
@@ -86,7 +86,7 @@ public class WaveManager implements IWaveManager {
 		this.updateDifficulty();
 		this.enemyComposition = this.calculateWaveComposition();
 		this.assignSpawnLocations();
-		this.timeOfLastCheck = System.currentTimeMillis();
+		this.timeOfLastWaveStart = System.currentTimeMillis();
 	}
 
 	private void constructCatalog() {
