@@ -28,13 +28,13 @@ public class WaveManager implements IWaveManager {
 
 	private WaveStatus waveStatus = WaveStatus.ONGOING;
 
-	private Map<EnemyRole, List<EnemySPI>> enemyCatalog = new HashMap<>();
+	private final Map<EnemyRole, List<EnemySPI>> enemyCatalog = new HashMap<>();
 
-	public WaveManager(int startWaveNumber, int waveCountdownInSeconds, IGameSettings gameSettings) {
+	public WaveManager(int startWaveNumber, int timeUntilNextWaveInSeconds, IGameSettings gameSettings) {
 		if (startWaveNumber < 1) throw new IllegalArgumentException("startWaveNumber must be greater than 0");
 		this.waveNumber = startWaveNumber - 1; // gets +1 in the nextWave function
 		this.gameSettings = gameSettings;
-		this.timeUntilNextWaveInSeconds = waveCountdownInSeconds;
+		this.timeUntilNextWaveInSeconds = timeUntilNextWaveInSeconds;
 		this.constructCatalog();
 	}
 
