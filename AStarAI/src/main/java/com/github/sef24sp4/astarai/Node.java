@@ -2,6 +2,7 @@ package com.github.sef24sp4.astarai;
 
 
 import com.github.sef24sp4.common.ai.map.MapNode;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.Collection;
@@ -25,7 +26,7 @@ public class Node {
 	}
 
 	public IVector getCoordinates() {
-		return this.coordinates;
+		return coordinates;
 	}
 
 	public MapNode getMapNode() {
@@ -36,16 +37,13 @@ public class Node {
 		return this.getMapNode().equals(node.getMapNode());
 	}
 
-
 	public double getGCost() {
 		return this.gCost;
 	}
 
-
 	public double getFCost() {
 		return this.fCost;
 	}
-
 
 	public void setGCost(double cost) {
 		this.gCost = cost;

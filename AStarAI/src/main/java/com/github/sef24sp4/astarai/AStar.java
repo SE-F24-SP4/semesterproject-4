@@ -7,29 +7,24 @@ import com.github.sef24sp4.common.ai.map.MapNode;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static java.lang.Double.MAX_VALUE;
-
-public class AStar implements IPathfindingProvider {
-	private Node[][] nodes;
-	private Node startNode;
-	private Node goalNode;
+public class AStar {
+	private final Node startNode;
+	private final Node goalNode;
 	private Node currentNode;
-
-	private boolean goalReached = false;
-
 	private List<Node> openList = new ArrayList<>();
 	private List<Node> pathList = new LinkedList<>();
-	private Map map;
 
 
-	private ArrayList<Node> openList = new ArrayList<>();
-	private ArrayList<Node> closedList = new ArrayList<>();
-	private ArrayList<Node> pathList = new ArrayList<>();
+	public AStar(final Node startNode, final Node goalNode) {
+		this.startNode = startNode;
+		this.goalNode = goalNode;
+	}
+
+	public List<Node> calculatePath(ICollidableEntity entity) {
+		return this.search(entity);
+	}
 
 	//Explaination
 	//startNode is where the entity using AI is.
@@ -38,89 +33,7 @@ public class AStar implements IPathfindingProvider {
 	@Override
 	public Coordinates nextCoordinateInPath(ICollidableEntity entity, IVector targetCoordinate) {
 
-	//make nodes for the map?
-	//check if node i solid?
-		int targetX = (int) Math.round(targetCoordinate.getX()); //round to nearest int (so 3.9 is 4 instead of 3)
-		int targetY = (int) Math.round(targetCoordinate.getY());
-		System.out.println(targetX);
-		System.out.println(targetY);
-
-		final Optional<MapNode> goalNode = this.map.getNodeContaining(targetCoordinate);
-		goalNode.ifPresent(node -> this.goalNode = new Node(targetCoordinate, node));
-
-		this.map.getNodeContaining(entity.getCoordinates()).ifPresent(node -> {
-			this.startNode = new Node(entity.getCoordinates(), node);
-		});
-
-
-		this.search(entity);
-
-		Optional<Node> nextStep = this.getNextStep();
-		if (nextStep.isPresent()) {
-			Node nextNode = nextStep.get();
-			//return mapNode.getSafeCoordinatesForEntity(entity,new Coordinates(nextNode.getX(), nextNode.getY()));
-			return new Coordinates(nextNode.getX(), nextNode.getY());
-		}
-
-		return entity.getCoordinates();
-	}
-
-		if (pathFound) { //can be exchanged with just if search
-			Node nextStep = getNextStep();
-			double nextStepX = nextStep.getX();
-			double nextStepY = nextStep.getY();
-
-	private void setNodes() { //public?
-		int width = Math.round(this.gameSettings.getDisplayWidth());
-		int height = Math.round(this.gameSettings.getDisplayHeight());
-
-	//Method for setNodes (startnode, goalNode, currentnode, og add currentnode til openList). //
-		this.nodes = new Node[width][height];
-
-		for (int x = 0; x < width - 1; x++) {
-			for (int y = 0; y < height - 1; y++) {
-				this.nodes[x][y] = new Node(x, y);
-				//set some nodes to solid?
-			}
-		}
-	}
-
-	private Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(this.pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	public Optional<Node> getNextStep() { //returns the next Node in the pathList
-		if (!this.pathList.isEmpty()) {
-			return Optional.of(pathList.remove(0));
-		}
-		return Optional.empty();
-	}
-
-	public void getCost(Node aNode) {
+	private void setFCostForNode(Node aNode) {
 		//gCost
 		double distanceSoFar = aNode.getGCost();
 		//hCost
@@ -129,11 +42,11 @@ public class AStar implements IPathfindingProvider {
 		aNode.setFCost(distanceSoFar + heuristics);
 	}
 
-	private void search(ICollidableEntity entity) {
+	private List<Node> search(ICollidableEntity entity) {
 
 		this.currentNode = this.startNode; //at first current node is the same as startnode
 		this.currentNode.setGCost(0);
-		while (!this.goalReached) {
+		while (!this.currentNode.hasSameMapNode(this.goalNode)) { //while goal == not reached
 
 			//TODO: need to specify currentNode?
 			this.currentNode.setChecked(true);
@@ -144,37 +57,27 @@ public class AStar implements IPathfindingProvider {
 				this.openNode(entity, eachNode);
 			}
 
-			int bestNode = 0; //best node in index
-			double bestFCost = MAX_VALUE; //so far best fCost close to infinity.
-
-			//find best node with loop though openList, comparing fCost.
-			for (int i = 0; i < this.openList.size(); i++) {
-
-				this.getCost(this.openList.get(i)); //calculate its cost.
-				if (this.openList.get(i).getFCost() < bestFCost) {
-					bestNode = i;
-					bestFCost = this.openList.get(i).getFCost();
-				} else if (this.openList.get(i).getFCost() == bestFCost) {
-					if (this.openList.get(i).getGCost() < this.openList.get(bestNode).getGCost()) {
-						bestNode = i;
-					}
-				}
-			}
-			//step++? to avoid it calculates the whole way, when enemy is far away.
-			//Could be based on the distance of Heuristics.
-
 			if (this.openList.isEmpty()) {
 				break;
 			}
 
+			int bestNode = 0; //best node in index
+
+			Optional<Node> minNode = this.openList.stream()
+					.min(Comparator.comparingDouble(Node::getFCost)
+							.thenComparing(Node::getGCost));
+
+			if (minNode.isPresent()) {
+				bestNode = this.openList.indexOf(minNode.get());
+			}
+
 			this.currentNode = this.openList.get(bestNode); //next curentNode is the one with lowest fCost.
 
-			if (this.currentNode.equals(this.goalNode)) {
-				this.goalReached = true;
+			if (this.currentNode.hasSameMapNode(this.goalNode)) { //if currentNode equals goalNode, goal is reached
 				this.trackPath();
-				return;
 			}
 		}
+		return this.pathList;
 	}
 
 	private void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
@@ -190,13 +93,20 @@ public class AStar implements IPathfindingProvider {
 	private void openNode(ICollidableEntity entity, Node aNode) {
 		if (this.openList.contains(aNode)) return;
 
-		aNode.setParent(this.currentNode); //set currentnode as parent
+		//Check how far Entity can go into the aNode.
+		Optional<IVector> aNodeSafeCoordinates = aNode.getMapNode().getSafeCoordinatesForEntity(entity, this.currentNode.getCoordinates());
 
-		//how far can the entity go into the aNode.
-		Optional<IVector> currentCoordinates = aNode.getMapNode().getSafeCoordinatesForEntity(entity, currentNode.getCoordinates());
+		if (aNodeSafeCoordinates.isPresent()) {
 
-		if (currentCoordinates.isEmpty()){
-			return;
+			double distanceFromParentNode = aNodeSafeCoordinates.get().getVectorTo(this.currentNode.getCoordinates()).getNorm();
+
+			Node newNode = new Node(aNodeSafeCoordinates.get(), aNode.getMapNode());
+
+			newNode.setParent(this.currentNode); //set currentnode as parent
+			newNode.setGCost(this.currentNode.getGCost() + distanceFromParentNode);
+			this.setFCostForNode(newNode); //set cost when node is opened
+
+			this.openList.add(newNode);
 		}
 		else {
 
