@@ -13,7 +13,8 @@ public class AStar {
 	private final Node startNode;
 	private final Node goalNode;
 	private Node currentNode;
-	private List<Node> openList = new ArrayList<>();
+	//private List<Node> openList = new ArrayList<>();
+	private final Collection<Node> openList = new HashSet<>();
 	private List<Node> pathList = new LinkedList<>();
 
 
@@ -61,17 +62,13 @@ public class AStar {
 				break;
 			}
 
-			int bestNode = 0; //best node in index
-
 			Optional<Node> minNode = this.openList.stream()
 					.min(Comparator.comparingDouble(Node::getFCost)
 							.thenComparing(Node::getGCost));
 
 			if (minNode.isPresent()) {
-				bestNode = this.openList.indexOf(minNode.get());
+				this.currentNode = minNode.get();
 			}
-
-			this.currentNode = this.openList.get(bestNode); //next curentNode is the one with lowest fCost.
 
 			if (this.currentNode.hasSameMapNode(this.goalNode)) { //if currentNode equals goalNode, goal is reached
 				this.trackPath();
@@ -127,6 +124,10 @@ public class AStar {
 
 	}
 
+
+	public void setCurrentNode(final Node currentNode) {
+		this.currentNode = currentNode;
+	}
 }
 
 

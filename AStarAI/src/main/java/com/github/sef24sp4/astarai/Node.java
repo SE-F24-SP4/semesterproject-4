@@ -14,6 +14,7 @@ public class Node {
 	private final IVector coordinates;
 
 	private final MapNode mapNode;
+	private Node goalNode;
 
 	public Node(IVector coordinates, MapNode mapNode) {
 		this.coordinates = coordinates;
