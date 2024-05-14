@@ -85,8 +85,8 @@ public class Bucket implements INode {
 	}
 
 	@Override
-	public boolean containsEntity(final CollidableEntityContainer entityContainer) {
-		return this.entities.contains(entityContainer);
+	public boolean containsEntity(final CollidableEntityContainer entity) {
+		return this.entities.contains(entity);
 	}
 
 	@Override
@@ -100,13 +100,13 @@ public class Bucket implements INode {
 	}
 
 	@Override
-	public boolean isEntityOverlapping(final CollidableEntityContainer entityContainer) {
-		final BasicVector vectorToCenter = entityContainer.getCoordinates().getVectorTo(this.getCenterCoordinates());
-		if (vectorToCenter.getNorm() <= entityContainer.getRadius()) return true;
+	public boolean isEntityOverlapping(final CollidableEntityContainer entity) {
+		final BasicVector vectorToCenter = entity.getCoordinates().getVectorTo(this.getCenterCoordinates());
+		if (vectorToCenter.getNorm() <= entity.getRadius()) return true;
 
 		final BasicVector vectorToFurthestPoint = vectorToCenter.getNormalizedVector();
-		vectorToFurthestPoint.scale(entityContainer.getRadius());
-		vectorToFurthestPoint.add(entityContainer.getCoordinates());
+		vectorToFurthestPoint.scale(entity.getRadius());
+		vectorToFurthestPoint.add(entity.getCoordinates());
 		return this.containsCoordinates(vectorToFurthestPoint);
 	}
 

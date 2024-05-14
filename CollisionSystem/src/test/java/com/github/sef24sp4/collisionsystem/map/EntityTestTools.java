@@ -12,7 +12,7 @@ import static java.util.Map.Entry;
 /**
  * A Helper class which contains logic to create
  * test {@link com.github.sef24sp4.common.entities.ICollidableEntity entities}
- * and test {@link com.github.sef24sp4.collisionsystem.CollidableEntityContainer entityContainers}.
+ * and test {@link CollidableEntityContainer entityContainers}.
  */
 public class EntityTestTools {
 	/**

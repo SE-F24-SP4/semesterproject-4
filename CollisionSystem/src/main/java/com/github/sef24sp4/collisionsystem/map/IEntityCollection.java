@@ -5,7 +5,8 @@ import com.github.sef24sp4.collisionsystem.CollidableEntityContainer;
 import java.util.Collection;
 
 /**
- * TODO:
+ * This is a collection for {@link CollidableEntityContainer}s,
+ * which simplifies interactions between large quantities of {@link CollidableEntityContainer entities}.
  */
 public interface IEntityCollection {
 	/**
@@ -21,31 +22,41 @@ public interface IEntityCollection {
 	public boolean addEntity(final CollidableEntityContainer entity);
 
 	/**
-	 * TODO:
+	 * Get all {@link CollidableEntityContainer entities} within this collection which collides with the given {@link CollidableEntityContainer entity}.
 	 *
-	 * @param entity
-	 * @return
+	 * @param entity The {@link CollidableEntityContainer entity} to check for.
+	 * @return A {@link Collection} of colliding {@link CollidableEntityContainer entities}.
 	 */
 	public Collection<CollidableEntityContainer> getCollidingEntitiesFor(final CollidableEntityContainer entity);
 
 	/**
-	 * TODO:
+	 * Check to see if the {@link CollidableEntityContainer entity} is contained within the current collection.
 	 *
-	 * @param entityContainer
-	 * @return
+	 * @param entity The {@link CollidableEntityContainer entity} to check for.
+	 * @return {@code true} if the {@link CollidableEntityContainer entity} is contained.
+	 * {@code false} otherwise.
 	 */
-	public boolean containsEntity(final CollidableEntityContainer entityContainer);
+	public boolean containsEntity(final CollidableEntityContainer entity);
 
 
 	/**
-	 * TODO:
+	 * Get all unique {@link CollidableEntityContainer entities} within the current collection
+	 * <p/>
+	 * Uniqueness is defined by {@link Object#hashCode()} method.
+	 * Two instances with the same {@link Object#hashCode() hash code} is considered to be duplicates of each other.
 	 *
-	 * @return
+	 * @return A {@link Collection} of all the contained {@link CollidableEntityContainer entities}.
+	 * @see #containsEntity(CollidableEntityContainer)
+	 * @see #addEntity(CollidableEntityContainer)
+	 * @see #clearEntities()
 	 */
 	public Collection<CollidableEntityContainer> getAllEntities();
 
 	/**
-	 * TODO:
+	 * Clear the current collection for all {@link CollidableEntityContainer entities}.
+	 *
+	 * @see #getAllEntities()
+	 * @see #addEntity(CollidableEntityContainer)
 	 */
 	public void clearEntities();
 }

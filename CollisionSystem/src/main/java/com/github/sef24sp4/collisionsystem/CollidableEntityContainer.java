@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * A decorator for {@link ICollidableEntity} which simplifies calculations of hit-box,
+ * A container for {@link ICollidableEntity} which simplifies calculations of hit-box,
  * using a circle encompassing the furthest point found in {@link ICollidableEntity#getPolygonCoordinates()}.
  */
 public class CollidableEntityContainer {

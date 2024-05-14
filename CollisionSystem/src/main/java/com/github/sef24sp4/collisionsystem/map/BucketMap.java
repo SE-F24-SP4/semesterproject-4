@@ -87,16 +87,16 @@ public final class BucketMap implements IGridMap {
 	}
 
 	@Override
-	public Collection<INode> getNeighboursTo(final INode node, final int radius) {
+	public Collection<INode> getNeighboursTo(final INode centerNode, final int radius) {
 		final Collection<INode> neighbours = new HashSet<>();
 		// for (int x = Math.max(0, node.getColumn() - 1); x < Math.min(node.getColumn() + 1, this.getColumnSize()); x++) { //TODO: REMOVE
 
-		for (final INode[] subRow : Arrays.asList(grid).subList(Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius + 1, this.getColumnSize()))) {
+		for (final INode[] subRow : Arrays.asList(grid).subList(Math.max(0, centerNode.getColumn() - radius), Math.min(centerNode.getColumn() + radius + 1, this.getColumnSize()))) {
 			//System.out.printf("Node %d,%d\nTotal size %d,%d\nRadius: %d\nMax/min %d/%d\n---\n", node.getColumn(), node.getRow(), this.getColumnSize(), this.getRowSize(), radius, Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius, this.getColumnSize())); //TODO: REMOVE
-			neighbours.addAll(Arrays.asList(subRow).subList(Math.max(0, node.getRow() - radius), Math.min(node.getRow() + radius + 1, this.getRowSize())));
+			neighbours.addAll(Arrays.asList(subRow).subList(Math.max(0, centerNode.getRow() - radius), Math.min(centerNode.getRow() + radius + 1, this.getRowSize())));
 		}
 
-		neighbours.remove(node);
+		neighbours.remove(centerNode);
 		return neighbours;
 	}
 
@@ -132,13 +132,14 @@ public final class BucketMap implements IGridMap {
 	}
 
 	@Override
-	public boolean containsEntity(final CollidableEntityContainer entityContainer) {
-		return this.getPotentiallyOverlappingNodes(entityContainer).stream().anyMatch(n -> n.containsEntity(entityContainer));
+	public boolean containsEntity(final CollidableEntityContainer entity) {
+		return this.getPotentiallyOverlappingNodes(entity).stream().anyMatch(n -> n.containsEntity(entity));
 	}
 
-	private Collection<INode> getPotentiallyOverlappingNodes(final CollidableEntityContainer entity) {
+	@Override
+	public Collection<INode> getPotentiallyOverlappingNodes(final CollidableEntityContainer entity, final IVector coordinates) {
 		try {
-			final INode centerNode = this.getNodeContainingDirectly(entity.getCoordinates());
+			final INode centerNode = this.getNodeContainingDirectly(coordinates);
 			final Collection<INode> nodes = this.getNeighboursTo(centerNode, Math.ceilDiv(Double.valueOf(entity.getRadius()).intValue(), this.getNodeSize()));
 			nodes.add(centerNode);
 			return nodes;
