@@ -177,10 +177,6 @@ class BucketTest {
 		assertFalse(this.bucket.containsEntity(entity));
 	}
 
-	@Test
-	void getSafeCoordinatesForEntity() {
-		//TODO:
-	}
 
 	@Test
 	void calculateHeuristicsFor() {

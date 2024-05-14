@@ -2,6 +2,7 @@ package com.github.sef24sp4.collisionsystem.map;
 
 import com.github.sef24sp4.collisionsystem.CollidableEntityContainer;
 import com.github.sef24sp4.common.ai.map.MapNode;
+import com.github.sef24sp4.common.ai.map.NotAdjacentNodeException;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.vector.BasicVector;
@@ -160,6 +161,26 @@ class BucketMapTest {
 		).map(EntityTestTools::getEntityContainerWithMockedEntities).map(Arguments::of);
 	}
 
+	/**
+	 * Argument source for {@link #getSafeCoordinatesForEntityThrowsNotAdjacentNodeException(IVector)}.
+	 *
+	 * @return The test arguments.
+	 * @see ParameterizedTest
+	 * @see MethodSource
+	 */
+	public static Stream<Arguments> getSafeCoordinatesForEntityThrowsNotAdjacentNodeException() {
+		return Stream.of(
+				Arguments.of(new BasicVector(860, 480)),
+				Arguments.of(new BasicVector(86, 48)),
+				Arguments.of(new BasicVector(56, 22)),
+				Arguments.of(new BasicVector(12, 32)),
+				Arguments.of(new BasicVector(-12, 28)),
+				Arguments.of(new BasicVector(-16, 6)),
+				Arguments.of(new BasicVector(32, -6)),
+				Arguments.of(new BasicVector(32, 6))
+		);
+	}
+
 	@BeforeEach
 	void setUp() {
 		Mockito.when(this.gameSettings.getDisplayWidth()).thenReturn(WIDTH);
@@ -191,7 +212,6 @@ class BucketMapTest {
 		final Optional<MapNode> result = this.bucketMap.getNodeContaining(testVector);
 		assertTrue(result.isEmpty());
 	}
-
 
 	@ParameterizedTest
 	@MethodSource
@@ -274,5 +294,21 @@ class BucketMapTest {
 
 		this.bucketMap.clearEntities();
 		assertTrue(this.bucketMap.getAllEntities().isEmpty());
+	}
+
+	@Test
+	void getSafeCoordinatesForEntity() {
+		//TODO:
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void getSafeCoordinatesForEntityThrowsNotAdjacentNodeException(final IVector coordinates) {
+		final ICollidableEntity entity = Mockito.mock();
+		final MapNode bucket = this.bucketMap.getNodeContaining(new BasicVector(15, 15)).orElseThrow();
+
+		assertThrows(NotAdjacentNodeException.class, () -> {
+			bucket.getSafeCoordinatesForEntity(entity, coordinates);
+		});
 	}
 }

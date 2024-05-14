@@ -2,11 +2,15 @@ package com.github.sef24sp4.collisionsystem.map;
 
 import com.github.sef24sp4.collisionsystem.CollidableEntityContainer;
 import com.github.sef24sp4.common.ai.map.MapNode;
+import com.github.sef24sp4.common.ai.map.NotAdjacentNodeException;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.IVector;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
 
 public class Bucket implements INode {
 	private final Collection<CollidableEntityContainer> entities = new HashSet<>();
@@ -114,10 +118,15 @@ public class Bucket implements INode {
 
 	/**
 	 * {@inheritDoc}
-	 * TODO: Requires that node is adjacent.
+	 *
+	 * @throws NotAdjacentNodeException If the {@link IVector fromPosition} is not in an adjacent node.
 	 */
 	@Override
-	public Optional<IVector> getSafeCoordinatesForEntity(final ICollidableEntity entity, final IVector fromPosition) {
+	public Optional<IVector> getSafeCoordinatesForEntity(final ICollidableEntity entity, final IVector fromPosition) throws NotAdjacentNodeException {
+		if (!this.parent.getNodeContaining(fromPosition).map(this::isNodeAdjacent).orElse(false)) {
+			throw new NotAdjacentNodeException(String.format("The fromPosition %s is not in an adjacent node to this node.", fromPosition));
+		}
+
 		//TODO:
 		/*
 		 * If distance to other entity is greater than the sum of both radi and distance to goal node, then it is clear.
