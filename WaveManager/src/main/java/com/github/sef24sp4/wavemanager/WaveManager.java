@@ -30,8 +30,25 @@ public class WaveManager implements IWaveManager {
 
 	private final Map<EnemyRole, List<EnemySPI>> enemyCatalog = new HashMap<>();
 
+	/**
+	 * Constructs a new WaveManager to manage waves, wave timing and enemy compositions.
+	 * <p>
+	 * This constructor initializes the WaveManager with the specified starting wave number,
+	 * the initial countdown until the next wave spawns, and game settings to manage spawning.
+	 * The actual wave number starts one less than the provided startWaveNumber
+	 * because it will be incremented by the nextWave function at the start of the game.
+	 *
+	 * @param startWaveNumber The wave number from which to start the count, must be greater than 0.
+	 * @param timeUntilNextWaveInSeconds The time in seconds until the next wave spawns, can't be negative.
+	 * If provided 0 it means that no time should be wasted and the next wave should spawn when it's ready.
+	 * @param gameSettings The settings for the map to assign spawn locations.
+	 *
+	 * @exception IllegalArgumentException is thrown when the startWaveNumber is below 1, or if
+	 * timeUntilNextWaveInSeconds is negative.
+	 */
 	public WaveManager(int startWaveNumber, int timeUntilNextWaveInSeconds, IGameSettings gameSettings) {
 		if (startWaveNumber < 1) throw new IllegalArgumentException("startWaveNumber must be greater than 0");
+		if (timeUntilNextWaveInSeconds < 0) throw new IllegalArgumentException("timeUntilNextWaveInSeconds must be greater or equal to 0");
 		this.waveNumber = startWaveNumber - 1; // gets +1 in the nextWave function
 		this.gameSettings = gameSettings;
 		this.timeUntilNextWaveInSeconds = timeUntilNextWaveInSeconds;
