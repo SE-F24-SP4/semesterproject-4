@@ -22,6 +22,9 @@ public final class GameScene {
 	public static void load(final Stage stage) {
 		final Button button = new Button("Back to start");
 		final Pane pane = new Pane(button);
+		final Scene scene = new Scene(pane, stage.getScene().getWidth(), stage.getScene().getHeight());
+		stage.setScene(scene);
+
 		final IGameProcessor gameProcessor = GameScene.getGameProcessor(pane);
 
 		button.addEventHandler(ActionEvent.ANY, event -> {
@@ -33,8 +36,6 @@ public final class GameScene {
 			}
 		});
 
-		final Scene scene = new Scene(pane, stage.getScene().getWidth(), stage.getScene().getHeight());
-		stage.setScene(scene);
 		gameProcessor.begin();
 		stage.show();
 	}
