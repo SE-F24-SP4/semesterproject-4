@@ -6,36 +6,35 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public final class StartMenu {
-	private Stage stage;
+	private Scene scene;
 	@FXML
 	private Button startButton;
 
-	public static void load(final Stage stage) throws IOException {
+	public static void load(final Scene scene) throws IOException {
 		final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(StartMenu.class.getResource("start-menu.fxml")));
 		final Parent root = loader.load();
 
 		final StartMenu startMenu = loader.getController();
-		startMenu.setStage(stage);
+		startMenu.setScene(scene);
 
-		stage.setScene(new Scene(root));
-		stage.show();
+
+		scene.setRoot(root);
 	}
 
-	public Stage getStage() {
-		return this.stage;
+	public Scene getScene() {
+		return this.scene;
 	}
 
-	public void setStage(final Stage stage) {
-		this.stage = stage;
+	private void setScene(final Scene scene) {
+		this.scene = scene;
 	}
 
 	public void startGame(final ActionEvent actionEvent) {
-		GameScene.load(this.getStage());
+		GameScene.load(this.getScene());
 	}
 }
