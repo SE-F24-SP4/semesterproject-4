@@ -49,14 +49,14 @@ class CollidableEntityContainerTest {
 	}
 
 	@Test
-	void collidesWith() {
+	void doesCollideWith() {
 		final ICollidableEntity otherEntity = Mockito.mock();
 		Mockito.when(otherEntity.getPolygonCoordinates()).thenReturn(new IVector[]{new BasicVector(3, 4)});
 		Mockito.when(otherEntity.getCoordinates()).thenReturn(new Coordinates(10, 0));
 		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(otherEntity);
 
 		Mockito.when(this.entity1.getCoordinates()).thenReturn(new Coordinates(0, 0));
-		assertTrue(this.container.collidesWith(otherContainer));
+		assertTrue(this.container.doesCollideWith(otherContainer));
 	}
 
 	@Test
@@ -67,7 +67,7 @@ class CollidableEntityContainerTest {
 		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(otherEntity);
 
 		Mockito.when(this.entity1.getCoordinates()).thenReturn(new Coordinates(0, 0));
-		assertFalse(this.container.collidesWith(otherContainer));
+		assertFalse(this.container.doesCollideWith(otherContainer));
 	}
 
 	@Test

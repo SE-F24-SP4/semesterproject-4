@@ -7,7 +7,6 @@ import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Bucket implements INode {
 	private final Collection<CollidableEntityContainer> entities = new HashSet<>();
@@ -78,7 +77,7 @@ public class Bucket implements INode {
 
 	@Override
 	public Collection<CollidableEntityContainer> getCollidingEntitiesFor(final CollidableEntityContainer entity) {
-		return this.entities.stream().filter(entity::collidesWith).toList();
+		return this.entities.stream().filter(entity::doesCollideWith).toList();
 	}
 
 	@Override

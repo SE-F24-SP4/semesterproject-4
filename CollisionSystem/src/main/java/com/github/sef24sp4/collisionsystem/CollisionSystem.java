@@ -55,7 +55,7 @@ public class CollisionSystem implements CollisionSystemSPI {
 		}
 		for (final CollidableEntityContainer entity1 : this.collidableEntities) {
 			for (final CollidableEntityContainer entity2 : this.collidableEntities) {
-				if (entity1.collidesWith(entity2)) {
+				if (entity1.doesCollideWith(entity2)) {
 					entity1.getEntity().collide(entityManager, entity2.getEntity());
 				}
 			}

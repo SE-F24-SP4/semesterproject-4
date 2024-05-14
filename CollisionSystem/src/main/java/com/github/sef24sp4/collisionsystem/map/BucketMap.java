@@ -127,7 +127,7 @@ public final class BucketMap implements IGridMap {
 		return this.getPotentiallyOverlappingNodes(entity).parallelStream()
 				.<CollidableEntityContainer>mapMulti((node, output) -> node.getAllEntities().forEach(output))
 				.distinct()
-				.filter(entity::collidesWith)
+				.filter(entity::doesCollideWith)
 				.toList();
 	}
 

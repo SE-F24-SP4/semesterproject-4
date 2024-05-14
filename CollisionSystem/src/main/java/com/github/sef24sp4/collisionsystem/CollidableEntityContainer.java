@@ -40,7 +40,7 @@ public class CollidableEntityContainer {
 	 * @param entityContainer The {@link CollidableEntityContainer} object containing the other {@link ICollidableEntity entity}.
 	 * @return {@code true} if the
 	 */
-	public boolean collidesWith(final CollidableEntityContainer entityContainer) {
+	public boolean doesCollideWith(final CollidableEntityContainer entityContainer) {
 		if (this.equals(entityContainer)) return false;
 		return this.getCoordinates().getVectorTo(entityContainer.getCoordinates()).getNorm() <= this.getRadius() + entityContainer.getRadius();
 	}
