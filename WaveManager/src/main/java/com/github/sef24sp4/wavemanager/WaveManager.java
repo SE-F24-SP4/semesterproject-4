@@ -85,7 +85,7 @@ public class WaveManager implements IWaveManager {
 		this.waveNumber++;
 		this.updateDifficulty();
 		this.enemyComposition = this.calculateWaveComposition();
-		this.assignSpawnLocation();
+		this.assignSpawnLocations();
 		this.timeOfLastCheck = System.currentTimeMillis();
 	}
 
@@ -172,7 +172,7 @@ public class WaveManager implements IWaveManager {
 
 
 	// goes through the list of enemies and assigns them a spawn location
-	private void assignSpawnLocation() {
+	private void assignSpawnLocations() {
 		this.assignCircularSpawnPoints();
 		// cannot spawn near the player
 		// can spawn in the same area, like north or south of the map
