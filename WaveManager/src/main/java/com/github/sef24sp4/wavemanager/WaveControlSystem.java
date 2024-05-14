@@ -47,9 +47,7 @@ public class WaveControlSystem implements IEntityProcessingService, IGamePluginS
 				waveManager.getAllEntities().forEach(entityManager::addEntity);
 				waveManager.setWaveStatus(WaveStatus.ONGOING);
 			}
-			case null, default -> {
-
-			}
+			case null, default -> throw new IllegalStateException("Unexpected value: " + waveManager.getWaveStatus());
 		}
 	}
 
