@@ -32,7 +32,7 @@ public class WaveControlSystem implements IEntityProcessingService, IGamePluginS
 				}
 			}
 			case WAITING -> {
-				int currentTimeUntilNextWave = waveManager.getWaveTimer();
+				int currentTimeUntilNextWave = waveManager.getSecondsUntilNextWave();
 				if (currentTimeUntilNextWave <= 0) {
 					waveManager.setWaveStatus(WaveStatus.READY);
 					// remove label or hide text

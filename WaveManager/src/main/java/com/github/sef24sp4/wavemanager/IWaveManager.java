@@ -58,7 +58,7 @@ public interface IWaveManager extends IEntityManager {
 	 *
 	 * @return The number of seconds remaining until the next wave starts.
 	 */
-	public int getWaveTimer();
+	public int getSecondsUntilNextWave();
 
 	/**
 	 * Handles all logic that should happen when transitioning to the next wave.

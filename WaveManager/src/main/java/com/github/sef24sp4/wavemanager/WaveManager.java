@@ -59,7 +59,7 @@ public class WaveManager implements IWaveManager {
 	}
 
 	@Override
-	public int getWaveTimer() {
+	public int getSecondsUntilNextWave() {
 		final long remainingTime = Math.multiplyFull(this.timeUntilNextWaveInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastCheck);
 		if (remainingTime <= 0) return 0;
 		return Math.toIntExact(Math.ceilDiv(remainingTime, 1000));
