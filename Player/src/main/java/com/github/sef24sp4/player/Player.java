@@ -26,6 +26,10 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	private final Optional<WeaponSPI> baseWeapon = ServiceLoader.load(WeaponSPI.class).findFirst();
 	private WeaponSPI currentWeapon;
+	//Last time hit by an IAttackingEntity in milliseconds.
+	private long timeOfLastCollision;
+	//Cooldown time between getting hit by IAttackingEntity in milliseconds.
+	private long collisionCooldown = 2000;
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
@@ -138,7 +142,11 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 			this.currentWeapon = weaponItem.getWeaponSPI();
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
-			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
+			long currentTIme = System.currentTimeMillis();
+			if (this.timeOfLastCollision + collisionCooldown < currentTIme) {
+				this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
+				this.timeOfLastCollision = System.currentTimeMillis();
+			}
 		}
 	}
 }
