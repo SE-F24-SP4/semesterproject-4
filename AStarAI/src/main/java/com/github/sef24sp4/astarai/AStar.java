@@ -1,10 +1,7 @@
 package com.github.sef24sp4.astarai;
 
-import com.github.sef24sp4.common.ai.IPathfindingProvider;
-import com.github.sef24sp4.common.ai.map.Map;
+import com.github.sef24sp4.common.ai.map.NotAdjacentNodeException;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
-import com.github.sef24sp4.common.ai.map.MapNode;
-import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.*;
@@ -13,9 +10,8 @@ public class AStar {
 	private final Node startNode;
 	private final Node goalNode;
 	private Node currentNode;
-	//private List<Node> openList = new ArrayList<>();
 	private final Collection<Node> openList = new HashSet<>();
-	private List<Node> pathList = new LinkedList<>();
+	private final List<Node> pathList = new LinkedList<>();
 
 
 	public AStar(final Node startNode, final Node goalNode) {
@@ -31,8 +27,6 @@ public class AStar {
 	//startNode is where the entity using AI is.
 	//goalNode is the position of the targetGoal
 	//currentNode, is used when calculating next node to open.
-	@Override
-	public Coordinates nextCoordinateInPath(ICollidableEntity entity, IVector targetCoordinate) {
 
 	private void setFCostForNode(Node aNode) {
 		//gCost
@@ -49,8 +43,6 @@ public class AStar {
 		this.currentNode.setGCost(0);
 		while (!this.currentNode.hasSameMapNode(this.goalNode)) { //while goal == not reached
 
-			//TODO: need to specify currentNode?
-			this.currentNode.setChecked(true);
 			this.openList.remove(this.currentNode);
 
 			//get neighbors and open nodes.
@@ -61,7 +53,6 @@ public class AStar {
 			if (this.openList.isEmpty()) {
 				break;
 			}
-
 			Optional<Node> minNode = this.openList.stream()
 					.min(Comparator.comparingDouble(Node::getFCost)
 							.thenComparing(Node::getGCost));
@@ -77,57 +68,42 @@ public class AStar {
 		return this.pathList;
 	}
 
-	private void trackPath() { //This method can be used to draw and track the path from goalNode to startNode.
 
-		while (this.currentNode != this.startNode) {
+	private void trackPath() {
+
+		while (!this.currentNode.hasSameMapNode(this.startNode)) { //while current node != startnode : backtrack path
 			this.pathList.add(0, this.currentNode);
 			this.currentNode = this.currentNode.getParent(); //parent to currentnode, is the next on path.
 		}
-		return this.goalReached; //return if goal is reached or not.
 	}
 
-	//Method for open nodes if: not open, not checked and not solid : open it.
+	//Method for open node if not already in the openList
 	private void openNode(ICollidableEntity entity, Node aNode) {
 		if (this.openList.contains(aNode)) return;
 
 		//Check how far Entity can go into the aNode.
-		Optional<IVector> aNodeSafeCoordinates = aNode.getMapNode().getSafeCoordinatesForEntity(entity, this.currentNode.getCoordinates());
+		try {
+			Optional<IVector> aNodeSafeCoordinates = aNode.getMapNode().getSafeCoordinatesForEntity(entity, this.currentNode.getCoordinates());
 
-		if (aNodeSafeCoordinates.isPresent()) {
+			if (aNodeSafeCoordinates.isPresent()) {
 
-			double distanceFromParentNode = aNodeSafeCoordinates.get().getVectorTo(this.currentNode.getCoordinates()).getNorm();
+				double distanceFromParentNode = aNodeSafeCoordinates.get().getVectorTo(this.currentNode.getCoordinates()).getNorm();
 
-			Node newNode = new Node(aNodeSafeCoordinates.get(), aNode.getMapNode());
+				Node newNode = new Node(aNodeSafeCoordinates.get(), aNode.getMapNode());
 
-			newNode.setParent(this.currentNode); //set currentnode as parent
-			newNode.setGCost(this.currentNode.getGCost() + distanceFromParentNode);
-			this.setFCostForNode(newNode); //set cost when node is opened
+				newNode.setParent(this.currentNode); //set currentnode as parent
+				newNode.setGCost(this.currentNode.getGCost() + distanceFromParentNode);
+				this.setFCostForNode(newNode); //set cost when node is opened
 
-			this.openList.add(newNode);
+				this.openList.add(newNode);
+			}
+		} catch (NotAdjacentNodeException e) {
+			throw new RuntimeException(e);
 		}
-		else {
 
-			aNode.setGCost(this.currentNode.getGCost() + 1);
-
-		}
-
-		//if empty = solid node.
-		//if not empty. Coodinate to openlist.
-
-		//c1.getvectorto(c2).getnorm) = distance
-
-		//if a node is direct nighbor gcost = current.node + 1
-		//if a node is diagonal neighbor gcost = current.node + root(2)
-		aNode.setGCost(this.currentNode.getGCost() + Math.sqrt(2));
-
-		this.openList.add(aNode);
 
 	}
 
-
-	public void setCurrentNode(final Node currentNode) {
-		this.currentNode = currentNode;
-	}
 }
 
 

@@ -2,7 +2,6 @@ package com.github.sef24sp4.astarai;
 
 
 import com.github.sef24sp4.common.ai.map.MapNode;
-import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.Collection;
@@ -12,9 +11,7 @@ public class Node {
 	private double gCost;
 	private double fCost;
 	private final IVector coordinates;
-
 	private final MapNode mapNode;
-	private Node goalNode;
 
 	public Node(IVector coordinates, MapNode mapNode) {
 		this.coordinates = coordinates;
@@ -23,19 +20,18 @@ public class Node {
 
 	public Collection<Node> getNeighboringNodes() {
 		return this.mapNode.getNeighboringNodes().stream().map(mapNode1 -> new Node(this.coordinates, mapNode1)).toList();
-
-	}
-
-	public IVector getCoordinates() {
-		return coordinates;
-	}
-
-	public MapNode getMapNode() {
-		return this.mapNode;
 	}
 
 	public boolean hasSameMapNode(Node node) {
 		return this.getMapNode().equals(node.getMapNode());
+	}
+
+	public IVector getCoordinates() {
+		return this.coordinates;
+	}
+
+	public MapNode getMapNode() {
+		return this.mapNode;
 	}
 
 	public double getGCost() {

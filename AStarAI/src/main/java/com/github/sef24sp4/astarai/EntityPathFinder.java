@@ -10,7 +10,6 @@ import java.util.*;
 
 public class EntityPathFinder implements IPathfindingProvider {
 	private static final int MAX_CAPACITY = 10;
-
 	private final SequencedMap<ICollidableEntity, IPathCaching> cachingMap = new LinkedHashMap<>();
 
 
@@ -26,7 +25,5 @@ public class EntityPathFinder implements IPathfindingProvider {
 		}
 
 		return this.cachingMap.get(entity).getNextCoordinates(entity, targetCoordinate);
-
-		// sometimes invalidate all caches to avoid filling memory?
 	}
 }
