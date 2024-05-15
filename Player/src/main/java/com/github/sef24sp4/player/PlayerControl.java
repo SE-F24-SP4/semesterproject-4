@@ -4,14 +4,11 @@ import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.gamecontrol.InputAction;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-import java.util.ServiceLoader;
 
 public class PlayerControl implements IEntityProcessingService {
 	private final Player player = Player.getPlayer();
 
-	private final ServiceLoader<WeaponSPI> weaponProviders = ServiceLoader.load(WeaponSPI.class);
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		double speed = this.player.getWalkSpeed();
@@ -19,7 +16,6 @@ public class PlayerControl implements IEntityProcessingService {
 		IGameInput keys = gameSettings.getKeys();
 		double playerX = this.player.getX();
 		double playerY = this.player.getY();
-
 		//Set rotation to look a cursor
 		this.player.setRotation(
 				this.player.getCoordinates().getRelativeRotationTo(
@@ -28,12 +24,7 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			this.weaponProviders.forEach(weaponSPI -> {
-						if (weaponSPI.getRemainingCoolDownTicks() <= 0 && weaponSPI.getAmmoCount() > 0) {
-							weaponSPI.shoot(entityManager, this.player);
-						}
-					}
-			);
+			this.player.shoot(entityManager);
 		}
 		if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
 			this.player.setX(playerX - diagonalSpeed);

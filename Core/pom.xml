@@ -37,6 +37,12 @@
 			<artifactId>javafx-base</artifactId>
 			<version>21.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>CommonCollisionSystem</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -52,7 +58,8 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<includeArtifactIds>javafx-controls,javafx-graphics,javafx-base,javafx-fxml</includeArtifactIds>
+							<includeArtifactIds>javafx-controls,javafx-graphics,javafx-base,javafx-fxml
+							</includeArtifactIds>
 							<outputDirectory>../mods-mvn</outputDirectory>
 						</configuration>
 					</execution>
