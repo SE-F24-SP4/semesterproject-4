@@ -68,8 +68,10 @@ public interface IWaveManager extends IEntityManager {
 	 * player health or resources, and recalculating difficulties. It ensures the game
 	 * progresses smoothly from one wave to the next, maintaining the continuity and
 	 * challenge of the gameplay.
+	 *
+	 * @return The new wave number that it have transitioned to.
 	 */
-	public void nextWave();
+	public int nextWave();
 
 	/**
 	 * Starts the wave and adds the enemy composition to the entityManager provided.

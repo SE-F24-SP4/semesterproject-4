@@ -155,12 +155,13 @@ public class WaveManager implements IWaveManager {
 	}
 
 	@Override
-	public void nextWave() {
+	public int nextWave() {
 		this.waveNumber++;
 		this.updateDifficulty();
 		this.enemyComposition = this.calculateWaveComposition();
 		this.assignSpawnLocations();
 		this.timeOfLastWaveStart = System.currentTimeMillis();
+		return this.waveNumber;
 	}
 
 	private void constructCatalog() {
