@@ -16,6 +16,12 @@ public final class LabelFactory {
 	private LabelFactory() {
 	}
 
+	public static Label create(final IVector coordinates, final String text, final double fontSize) {
+		final Label label = fetchProvider().create(coordinates, text);
+		label.setFontSize(fontSize);
+		return label;
+	}
+
 	public static Label create(final IVector coordinates, final String text) {
 		return fetchProvider().create(coordinates, text);
 	}
