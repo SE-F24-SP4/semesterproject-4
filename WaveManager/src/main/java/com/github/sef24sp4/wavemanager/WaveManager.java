@@ -30,6 +30,9 @@ public class WaveManager implements IWaveManager {
 
 	private final Map<EnemyRole, List<EnemySPI>> enemyCatalog = new HashMap<>();
 
+	private final int baseDifficulty;
+	private final double growthRate;
+
 	/**
 	 * Constructs a new WaveManager to manage waves, wave timing and enemy compositions.
 	 * <p>
@@ -46,12 +49,22 @@ public class WaveManager implements IWaveManager {
 	 * @exception IllegalArgumentException is thrown when the startWaveNumber is below 1, or if
 	 * timeUntilNextWaveInSeconds is negative.
 	 */
-	public WaveManager(int startWaveNumber, int timeUntilNextWaveInSeconds, IGameSettings gameSettings) {
+	public WaveManager(final int startWaveNumber, final int timeUntilNextWaveInSeconds, final IGameSettings gameSettings) {
+		this(startWaveNumber, timeUntilNextWaveInSeconds, gameSettings, 50, 1.25);
+	}
+
+	public WaveManager(final int startWaveNumber, final int timeUntilNextWaveInSeconds, final IGameSettings gameSettings, final int baseDifficulty, final double growthRate) {
 		if (startWaveNumber < 1) throw new IllegalArgumentException("startWaveNumber must be greater than 0");
 		if (timeUntilNextWaveInSeconds < 0) throw new IllegalArgumentException("timeUntilNextWaveInSeconds must be greater or equal to 0");
+		if (baseDifficulty < 1) throw new IllegalArgumentException("baseDifficulty must be greater than 0");
+		if (growthRate < 1) throw new IllegalArgumentException("growthRate must be greater than 0");
+
 		this.waveNumber = startWaveNumber - 1; // gets +1 in the nextWave function
 		this.gameSettings = gameSettings;
 		this.timeUntilNextWaveInSeconds = timeUntilNextWaveInSeconds;
+		this.baseDifficulty = baseDifficulty;
+		this.growthRate = growthRate;
+
 		this.constructCatalog();
 	}
 
@@ -117,9 +130,7 @@ public class WaveManager implements IWaveManager {
 	}
 
 	private void updateDifficulty() {
-		int baseDifficulty = 50;
-		double growthRate = 1.25;
-		this.waveDifficulty = Math.round(baseDifficulty * Math.pow(growthRate, this.waveNumber - 1));
+		this.waveDifficulty = Math.round(this.baseDifficulty * Math.pow(this.growthRate, this.waveNumber - 1));
 	}
 
 	private Collection<IEntity> calculateWaveComposition() {
