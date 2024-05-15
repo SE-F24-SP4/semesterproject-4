@@ -6,6 +6,7 @@ import com.github.sef24sp4.core.interfaces.IGameProcessor;
 import com.github.sef24sp4.core.javafxbindings.AnimationTimerTickExecutor;
 import com.github.sef24sp4.core.javafxbindings.EntityToJavaFxMapper;
 import com.github.sef24sp4.core.javafxbindings.JavaFxInputInitializer;
+import com.github.sef24sp4.core.javafxbindings.JavaFxLabelProvider;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +23,8 @@ public final class GameScene {
 		final Button button = new Button("Back to start");
 		final Pane pane = new Pane(button);
 		scene.setRoot(pane);
+
+		JavaFxLabelProvider.setRoot(pane);
 
 		final IGameProcessor gameProcessor = GameScene.getGameProcessor(pane);
 
