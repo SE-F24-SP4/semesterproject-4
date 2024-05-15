@@ -1,7 +1,10 @@
 package com.github.sef24sp4.core.scenes;
 
+import com.github.sef24sp4.common.collisionsystem.CollisionSystemProvider;
+import com.github.sef24sp4.common.collisionsystem.CollisionSystemSPI;
 import com.github.sef24sp4.core.game.GameBuilder;
 import com.github.sef24sp4.core.game.GameSettings;
+import com.github.sef24sp4.core.game.GameSettingsProvider;
 import com.github.sef24sp4.core.interfaces.IGameProcessor;
 import com.github.sef24sp4.core.javafxbindings.AnimationTimerTickExecutor;
 import com.github.sef24sp4.core.javafxbindings.EntityToJavaFxMapper;
@@ -45,13 +48,18 @@ public final class GameScene {
 		gameSettings.setDisplayHeight(Math.toIntExact(Math.round(pane.getHeight())));
 		gameSettings.setDisplayWidth(Math.toIntExact(Math.round(pane.getWidth())));
 
+		GameSettingsProvider.setSettings(gameSettings);
+
 		pane.widthProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayWidth(newValue.intValue())));
 		pane.heightProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayHeight(newValue.intValue())));
+
+		final CollisionSystemSPI collisionSystemSPI = CollisionSystemProvider.load().create(gameSettings);
 
 		return new GameBuilder()
 				.setGameTickExecutor(new AnimationTimerTickExecutor())
 				.setEntityEntityToGraphicsMapper(new EntityToJavaFxMapper(pane.getChildren()))
 				.setGameSettings(gameSettings)
+				.setCollisionSystemSPI(collisionSystemSPI)
 				.build();
 	}
 }

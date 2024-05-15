@@ -1,5 +1,6 @@
 package com.github.sef24sp4.common.ai.map;
 
+import com.github.sef24sp4.common.interfaces.GameSettingsLoader;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 
 import java.util.Optional;
@@ -19,6 +20,18 @@ public interface MapProvider {
 	 */
 	public static Optional<Map> load(final IGameSettings gameSettings) {
 		return ServiceLoader.load(MapProvider.class).findFirst().map(s -> s.fetch(gameSettings));
+	}
+
+	/**
+	 * An alias for {@link #load(IGameSettings) load(GameSettingsLoader.load())}.
+	 *
+	 * @return An {@link Optional} with the fetched {@link Map} if a {@link MapProvider} was found.
+	 * Otherwise, an {@link Optional#empty() empty Optional} is returned.
+	 * @see #fetch(IGameSettings)
+	 * @see #load(IGameSettings)
+	 */
+	public static Optional<Map> load() {
+		return load(GameSettingsLoader.load());
 	}
 
 	/**
