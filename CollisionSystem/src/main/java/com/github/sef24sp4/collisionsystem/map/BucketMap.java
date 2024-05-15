@@ -7,10 +7,6 @@ import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.*;
 
-/* TODO: make a public static provider method.
- * https://docs.oracle.com/en/java/javase/21/docs/api//java.base/java/util/ServiceLoader.html
- */
-
 public final class BucketMap implements IGridMap {
 	private final int nodeSize;
 	private final INode[][] grid;
