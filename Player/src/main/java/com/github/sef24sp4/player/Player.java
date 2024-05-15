@@ -2,6 +2,7 @@ package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.entities.IHealingEntity;
 import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
+import com.github.sef24sp4.common.item.itemtypes.WeaponItem;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
@@ -11,14 +12,20 @@ import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.metadata.IGameMetadata;
 import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
+import com.github.sef24sp4.common.weapon.WeaponSPI;
+
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
 	private double health = this.maxHealth;
 	private final IGameMetadata metadata;
 	private static final Player PLAYER = new Player();
-	private SpeedControl speedControl = new SpeedControl(2);
+	private final SpeedControl speedControl = new SpeedControl(2);
 
+	private final Optional<WeaponSPI> baseWeapon = ServiceLoader.load(WeaponSPI.class).findFirst();
+	private WeaponSPI currentWeapon;
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
@@ -106,6 +113,17 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		if (this.health >= this.maxHealth) this.health = this.maxHealth;
 	}
 
+	public Optional<WeaponSPI> getActiveWeapon() {
+		if (this.currentWeapon != null && this.currentWeapon.getAmmoCount() <= 0) this.currentWeapon = null;
+		if (this.currentWeapon == null) return this.baseWeapon;
+		return Optional.of(this.currentWeapon);
+	}
+
+	public boolean shoot(final IEntityManager entityManager) {
+		return this.getActiveWeapon().map(weaponSPI -> weaponSPI.shoot(entityManager, this)).orElse(false);
+	}
+
+
 	@Override
 	public void collide(IEntityManager entityManager, ICollidableEntity otherEntity) {
 		if (otherEntity instanceof CommonProjectile projectile && projectile.getShooter() == this) return;
@@ -114,6 +132,9 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		}
 		if (otherEntity instanceof ISpeedItem speedItem) {
 			this.speedControl.setSpeedBuff(speedItem);
+		}
+		if (otherEntity instanceof WeaponItem weaponItem) {
+			this.currentWeapon = weaponItem.getWeaponSPI();
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
 			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
