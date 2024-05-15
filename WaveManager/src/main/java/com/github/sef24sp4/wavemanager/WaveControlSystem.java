@@ -11,16 +11,10 @@ public class WaveControlSystem implements IEntityProcessingService, IGamePluginS
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		switch (waveManager.getWaveStatus()) {
-			case ONGOING -> {
-				waveManager.processOngoingWave(entityManager);
-			}
-			case WAITING -> {
-				waveManager.processWaitingWave();
-			}
-			case READY -> {
-				waveManager.startWaveWithEntities(entityManager);
-			}
-			case null, default -> throw new IllegalStateException("Unexpected value: " + waveManager.getWaveStatus());
+			case ONGOING -> waveManager.processOngoingWave(entityManager);
+			case WAITING -> waveManager.processWaitingWave();
+			case READY -> waveManager.startWaveWithEntities(entityManager);
+			default -> throw new IllegalStateException("Unexpected value: " + waveManager.getWaveStatus());
 		}
 	}
 
