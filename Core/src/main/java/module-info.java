@@ -1,11 +1,11 @@
 import com.github.sef24sp4.common.graphics.label.LabelProvider;
 import com.github.sef24sp4.core.javafxbindings.JavaFxLabelProvider;
-import com.github.sef24sp4.common.collisionsystem.CollisionSystemFactory;
+import com.github.sef24sp4.common.collisionsystem.CollisionSystemProvider;
 
 module Core {
 	uses com.github.sef24sp4.common.services.IEntityProcessingService;
 	uses com.github.sef24sp4.common.services.IGamePluginService;
-	uses CollisionSystemFactory;
+	uses CollisionSystemProvider;
 	requires javafx.graphics;
 	requires javafx.controls;
 	requires javafx.fxml;

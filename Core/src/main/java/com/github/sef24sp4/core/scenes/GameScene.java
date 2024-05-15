@@ -1,6 +1,6 @@
 package com.github.sef24sp4.core.scenes;
 
-import com.github.sef24sp4.common.collisionsystem.CollisionSystemFactory;
+import com.github.sef24sp4.common.collisionsystem.CollisionSystemProvider;
 import com.github.sef24sp4.common.collisionsystem.CollisionSystemSPI;
 import com.github.sef24sp4.core.game.GameBuilder;
 import com.github.sef24sp4.core.game.GameSettings;
@@ -50,7 +50,7 @@ public final class GameScene {
 		pane.widthProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayWidth(newValue.intValue())));
 		pane.heightProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayHeight(newValue.intValue())));
 
-		final CollisionSystemSPI collisionSystemSPI = CollisionSystemFactory.load().create(gameSettings);
+		final CollisionSystemSPI collisionSystemSPI = CollisionSystemProvider.load().create(gameSettings);
 
 		return new GameBuilder()
 				.setGameTickExecutor(new AnimationTimerTickExecutor())

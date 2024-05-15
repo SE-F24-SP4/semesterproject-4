@@ -12,16 +12,16 @@ import java.util.ServiceLoader;
  * Thus, this helper class is provided, which uses a factory pattern circumvent this limitation.
  */
 @FunctionalInterface
-public interface CollisionSystemFactory {
+public interface CollisionSystemProvider {
 	/**
-	 * Loads the first found provider of {@link CollisionSystemFactory} using {@link ServiceLoader} if any.
-	 * Or a {@link CollisionSystemFactory.Default default} dummy implementation if no suitable provider is found.
+	 * Loads the first found provider of {@link CollisionSystemProvider} using {@link ServiceLoader} if any.
+	 * Or a {@link CollisionSystemProvider.Default default} dummy implementation if no suitable provider is found.
 	 *
-	 * @return An implementation of {@link CollisionSystemFactory} if found.
-	 * Otherwise, {@link CollisionSystemFactory.Default}.
+	 * @return An implementation of {@link CollisionSystemProvider} if found.
+	 * Otherwise, {@link CollisionSystemProvider.Default}.
 	 */
-	public static CollisionSystemFactory load() {
-		return ServiceLoader.load(CollisionSystemFactory.class).findFirst().orElse(new CollisionSystemFactory.Default());
+	public static CollisionSystemProvider load() {
+		return ServiceLoader.load(CollisionSystemProvider.class).findFirst().orElse(new CollisionSystemProvider.Default());
 	}
 
 
@@ -39,7 +39,7 @@ public interface CollisionSystemFactory {
 	 * It is provided to make collision system an optional implementation.
 	 * This implementation is essentially a no-op.
 	 */
-	public static final class Default implements CollisionSystemFactory {
+	public static final class Default implements CollisionSystemProvider {
 		@Override
 		public CollisionSystemSPI create(final IGameSettings gameSettings) {
 			return new CollisionSystemSPI() {

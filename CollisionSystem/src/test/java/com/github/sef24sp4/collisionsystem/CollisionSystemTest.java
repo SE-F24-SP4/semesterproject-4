@@ -43,7 +43,7 @@ class CollisionSystemTest {
 		Mockito.lenient().when(this.gameSettings.getDisplayWidth()).thenReturn(600);
 
 
-		this.collisionSystem = (new CollisionSystemFactory()).create(this.gameSettings);
+		this.collisionSystem = (new CollisionSystemProvider()).create(this.gameSettings);
 
 
 		Mockito.lenient().when(this.entity1.getCoordinates()).thenReturn(new Coordinates(3, 3));
