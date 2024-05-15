@@ -5,11 +5,6 @@ import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.weaponpack.AbstractWeaponItem;
 
 public class ShotGunItem extends AbstractWeaponItem {
-	@Override
-	public WeaponSPI getWeaponSPI() {
-		return new ShotGun();
-	}
-
 	public ShotGunItem() {
 		this.setRotation(3.14);
 		this.setPolygonCoordinates(
@@ -27,5 +22,10 @@ public class ShotGunItem extends AbstractWeaponItem {
 				new Coordinates(-6, -4),
 				new Coordinates(-6, -10)
 		);
+	}
+
+	@Override
+	public WeaponSPI getWeaponSPI() {
+		return new ShotGun();
 	}
 }

@@ -9,6 +9,7 @@ public class ShotGunBullet extends AbstractProjectile {
 
 	/**
 	 * Constructs the BaseProjectile with the shooter.
+	 *
 	 * @param shooter Refereres to the shooter or player, that holds the weapon.
 	 */
 	protected ShotGunBullet(IEntity shooter) {
@@ -23,6 +24,7 @@ public class ShotGunBullet extends AbstractProjectile {
 
 	/**
 	 * Gets the amount of damage.
+	 *
 	 * @return The value of damage.
 	 */
 	@Override

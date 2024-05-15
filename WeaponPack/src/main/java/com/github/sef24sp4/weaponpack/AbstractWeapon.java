@@ -3,9 +3,9 @@ package com.github.sef24sp4.weaponpack;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 
 public abstract class AbstractWeapon implements WeaponSPI {
+	private final long maxCoolDownTicks;
 	private long timeOfLastShot;
 	private int ammoCount;
-	private final long maxCoolDownTicks;
 
 	public AbstractWeapon(final long maxCoolDownTicks, final int ammoCount) {
 		this.maxCoolDownTicks = maxCoolDownTicks;
@@ -16,6 +16,7 @@ public abstract class AbstractWeapon implements WeaponSPI {
 		 */
 		this.timeOfLastShot = System.nanoTime() - this.maxCoolDownTicks;
 	}
+
 	/**
 	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
 	 *
@@ -50,6 +51,7 @@ public abstract class AbstractWeapon implements WeaponSPI {
 
 	/**
 	 * Gets the amount of ammunition.
+	 *
 	 * @return The value of ammunition.
 	 */
 	@Override

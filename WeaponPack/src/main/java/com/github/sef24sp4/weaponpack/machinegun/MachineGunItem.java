@@ -1,13 +1,10 @@
 package com.github.sef24sp4.weaponpack.machinegun;
+
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.weaponpack.AbstractWeaponItem;
 
 public class MachineGunItem extends AbstractWeaponItem {
-
-	public WeaponSPI getWeaponSPI() {
-		return new MachineGun();
-	}
 
 	public MachineGunItem() {
 		this.setRotation(3.14);
@@ -26,5 +23,10 @@ public class MachineGunItem extends AbstractWeaponItem {
 				new Coordinates(-10, 10),
 				new Coordinates(-10, -10)
 		);
+	}
+
+	@Override
+	public WeaponSPI getWeaponSPI() {
+		return new MachineGun();
 	}
 }
