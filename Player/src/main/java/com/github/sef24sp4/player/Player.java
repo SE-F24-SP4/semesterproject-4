@@ -21,7 +21,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	private final double maxHealth = 10;
 	private double health = this.maxHealth;
 	private final IGameMetadata metadata;
-	private static final Player PLAYER = new Player();
+	private static Player activePlayerInstance = reinitializePlayer();
 	private final SpeedControl speedControl = new SpeedControl(2);
 
 	private final Optional<WeaponSPI> baseWeapon = ServiceLoader.load(WeaponSPI.class).findFirst();
@@ -44,7 +44,12 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 * @return The only instance of the player
 	 */
 	public static Player getPlayer() {
-		return PLAYER;
+		return activePlayerInstance;
+	}
+
+	public static Player reinitializePlayer() {
+		activePlayerInstance = new Player();
+		return activePlayerInstance;
 	}
 
 	/**

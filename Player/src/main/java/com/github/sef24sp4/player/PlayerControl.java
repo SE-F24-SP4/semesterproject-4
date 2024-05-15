@@ -2,12 +2,18 @@ package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.gamecontrol.InputAction;
+import com.github.sef24sp4.common.graphics.label.Label;
+import com.github.sef24sp4.common.graphics.label.LabelFactory;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
+import com.github.sef24sp4.common.vector.Coordinates;
 
 public class PlayerControl implements IEntityProcessingService {
 	private final Player player = Player.getPlayer();
+
+	private final Label healthLabel = LabelFactory.create(new Coordinates(0, 21), "", 20);
+	private final Label ammoCountLabel = LabelFactory.create(new Coordinates(0, 42), "", 20);
 
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
@@ -64,5 +70,20 @@ public class PlayerControl implements IEntityProcessingService {
 				this.player.setY(gameSettings.getDisplayHeight());
 			}
 		}
+		this.updateLabels();
+	}
+
+	public void updateLabels() {
+		//Update AmmoCountLabel
+		this.player.getActiveWeapon().ifPresent(w -> {
+			String ammoCount;
+			if (w.getAmmoCount() == Integer.MAX_VALUE) {
+				ammoCount = "∞";
+			} else ammoCount = String.valueOf(w.getAmmoCount());
+			this.ammoCountLabel.setText(String.format("Ammo: %s", ammoCount));
+		});
+
+		//Update heal
+		this.healthLabel.setText(String.format("Health: %d", Math.round(this.player.getHealth())));
 	}
 }
