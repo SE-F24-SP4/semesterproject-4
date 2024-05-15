@@ -4,8 +4,11 @@ import com.github.sef24sp4.common.enemy.CommonEnemy;
 import com.github.sef24sp4.common.enemy.EnemyRole;
 import com.github.sef24sp4.common.enemy.EnemySPI;
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.graphics.label.Label;
+import com.github.sef24sp4.common.graphics.label.LabelFactory;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
+import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.Coordinates;
 
 import java.util.*;
@@ -36,6 +39,9 @@ public class WaveManager implements IWaveManager {
 
 	// used in processWaitingWave() to measure time and make sure we update only when needed to.
 	private long lastSecondTimeCheck;
+
+	private final Label waveLabel;
+	private final Label countDownLabel;
 
 	// test
 	private final long maxCoolDownTicks = 8_000;
@@ -72,6 +78,9 @@ public class WaveManager implements IWaveManager {
 		this.waveCooldownInSeconds = waveCooldownInSeconds;
 		this.baseDifficulty = baseDifficulty;
 		this.growthRate = growthRate;
+
+		this.waveLabel = LabelFactory.create(new BasicVector((this.gameSettings.getDisplayWidth() / 2.0) - 70, 0), "Wave: 0", 40);
+		this.countDownLabel = LabelFactory.create(new BasicVector((this.gameSettings.getDisplayWidth() / 2.0) - 50, (this.gameSettings.getDisplayHeight() / 2.0) - 150), "5", 200);
 
 		this.constructCatalog();
 	}
@@ -130,12 +139,13 @@ public class WaveManager implements IWaveManager {
 		long currentTimeUntilNextWave = Math.ceilDiv(this.getSecondsUntilNextWave(), 1000);
 		if (currentTimeUntilNextWave <= 0) {
 			this.waveStatus = WaveStatus.READY;
-			// remove label or hide text
+			// hide text
+			this.countDownLabel.setText("");
 
 		} else if (currentTimeUntilNextWave != this.lastSecondTimeCheck) {
 			this.lastSecondTimeCheck = currentTimeUntilNextWave;
 			// update label countdown
-			System.out.println(currentTimeUntilNextWave);
+			this.countDownLabel.setText(String.valueOf(currentTimeUntilNextWave));
 		}
 	}
 
@@ -146,7 +156,7 @@ public class WaveManager implements IWaveManager {
 			this.waveStatus = WaveStatus.WAITING;
 			this.timeOfLastCheck = System.currentTimeMillis();
 			// update wave number label
-			System.out.println("Wave: " + this.waveNumber);
+			this.waveLabel.setText("Wave: " + this.waveNumber);
 		}
 		// test
 		if (this.maxCoolDownTicks - (System.currentTimeMillis() - this.timeOfLastCheck) < 0) {
