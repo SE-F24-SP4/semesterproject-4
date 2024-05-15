@@ -6,10 +6,8 @@ import com.github.sef24sp4.common.graphics.label.Label;
 import com.github.sef24sp4.common.graphics.label.LabelFactory;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
-import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
-
-import java.nio.charset.StandardCharsets;
+import com.github.sef24sp4.common.vector.Coordinates;
 
 public class PlayerControl implements IEntityProcessingService {
 	private final Player player = Player.getPlayer();
@@ -80,7 +78,7 @@ public class PlayerControl implements IEntityProcessingService {
 		this.player.getActiveWeapon().ifPresent(w -> {
 			String ammoCount;
 			if (w.getAmmoCount() == Integer.MAX_VALUE) {
-				ammoCount = new String(Character.toString('\u221E').getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+				ammoCount = "∞";
 			} else ammoCount = String.valueOf(w.getAmmoCount());
 			this.ammoCountLabel.setText(String.format("Ammo: %s", ammoCount));
 		});
