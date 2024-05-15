@@ -41,12 +41,12 @@ public class PlayerTest {
 
 	@Test
 	void getHealth() {
-		assertEquals(10, this.player.getHealth());
+		assertEquals(50, this.player.getHealth());
 	}
 
 	@Test
 	void getMaxHealth() {
-		assertEquals(10, this.player.getMaxHealth());
+		assertEquals(50, this.player.getMaxHealth());
 	}
 
 	@Test

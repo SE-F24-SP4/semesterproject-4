@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 
 public final class Player extends CommonEntity implements ICollidableEntity {
-	private final double maxHealth = 10;
+	private final double maxHealth = 50;
 	private double health = this.maxHealth;
 	private final IGameMetadata metadata;
 	private static Player activePlayerInstance = reinitializePlayer();
@@ -26,6 +26,10 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	private final Optional<WeaponSPI> baseWeapon = ServiceLoader.load(WeaponSPI.class).findFirst();
 	private WeaponSPI currentWeapon;
+	//Last time hit by an IAttackingEntity in milliseconds.
+	private long timeOfLastCollision;
+	//Cooldown time between getting hit by IAttackingEntity in milliseconds.
+	private long collisionCooldown = 1000;
 
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
@@ -143,7 +147,11 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 			this.currentWeapon = weaponItem.getWeaponSPI();
 		}
 		if (otherEntity instanceof IAttackingEntity attackingEntity) {
-			this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
+			long currentTime = System.currentTimeMillis();
+			if (this.timeOfLastCollision + this.collisionCooldown < currentTime) {
+				this.takeDamage(attackingEntity.getAttackDamage(), entityManager);
+				this.timeOfLastCollision = System.currentTimeMillis();
+			}
 		}
 	}
 }
