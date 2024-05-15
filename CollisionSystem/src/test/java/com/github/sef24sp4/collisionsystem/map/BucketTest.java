@@ -1,7 +1,6 @@
 package com.github.sef24sp4.collisionsystem.map;
 
 import com.github.sef24sp4.collisionsystem.CollidableEntityContainer;
-import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.IVector;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.github.sef24sp4.collisionsystem.map.EntityTestTools.getEntityContainerWithMockedEntities;
@@ -99,7 +97,7 @@ class BucketTest {
 
 	/**
 	 * A Helper method to get a {@link Stream} of {@link CollidableEntityContainer} with
-	 * {@link Mockito mocked} {@link ICollidableEntity entities} which overlaps with the test {@link Bucket}.
+	 * {@link Mockito mocked} {@link com.github.sef24sp4.common.entities.ICollidableEntity entities} which overlaps with the test {@link Bucket}.
 	 *
 	 * @return The stream of test {@link CollidableEntityContainer entities}.
 	 * @see #addOverlappingEntity()

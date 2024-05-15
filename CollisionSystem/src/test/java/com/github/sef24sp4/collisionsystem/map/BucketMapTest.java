@@ -354,8 +354,9 @@ class BucketMapTest {
 
 	@ParameterizedTest
 	@MethodSource
-	void getSafeCoordinatesForEntity(final CollidableEntityContainer mainEntity, final IVector expectedTarget, final Collection<CollidableEntityContainer> otherEntities) throws NotAdjacentNodeException {
-		System.out.printf("--- BEGIN TEST ---\n\tEntities: %d\n\tTarget: %s\n\tMain entity: %s\n", otherEntities.size(), expectedTarget, mainEntity);
+	void getSafeCoordinatesForEntity(final CollidableEntityContainer mainEntity, final IVector expectedTarget, final Collection<CollidableEntityContainer> otherEntities)
+			throws NotAdjacentNodeException {
+
 		final MapNode bucket = this.bucketMap.getNodeContaining(new BasicVector(35, 25)).orElseThrow();
 		otherEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e)));
 

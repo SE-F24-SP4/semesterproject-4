@@ -36,7 +36,8 @@ public class Bucket implements INode {
 		return vector;
 	}
 
-	static Optional<IVector> calculateSafeCoordinatesFor(final CollidableEntityContainer mainEntity, final IVector fromPosition, final CollidableEntityContainer otherEntity, final IVector directionToCenter) {
+	static Optional<IVector> calculateSafeCoordinatesFor(final CollidableEntityContainer mainEntity, final IVector fromPosition,
+	                                                     final CollidableEntityContainer otherEntity, final IVector directionToCenter) {
 		final IVector directionToOtherEntity = fromPosition.getVectorTo(otherEntity.getCoordinates());
 		final double clearance = mainEntity.getRadius() + otherEntity.getRadius();
 		final double angleToOtherEntity = directionToOtherEntity.getAngleBetween(directionToCenter);
@@ -76,8 +77,6 @@ public class Bucket implements INode {
 
 	@Override
 	public boolean containsCoordinates(final IVector coordinates) {
-		// System.out.printf("startCoordinates (%.2f, %.2f)\n", this.getStartCoordinates().getX(), this.getStartCoordinates().getY()); //TODO: REMOVE
-		// System.out.printf("endCoordinates (%.2f, %.2f)\n---\n", this.getEndCoordinates().getX(), this.getEndCoordinates().getY()); //TODO: REMOVE
 		return this.getStartCoordinates().getX() <= coordinates.getX() && this.getStartCoordinates().getY() <= coordinates.getY()
 				&& this.getEndCoordinates().getX() >= coordinates.getX() && this.getEndCoordinates().getY() >= coordinates.getY();
 	}
@@ -141,10 +140,6 @@ public class Bucket implements INode {
 			throw new NotAdjacentNodeException(String.format("The fromPosition %s is not in an adjacent node to this node.", fromPosition));
 		}
 
-		//TODO:
-		/*
-		 * If distance to other entity is greater than the sum of both radi and distance to goal node, then it is clear.
-		 */
 		final CollidableEntityContainer mainEntity = new CollidableEntityContainer(entity);
 		final IVector center = this.getCenterCoordinates();
 
@@ -152,18 +147,10 @@ public class Bucket implements INode {
 
 		final Stream<CollidableEntityContainer> potentialCollidingEntities = this.streamOfNodesOverlapping(mainEntity, fromPosition, center)
 				.<CollidableEntityContainer>mapMulti((n, output) -> n.getAllEntities().forEach(output))
-				.distinct()
-				.filter(e -> {
-					System.out.println(e);
-					return true;
-				});
+				.distinct();
 
 		final Collection<IVector> candidateCoordinates = potentialCollidingEntities
 				.<IVector>mapMulti((e, output) -> calculateSafeCoordinatesFor(mainEntity, fromPosition, e, directionToCenter).ifPresent(output))
-				.filter(e -> {
-					System.out.println(e);
-					return true;
-				})
 				.filter(c -> MathTools.isPointBetween(fromPosition, c, center))
 				.toList();
 
@@ -175,11 +162,7 @@ public class Bucket implements INode {
 	private Stream<INode> streamOfNodesOverlapping(final CollidableEntityContainer entity, final IVector... coordinates) {
 		return Arrays.stream(coordinates)
 				.<INode>mapMulti((c, output) -> this.parent.getPotentiallyOverlappingNodes(entity, c).forEach(output))
-				.distinct()
-				.filter(e -> {
-					System.out.println(e);
-					return true;
-				});
+				.distinct();
 	}
 
 	@Override

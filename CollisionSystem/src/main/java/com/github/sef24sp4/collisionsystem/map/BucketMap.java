@@ -34,7 +34,7 @@ public final class BucketMap implements IGridMap {
 	private BucketMap initializeGrid(final INodeFactory factory) {
 		for (int x = 0; x < this.getColumnSize(); x++) {
 			for (int y = 0; y < this.getRowSize(); y++) {
-				grid[x][y] = factory.create(x, y, this);
+				this.grid[x][y] = factory.create(x, y, this);
 			}
 		}
 		return this;
@@ -89,10 +89,8 @@ public final class BucketMap implements IGridMap {
 	@Override
 	public Collection<INode> getNeighboursTo(final INode centerNode, final int radius) {
 		final Collection<INode> neighbours = new HashSet<>();
-		// for (int x = Math.max(0, node.getColumn() - 1); x < Math.min(node.getColumn() + 1, this.getColumnSize()); x++) { //TODO: REMOVE
 
-		for (final INode[] subRow : Arrays.asList(grid).subList(Math.max(0, centerNode.getColumn() - radius), Math.min(centerNode.getColumn() + radius + 1, this.getColumnSize()))) {
-			//System.out.printf("Node %d,%d\nTotal size %d,%d\nRadius: %d\nMax/min %d/%d\n---\n", node.getColumn(), node.getRow(), this.getColumnSize(), this.getRowSize(), radius, Math.max(0, node.getColumn() - radius), Math.min(node.getColumn() + radius, this.getColumnSize())); //TODO: REMOVE
+		for (final INode[] subRow : Arrays.asList(this.grid).subList(Math.max(0, centerNode.getColumn() - radius), Math.min(centerNode.getColumn() + radius + 1, this.getColumnSize()))) {
 			neighbours.addAll(Arrays.asList(subRow).subList(Math.max(0, centerNode.getRow() - radius), Math.min(centerNode.getRow() + radius + 1, this.getRowSize())));
 		}
 

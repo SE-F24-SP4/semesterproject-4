@@ -28,7 +28,7 @@ class CollidableEntityContainerTest {
 				new BasicVector(0, -5),
 				new BasicVector(-3, -3)
 		});
-		this.container = new CollidableEntityContainer(entity1);
+		this.container = new CollidableEntityContainer(this.entity1);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ class CollidableEntityContainerTest {
 
 	@Test
 	void testHashCode() {
-		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(entity1);
+		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(this.entity1);
 		assertEquals(otherContainer.hashCode(), this.container.hashCode());
 
 		// The hashCode of the raw entity should not be the same as for the decorated entity.
@@ -85,7 +85,7 @@ class CollidableEntityContainerTest {
 
 	@Test
 	void testEquals() {
-		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(entity1);
+		final CollidableEntityContainer otherContainer = new CollidableEntityContainer(this.entity1);
 		assertEquals(otherContainer, this.container);
 
 		final ICollidableEntity differentEntity = Mockito.when(Mockito.mock(ICollidableEntity.class).getPolygonCoordinates()).thenReturn(new IVector[]{new BasicVector(3, 4)}).getMock();

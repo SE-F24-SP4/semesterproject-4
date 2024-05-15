@@ -14,7 +14,10 @@ import static java.util.Map.Entry;
  * test {@link com.github.sef24sp4.common.entities.ICollidableEntity entities}
  * and test {@link CollidableEntityContainer entityContainers}.
  */
-public class EntityTestTools {
+public final class EntityTestTools {
+	private EntityTestTools() {
+	}
+
 	/**
 	 * Helper method for easily creating {@link CollidableEntityContainer} with {@link Mockito#mock(Object[]) mocked} {@link ICollidableEntity entities}.
 	 *

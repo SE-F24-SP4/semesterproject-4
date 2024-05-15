@@ -30,7 +30,8 @@ public class SafeCoordinatesTest {
 	 */
 	public static Stream<Arguments> calculateSafeCoordinatesFor() {
 		return Stream.of(
-				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), getEntityContainerWithMockedEntities(38, 25, 5), new BasicVector(43.41013748054263, 16.58986251947377)),
+				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), getEntityContainerWithMockedEntities(38, 25, 5),
+						new BasicVector(43.41013748054263, 16.58986251947377)),
 				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), getEntityContainerWithMockedEntities(41, 21, 5), new BasicVector(47, 13)),
 				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), getEntityContainerWithMockedEntities(49, 21, 5), new BasicVector(49, 11)),
 				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), getEntityContainerWithMockedEntities(35, 23, 5), new BasicVector(43, 17)),
@@ -56,13 +57,11 @@ public class SafeCoordinatesTest {
 	@ParameterizedTest
 	@MethodSource
 	void calculateSafeCoordinatesFor(final CollidableEntityContainer mainEntity, final CollidableEntityContainer otherEntity, final IVector expectedTarget) {
-		System.out.printf("BEGIN TEST ---\n\tMain entity: %s\n\tOther entity: %s\n\tTarget: %s\n", mainEntity, otherEntity, expectedTarget);
 		final IVector vectorToCenter = mainEntity.getCoordinates().getVectorTo(new BasicVector(35, 25));
 
 		final Optional<IVector> result = Bucket.calculateSafeCoordinatesFor(mainEntity, mainEntity.getCoordinates(), otherEntity, vectorToCenter);
 		assertTrue(result.isPresent());
 		final double distanceFromTarget = expectedTarget.getVectorTo(result.get()).getNorm();
-		System.out.printf("\tDistance: %f\n", distanceFromTarget);
 		assertTrue(distanceFromTarget <= DEFAULT_TOLERANCE, String.format("Wanted: %s but got %s, which is %f away", expectedTarget, result.get(), distanceFromTarget));
 	}
 

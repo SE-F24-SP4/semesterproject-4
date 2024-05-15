@@ -8,6 +8,9 @@ import com.github.sef24sp4.common.vector.IVector;
 public final class MathTools {
 	public static final double DEFAULT_TOLERANCE = 0.000_000_000_2;
 
+	private MathTools() {
+	}
+
 	/**
 	 * Check if a {@link IVector point} is between two other points drawn on a straight line.
 	 *

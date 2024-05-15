@@ -13,6 +13,7 @@ public interface IGridMap extends Map, IEntityCollection {
 	 * The {@link INode centerNode} is not included in the returned {@link Collection}.
 	 *
 	 * @param centerNode The {@link INode node} from where to find neighbouring nodes for.
+	 * @param radius     The radius to get neighboring nodes for.
 	 * @return A {@link Collection} of {@link INode} which surrounds the {@link INode centerNode}.
 	 */
 	public Collection<INode> getNeighboursTo(final INode centerNode, final int radius);
