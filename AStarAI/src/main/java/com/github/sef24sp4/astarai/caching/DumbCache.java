@@ -34,13 +34,13 @@ public class DumbCache implements IPathCaching {
 	}
 
 	@Override
-	public IVector getNextCoordinates(ICollidableEntity collidableEntity, final IVector targetCoordinate) {
+	public IVector getNextCoordinates(final IVector targetCoordinate) {
 
 		if (!this.isCachedPathValid(targetCoordinate)) {
 			this.map.getNodeContaining(this.entity.getCoordinates()).ifPresent(node -> {
 				this.entityNode = new Node(this.entity.getCoordinates(), node);
 			});
-			this.map.getNodeContaining(collidableEntity.getCoordinates()).ifPresent(node -> {
+			this.map.getNodeContaining(this.entity.getCoordinates()).ifPresent(node -> {
 				this.targetNode = new Node(targetCoordinate, node);
 			});
 
@@ -49,14 +49,14 @@ public class DumbCache implements IPathCaching {
 			this.aStarSession = new AStar(this.entityNode, this.targetNode);
 
 			this.pathList.clear();
-			this.pathList = this.aStarSession.calculatePath(collidableEntity);
+			this.pathList = this.aStarSession.calculatePath(this.entity);
 			this.pathCreationTime = System.currentTimeMillis(); //get the time for when last times calculatePath called
 
-			return this.getNextNode().map(Node::getCoordinates).orElse(collidableEntity.getCoordinates());
+			return this.getNextNode().map(Node::getCoordinates).orElse(this.entity.getCoordinates());
 		}
 
 		//if cache is valid, return (optional Node) or current position
-		return this.getNextNode().map(Node::getCoordinates).orElse(collidableEntity.getCoordinates());
+		return this.getNextNode().map(Node::getCoordinates).orElse(this.entity.getCoordinates());
 	}
 
 	public boolean isCachedPathValid(IVector targetCoordinate) {

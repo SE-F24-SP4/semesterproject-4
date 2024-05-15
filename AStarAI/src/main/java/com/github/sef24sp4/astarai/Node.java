@@ -19,7 +19,7 @@ public class Node {
 	}
 
 	public Collection<Node> getNeighboringNodes() {
-		return this.mapNode.getNeighboringNodes().stream().map(mapNode1 -> new Node(this.coordinates, mapNode1)).toList();
+		return this.mapNode.getNeighboringNodes().stream().map(mapNode1 -> new Node(mapNode1.getCenterCoordinates(), mapNode1)).toList();
 	}
 
 	public boolean hasSameMapNode(Node node) {

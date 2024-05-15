@@ -24,6 +24,6 @@ public class EntityPathFinder implements IPathfindingProvider {
 			this.cachingMap.put(entity, new DumbCache(entity));
 		}
 
-		return this.cachingMap.get(entity).getNextCoordinates(entity, targetCoordinate);
+		return this.cachingMap.get(entity).getNextCoordinates(targetCoordinate);
 	}
 }
