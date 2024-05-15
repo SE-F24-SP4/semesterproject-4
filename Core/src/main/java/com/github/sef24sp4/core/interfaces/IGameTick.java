@@ -10,5 +10,5 @@ public interface IGameTick {
 	 *
 	 * @param now The current {@link System#nanoTime()}. Can be used to compute time differences between ticks.
 	 */
-	public void tick(long now);
+	public void tick(final long now);
 }

@@ -11,7 +11,7 @@ public class JavaFxMouseCoordinates implements IMouseCoordinates {
 	private double x;
 	private double y;
 
-	JavaFxMouseCoordinates(EventTarget target) {
+	JavaFxMouseCoordinates(final EventTarget target) {
 		target.addEventHandler(MouseEvent.ANY, event -> {
 			this.x = event.getX();
 			this.y = event.getY();

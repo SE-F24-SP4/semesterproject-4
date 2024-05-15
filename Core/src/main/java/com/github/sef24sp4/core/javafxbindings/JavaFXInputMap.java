@@ -7,26 +7,28 @@ import javafx.scene.input.MouseButton;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Map.entry;
+
 public final class JavaFXInputMap {
 	private static final Map<KeyCode, InputAction> KEY_MAP = Map.ofEntries(
-			Map.entry(KeyCode.A, InputAction.LEFT),
-			Map.entry(KeyCode.W, InputAction.UP),
-			Map.entry(KeyCode.D, InputAction.RIGHT),
-			Map.entry(KeyCode.S, InputAction.DOWN)
+			entry(KeyCode.A, InputAction.LEFT),
+			entry(KeyCode.W, InputAction.UP),
+			entry(KeyCode.D, InputAction.RIGHT),
+			entry(KeyCode.S, InputAction.DOWN)
 	);
 
 	private static final Map<MouseButton, InputAction> MOUSE_BUTTON_MAP = Map.ofEntries(
-			Map.entry(MouseButton.PRIMARY, InputAction.SHOOT)
+			entry(MouseButton.PRIMARY, InputAction.SHOOT)
 	);
 
 	private JavaFXInputMap() {
 	}
 
-	public static Optional<InputAction> getFromKey(KeyCode keyCode) {
+	public static Optional<InputAction> getFromKey(final KeyCode keyCode) {
 		return Optional.ofNullable(JavaFXInputMap.KEY_MAP.get(keyCode));
 	}
 
-	public static Optional<InputAction> getFromMouseButton(MouseButton mouseButton) {
+	public static Optional<InputAction> getFromMouseButton(final MouseButton mouseButton) {
 		return Optional.ofNullable(JavaFXInputMap.MOUSE_BUTTON_MAP.get(mouseButton));
 	}
 }
