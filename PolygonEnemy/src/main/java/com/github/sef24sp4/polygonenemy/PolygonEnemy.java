@@ -1,7 +1,7 @@
 package com.github.sef24sp4.polygonenemy;
 
+import com.github.sef24sp4.common.enemy.CommonEnemy;
 import com.github.sef24sp4.common.vector.Coordinates;
-import com.github.sef24sp4.common.entities.CommonEntity;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
@@ -12,7 +12,7 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAttackingEntity {
+public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAttackingEntity {
 	private final int edges;
 	private final double damage;
 	private final double maxHealth;
@@ -35,8 +35,7 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 		this.damage = edges;
 		this.maxHealth = edges;
 		this.speed = 1.0 / Math.log(1.0 + (edges - 2));
-		this.metadata = new MetadataBuilder(GameElementType.ENEMY).
-				getMetadata();
+		this.metadata = new MetadataBuilder(GameElementType.ENEMY).getMetadata();
 		this.setPolygonCoordinates(this.calculatePolygonCoordinates(edges, edges * 3.2));
 	}
 	/**
@@ -76,6 +75,21 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 	@Override
 	public double getAttackDamage() {
 		return this.damage;
+	}
+
+	@Override
+	public IGameMetadata getMetadata() {
+		return this.metadata;
+	}
+
+	@Override
+	public long getDifficulty() {
+		return Math.round(this.damage * this.maxHealth);
+	}
+
+	@Override
+	public int getTier() {
+		return this.edges - 2;
 	}
 
 	private List<Coordinates> calculatePolygonCoordinates(int polygonEdges, double radius) {
@@ -126,10 +140,5 @@ public class PolygonEnemy extends CommonEntity implements ICollidableEntity, IAt
 				}
 			}
 		}
-	}
-
-	@Override
-	public IGameMetadata getMetadata() {
-		return this.metadata;
 	}
 }
