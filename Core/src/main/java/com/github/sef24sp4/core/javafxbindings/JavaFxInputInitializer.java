@@ -21,13 +21,13 @@ public final class JavaFxInputInitializer {
 	private final IMouseCoordinates mouseCoordinates;
 	private final GameInput gameInput;
 
-	private JavaFxInputInitializer(EventTarget target) {
+	private JavaFxInputInitializer(final EventTarget target) {
 		this.target = target;
 		this.mouseCoordinates = new JavaFxMouseCoordinates(this.target);
 		this.gameInput = new GameInput(this.mouseCoordinates);
 	}
 
-	public static GameInput init(EventTarget target) {
+	public static GameInput init(final EventTarget target) {
 		return new JavaFxInputInitializer(target).init();
 	}
 
@@ -43,7 +43,7 @@ public final class JavaFxInputInitializer {
 		return this.gameInput;
 	}
 
-	private <E extends Event> void setEvents(EventType<? extends E> activate, EventType<? extends E> deactivate, BiConsumer<? super E, Boolean> consumer) {
+	private <E extends Event> void setEvents(final EventType<? extends E> activate, final EventType<? extends E> deactivate, final BiConsumer<? super E, Boolean> consumer) {
 		this.target.addEventHandler(activate, event -> consumer.accept(event, true));
 		this.target.addEventHandler(deactivate, event -> consumer.accept(event, false));
 	}

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.sef24sp4.core.scenes.StartMenu">
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.sef24sp4.core.scenes.StartMenu">
    <children>
-      <Button fx:id="startButton" alignment="CENTER" layoutX="240.0" layoutY="166.0" mnemonicParsing="false" onAction="#startGame" text="Start">
+      <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" onAction="#startGame" text="Start" StackPane.alignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Button>
    </children>
-</AnchorPane>
+</StackPane>
