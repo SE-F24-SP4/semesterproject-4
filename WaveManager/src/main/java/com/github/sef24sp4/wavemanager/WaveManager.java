@@ -22,7 +22,7 @@ public class WaveManager implements IWaveManager {
 
 	private long waveDifficulty;
 
-	private final int timeUntilNextWaveInSeconds;
+	private final int waveCooldownInSeconds;
 
 	private long timeOfLastWaveStart;
 
@@ -42,26 +42,26 @@ public class WaveManager implements IWaveManager {
 	 * because it will be incremented by the nextWave function at the start of the game.
 	 *
 	 * @param startWaveNumber The wave number from which to start the count, must be greater than 0.
-	 * @param timeUntilNextWaveInSeconds The time in seconds until the next wave spawns, can't be negative.
+	 * @param waveCooldownInSeconds The time in seconds until the next wave spawns, can't be negative.
 	 * If provided 0 it means that no time should be wasted and the next wave should spawn when it's ready.
 	 * @param gameSettings The settings for the map to assign spawn locations.
 	 *
 	 * @exception IllegalArgumentException is thrown when the startWaveNumber is below 1, or if
 	 * timeUntilNextWaveInSeconds is negative.
 	 */
-	public WaveManager(final int startWaveNumber, final int timeUntilNextWaveInSeconds, final IGameSettings gameSettings) {
-		this(startWaveNumber, timeUntilNextWaveInSeconds, gameSettings, 50, 1.25);
+	public WaveManager(final int startWaveNumber, final int waveCooldownInSeconds, final IGameSettings gameSettings) {
+		this(startWaveNumber, waveCooldownInSeconds, gameSettings, 50, 1.25);
 	}
 
-	public WaveManager(final int startWaveNumber, final int timeUntilNextWaveInSeconds, final IGameSettings gameSettings, final int baseDifficulty, final double growthRate) {
+	public WaveManager(final int startWaveNumber, final int waveCooldownInSeconds, final IGameSettings gameSettings, final int baseDifficulty, final double growthRate) {
 		if (startWaveNumber < 1) throw new IllegalArgumentException("startWaveNumber must be greater than 0");
-		if (timeUntilNextWaveInSeconds < 0) throw new IllegalArgumentException("timeUntilNextWaveInSeconds must be greater or equal to 0");
+		if (waveCooldownInSeconds < 0) throw new IllegalArgumentException("timeUntilNextWaveInSeconds must be greater or equal to 0");
 		if (baseDifficulty < 1) throw new IllegalArgumentException("baseDifficulty must be greater than 0");
 		if (growthRate < 1) throw new IllegalArgumentException("growthRate must be greater than 0");
 
 		this.waveNumber = startWaveNumber - 1; // gets +1 in the nextWave function
 		this.gameSettings = gameSettings;
-		this.timeUntilNextWaveInSeconds = timeUntilNextWaveInSeconds;
+		this.waveCooldownInSeconds = waveCooldownInSeconds;
 		this.baseDifficulty = baseDifficulty;
 		this.growthRate = growthRate;
 
@@ -90,7 +90,7 @@ public class WaveManager implements IWaveManager {
 
 	@Override
 	public int getSecondsUntilNextWave() {
-		final long remainingTime = Math.multiplyFull(this.timeUntilNextWaveInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastWaveStart);
+		final long remainingTime = Math.multiplyFull(this.waveCooldownInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastWaveStart);
 		if (remainingTime <= 0) return 0;
 		return Math.toIntExact(Math.ceilDiv(remainingTime, 1000));
 	}
