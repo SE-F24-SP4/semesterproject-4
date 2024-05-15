@@ -31,8 +31,9 @@ public class SpeedControl {
 	 * <p>
 	 * This method is typically invoked when a speed buff is applied to the player. The speed and duration is fetched from the speedItem
 	 * and is added to the current speed,
+	 *
 	 * @param speedItem A speedItem that has a speedAmount and useDuration that gets added to the entity's current speed.
-	 * The duration is added to the current time to determine the time when the speed buff expires.
+	 *                  The duration is added to the current time to determine the time when the speed buff expires.
 	 * @see ISpeedItem
 	 */
 	public void setSpeedBuff(ISpeedItem speedItem) {

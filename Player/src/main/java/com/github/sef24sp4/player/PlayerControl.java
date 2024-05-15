@@ -27,7 +27,6 @@ public class PlayerControl implements IEntityProcessingService {
 		IGameInput keys = gameSettings.getKeys();
 		double playerX = this.player.getX();
 		double playerY = this.player.getY();
-
 		//Set rotation to look a cursor
 		this.player.setRotation(
 				this.player.getCoordinates().getRelativeRotationTo(
@@ -36,12 +35,7 @@ public class PlayerControl implements IEntityProcessingService {
 
 		//Check if it should shoot
 		if (keys.isDown(InputAction.SHOOT)) {
-			this.weaponProviders.forEach(weaponSPI -> {
-						if (weaponSPI.getRemainingCoolDownTicks() <= 0 && weaponSPI.getAmmoCount() > 0) {
-							weaponSPI.shoot(entityManager, this.player);
-						}
-					}
-			);
+			this.player.shoot(entityManager);
 		}
 		if (keys.isDown(InputAction.UP, InputAction.LEFT)) {
 			this.player.setX(playerX - diagonalSpeed);

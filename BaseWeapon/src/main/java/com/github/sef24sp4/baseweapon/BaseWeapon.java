@@ -8,7 +8,6 @@ public class BaseWeapon implements WeaponSPI {
 	private final int ammoCount = Integer.MAX_VALUE;
 	private final ProjectileControlSystem projectileControlSystem = new ProjectileControlSystem();
 
-
 	private final long maxCoolDownTicks = 1_000_000_000 / 4;
 	private long timeOfLastShot;
 
@@ -30,11 +29,19 @@ public class BaseWeapon implements WeaponSPI {
 		return true;
 	}
 
+	/**
+	 * Gets the amount of ammunition.
+	 * @return The value of ammunition.
+	 */
 	@Override
 	public int getAmmoCount() {
 		return this.ammoCount;
 	}
 
+	/**
+	 * The method defines remainingCoolDownTicks, which is the time from last shot and to the current time.
+	 * @return The value of remainingCoolDownTicks.
+	 */
 	@Override
 	public long getRemainingCoolDownTicks() {
 		final long remainingCoolDownTicks = this.maxCoolDownTicks - (System.nanoTime() - this.timeOfLastShot);

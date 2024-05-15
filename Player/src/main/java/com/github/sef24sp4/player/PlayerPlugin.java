@@ -6,6 +6,7 @@ import com.github.sef24sp4.common.services.IGamePluginService;
 
 public class PlayerPlugin implements IGamePluginService {
 	private final Player player = Player.getPlayer();
+
 	@Override
 	public void launch(IEntityManager entityManager, IGameSettings gameSettings) {
 
