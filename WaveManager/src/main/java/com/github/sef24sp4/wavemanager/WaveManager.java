@@ -43,10 +43,6 @@ public class WaveManager implements IWaveManager {
 	private final Label waveLabel;
 	private final Label countDownLabel;
 
-	// test
-	private final long maxCoolDownTicks = 8_000;
-	private long timeOfLastCheck;
-
 	/**
 	 * Constructs a new WaveManager to manage waves, wave timing and enemy compositions.
 	 * <p>
@@ -154,13 +150,8 @@ public class WaveManager implements IWaveManager {
 		if (entityManager.getEntitiesByClass(CommonEnemy.class).isEmpty()) {
 			this.nextWave();
 			this.waveStatus = WaveStatus.WAITING;
-			this.timeOfLastCheck = System.currentTimeMillis();
 			// update wave number label
 			this.waveLabel.setText("Wave: " + this.waveNumber);
-		}
-		// test
-		if (this.maxCoolDownTicks - (System.currentTimeMillis() - this.timeOfLastCheck) < 0) {
-			entityManager.removeEntitiesByClass(CommonEnemy.class);
 		}
 	}
 
