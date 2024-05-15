@@ -15,8 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.github.sef24sp4.collisionsystem.map.EntityTestTools.getEntityContainerWithMockedEntities;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -171,7 +173,7 @@ class BucketTest {
 	@ParameterizedTest
 	@MethodSource
 	void addNonOverlappingEntityReturnFalse(final IVector coordinates, final double radius) {
-		final CollidableEntityContainer entity = EntityTestTools.getEntityContainerWithMockedEntities(coordinates, radius);
+		final CollidableEntityContainer entity = getEntityContainerWithMockedEntities(coordinates, radius);
 
 		assertFalse(this.bucket.addEntity(entity));
 		assertFalse(this.bucket.containsEntity(entity));
@@ -216,7 +218,7 @@ class BucketTest {
 				entry(new BasicVector(8, 22), 6.0),
 				entry(new BasicVector(11, 12), 3.0),
 				entry(new BasicVector(5, 14), 8.0)
-		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+		).map(e -> getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
 
 		final Collection<CollidableEntityContainer> collidingEntities = Stream.of(
 				entry(new BasicVector(13, 16), 2.0),
@@ -230,12 +232,12 @@ class BucketTest {
 				entry(new BasicVector(11.5, 11.5), 3.0),
 				entry(new BasicVector(11, 12), 4.0),
 				entry(new BasicVector(5, 14), 9.0)
-		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+		).map(e -> getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
 
 		nonCollidingEntities.forEach(e -> assertTrue(this.bucket.addEntity(e), String.format("Failed to add: %s", e)));
 		collidingEntities.forEach(e -> assertTrue(this.bucket.addEntity(e), String.format("Failed to add: %s", e)));
 
-		final CollidableEntityContainer otherEntity = EntityTestTools.getEntityContainerWithMockedEntities(new BasicVector(18, 16), 5);
+		final CollidableEntityContainer otherEntity = getEntityContainerWithMockedEntities(new BasicVector(18, 16), 5);
 
 
 		final Collection<CollidableEntityContainer> collidedEntities = this.bucket.getCollidingEntitiesFor(otherEntity);

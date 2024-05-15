@@ -1,16 +1,15 @@
 package com.github.sef24sp4.collisionsystem.map;
 
 import com.github.sef24sp4.collisionsystem.CollidableEntityContainer;
+import com.github.sef24sp4.collisionsystem.map.util.MathTools;
 import com.github.sef24sp4.common.ai.map.MapNode;
 import com.github.sef24sp4.common.ai.map.NotAdjacentNodeException;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.vector.BasicVector;
 import com.github.sef24sp4.common.vector.IVector;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Bucket implements INode {
 	private final Collection<CollidableEntityContainer> entities = new HashSet<>();
@@ -37,6 +36,24 @@ public class Bucket implements INode {
 		return vector;
 	}
 
+	static Optional<IVector> calculateSafeCoordinatesFor(final CollidableEntityContainer mainEntity, final IVector fromPosition, final CollidableEntityContainer otherEntity, final IVector directionToCenter) {
+		final IVector directionToOtherEntity = fromPosition.getVectorTo(otherEntity.getCoordinates());
+		final double clearance = mainEntity.getRadius() + otherEntity.getRadius();
+		final double angleToOtherEntity = directionToOtherEntity.getAngleBetween(directionToCenter);
+
+		final double otherEntityPerpendicularDistanceToPath = Math.sin(angleToOtherEntity) * directionToOtherEntity.getNorm();
+
+		final double beta = Math.acos(otherEntityPerpendicularDistanceToPath / clearance);
+		if (Double.isNaN(beta)) return Optional.empty();
+
+		final double angleToSafeCoordinates = (Math.PI / 2) - angleToOtherEntity - beta;
+
+		final BasicVector safeCoordinates = directionToOtherEntity.getNegative().getNewVectorWithAngle(angleToSafeCoordinates).getNormalizedVector();
+		safeCoordinates.scale(clearance);
+		safeCoordinates.add(otherEntity.getCoordinates());
+		return Optional.of(safeCoordinates);
+	}
+
 	public IVector getStartCoordinates() {
 		return this.startCoordinates;
 	}
@@ -57,7 +74,6 @@ public class Bucket implements INode {
 		return crossLine;
 	}
 
-
 	@Override
 	public boolean containsCoordinates(final IVector coordinates) {
 		// System.out.printf("startCoordinates (%.2f, %.2f)\n", this.getStartCoordinates().getX(), this.getStartCoordinates().getY()); //TODO: REMOVE
@@ -65,7 +81,6 @@ public class Bucket implements INode {
 		return this.getStartCoordinates().getX() <= coordinates.getX() && this.getStartCoordinates().getY() <= coordinates.getY()
 				&& this.getEndCoordinates().getX() >= coordinates.getX() && this.getEndCoordinates().getY() >= coordinates.getY();
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -110,7 +125,6 @@ public class Bucket implements INode {
 		return this.containsCoordinates(vectorToFurthestPoint);
 	}
 
-
 	@Override
 	public Collection<MapNode> getNeighboringNodes() {
 		return new HashSet<>(this.parent.getNeighboursTo(this, 1));
@@ -131,9 +145,41 @@ public class Bucket implements INode {
 		/*
 		 * If distance to other entity is greater than the sum of both radi and distance to goal node, then it is clear.
 		 */
+		final CollidableEntityContainer mainEntity = new CollidableEntityContainer(entity);
+		final IVector center = this.getCenterCoordinates();
 
+		final IVector directionToCenter = fromPosition.getVectorTo(center);
 
-		return Optional.empty();
+		final Stream<CollidableEntityContainer> potentialCollidingEntities = this.streamOfNodesOverlapping(mainEntity, fromPosition, center)
+				.<CollidableEntityContainer>mapMulti((n, output) -> n.getAllEntities().forEach(output))
+				.distinct()
+				.filter(e -> {
+					System.out.println(e);
+					return true;
+				});
+
+		final Collection<IVector> candidateCoordinates = potentialCollidingEntities
+				.<IVector>mapMulti((e, output) -> calculateSafeCoordinatesFor(mainEntity, fromPosition, e, directionToCenter).ifPresent(output))
+				.filter(e -> {
+					System.out.println(e);
+					return true;
+				})
+				.filter(c -> MathTools.isPointBetween(fromPosition, c, center))
+				.toList();
+
+		if (candidateCoordinates.isEmpty()) return Optional.of(center);
+		if (candidateCoordinates.stream().anyMatch(c -> !this.containsCoordinates(c))) return Optional.empty();
+		return candidateCoordinates.stream().max(Comparator.comparingDouble(c -> c.getVectorTo(center).getNorm()));
+	}
+
+	private Stream<INode> streamOfNodesOverlapping(final CollidableEntityContainer entity, final IVector... coordinates) {
+		return Arrays.stream(coordinates)
+				.<INode>mapMulti((c, output) -> this.parent.getPotentiallyOverlappingNodes(entity, c).forEach(output))
+				.distinct()
+				.filter(e -> {
+					System.out.println(e);
+					return true;
+				});
 	}
 
 	@Override

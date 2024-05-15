@@ -18,9 +18,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.github.sef24sp4.collisionsystem.map.EntityTestTools.getEntityContainerWithMockedEntities;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -181,6 +183,60 @@ class BucketMapTest {
 		);
 	}
 
+	/**
+	 * Argument source for {@link #getSafeCoordinatesForEntity(CollidableEntityContainer, IVector, Collection)}.
+	 *
+	 * @return The test arguments.
+	 * @see ParameterizedTest
+	 * @see MethodSource
+	 */
+	public static Stream<Arguments> getSafeCoordinatesForEntity() {
+		return Stream.of(
+				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), new BasicVector(38, 22), List.of(
+						getEntityContainerWithMockedEntities(52, 8, 5),
+						getEntityContainerWithMockedEntities(42, 6, 5),
+						getEntityContainerWithMockedEntities(32, 12, 5),
+						getEntityContainerWithMockedEntities(42, 6, 5),
+						getEntityContainerWithMockedEntities(50, 6, 5),
+						getEntityContainerWithMockedEntities(54, 12, 5),
+						getEntityContainerWithMockedEntities(50, 30, 5),
+						getEntityContainerWithMockedEntities(66, 36, 5),
+						getEntityContainerWithMockedEntities(28, 26, 5),
+						getEntityContainerWithMockedEntities(32, 32, 5),
+						getEntityContainerWithMockedEntities(40, 32, 5),
+						getEntityContainerWithMockedEntities(28, 22, 5)
+				)),
+				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), new BasicVector(35, 25), List.of(
+						getEntityContainerWithMockedEntities(52, 8, 5),
+						getEntityContainerWithMockedEntities(42, 6, 5),
+						getEntityContainerWithMockedEntities(32, 12, 5),
+						getEntityContainerWithMockedEntities(26, 34, 5)
+				)),
+				Arguments.of(getEntityContainerWithMockedEntities(44, 16, 5), new BasicVector(35, 25), List.of())
+		);
+	}
+
+	/**
+	 * Argument source for {@link #getSafeCoordinatesForEntityEmptyResult(CollidableEntityContainer, Collection)}.
+	 *
+	 * @return The test arguments.
+	 * @see ParameterizedTest
+	 * @see MethodSource
+	 */
+	public static Stream<Arguments> getSafeCoordinatesForEntityEmptyResult() {
+		return Stream.of(
+				Arguments.of(getEntityContainerWithMockedEntities(46, 14, 5), List.of(
+						getEntityContainerWithMockedEntities(42, 30, 5),
+						getEntityContainerWithMockedEntities(31, 11, 5),
+						getEntityContainerWithMockedEntities(31, 19, 5),
+						getEntityContainerWithMockedEntities(31, 16, 5)
+				)),
+				Arguments.of(getEntityContainerWithMockedEntities(46, 14, 5), List.of(
+						getEntityContainerWithMockedEntities(31, 19, 5)
+				))
+		);
+	}
+
 	@BeforeEach
 	void setUp() {
 		Mockito.when(this.gameSettings.getDisplayWidth()).thenReturn(WIDTH);
@@ -251,7 +307,7 @@ class BucketMapTest {
 				entry(new BasicVector(8, 22), 6.0),
 				entry(new BasicVector(11, 12), 3.0),
 				entry(new BasicVector(5, 14), 8.0)
-		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+		).map(e -> getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
 
 		final Collection<CollidableEntityContainer> collidingEntities = Stream.of(
 				entry(new BasicVector(13, 16), 2.0),
@@ -265,12 +321,12 @@ class BucketMapTest {
 				entry(new BasicVector(11.5, 11.5), 3.0),
 				entry(new BasicVector(11, 12), 4.0),
 				entry(new BasicVector(5, 14), 9.0)
-		).map(e -> EntityTestTools.getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
+		).map(e -> getEntityContainerWithMockedEntities(e.getKey(), e.getValue())).toList();
 
 		nonCollidingEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e), String.format("Failed to add: %s", e)));
 		collidingEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e), String.format("Failed to add: %s", e)));
 
-		final CollidableEntityContainer otherEntity = EntityTestTools.getEntityContainerWithMockedEntities(new BasicVector(18, 16), 5);
+		final CollidableEntityContainer otherEntity = getEntityContainerWithMockedEntities(new BasicVector(18, 16), 5);
 
 
 		final Collection<CollidableEntityContainer> collidedEntities = this.bucketMap.getCollidingEntitiesFor(otherEntity);
@@ -296,9 +352,27 @@ class BucketMapTest {
 		assertTrue(this.bucketMap.getAllEntities().isEmpty());
 	}
 
-	@Test
-	void getSafeCoordinatesForEntity() {
-		//TODO:
+	@ParameterizedTest
+	@MethodSource
+	void getSafeCoordinatesForEntity(final CollidableEntityContainer mainEntity, final IVector expectedTarget, final Collection<CollidableEntityContainer> otherEntities) throws NotAdjacentNodeException {
+		System.out.printf("--- BEGIN TEST ---\n\tEntities: %d\n\tTarget: %s\n\tMain entity: %s\n", otherEntities.size(), expectedTarget, mainEntity);
+		final MapNode bucket = this.bucketMap.getNodeContaining(new BasicVector(35, 25)).orElseThrow();
+		otherEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e)));
+
+		final Optional<IVector> result = bucket.getSafeCoordinatesForEntity(mainEntity.getEntity(), mainEntity.getCoordinates());
+		assertTrue(result.isPresent());
+		final double distanceFromTarget = expectedTarget.getVectorTo(result.get()).getNorm();
+		assertTrue(distanceFromTarget <= SafeCoordinatesTest.DEFAULT_TOLERANCE, String.format("Wanted: %s but got %s, which is %f away", expectedTarget, result.get(), distanceFromTarget));
+	}
+
+	@ParameterizedTest
+	@MethodSource
+	void getSafeCoordinatesForEntityEmptyResult(final CollidableEntityContainer mainEntity, final Collection<CollidableEntityContainer> otherEntities) throws NotAdjacentNodeException {
+		final MapNode bucket = this.bucketMap.getNodeContaining(new BasicVector(35, 25)).orElseThrow();
+		otherEntities.forEach(e -> assertTrue(this.bucketMap.addEntity(e)));
+
+		final Optional<IVector> result = bucket.getSafeCoordinatesForEntity(mainEntity.getEntity(), mainEntity.getCoordinates());
+		assertTrue(result.isEmpty());
 	}
 
 	@ParameterizedTest

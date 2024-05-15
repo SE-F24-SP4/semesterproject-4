@@ -6,6 +6,7 @@ import com.github.sef24sp4.common.vector.IVector;
  * A collection of helper tools for complex calculations.
  */
 public final class MathTools {
+	public static final double DEFAULT_TOLERANCE = 0.000_000_000_2;
 
 	/**
 	 * Check if a {@link IVector point} is between two other points drawn on a straight line.
@@ -25,7 +26,7 @@ public final class MathTools {
 	}
 
 	public static boolean isPointBetween(final IVector a, final IVector point, final IVector b) {
-		return isPointBetween(a, point, b, 0.000_000_000_2);
+		return isPointBetween(a, point, b, DEFAULT_TOLERANCE);
 	}
 
 	/**

@@ -32,4 +32,8 @@ public class EntityTestTools {
 	static CollidableEntityContainer getEntityContainerWithMockedEntities(final Entry<? extends IVector, Double> entry) {
 		return getEntityContainerWithMockedEntities(entry.getKey(), entry.getValue());
 	}
+
+	static CollidableEntityContainer getEntityContainerWithMockedEntities(final double x, final double y, final double radius) {
+		return getEntityContainerWithMockedEntities(new BasicVector(x, y), radius);
+	}
 }
