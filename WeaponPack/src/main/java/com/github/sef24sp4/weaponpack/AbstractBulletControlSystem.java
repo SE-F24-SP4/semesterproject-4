@@ -5,7 +5,7 @@ import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.projectile.ProjectileSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
 
-public abstract class AbstractBulletControlSystem implements IEntityProcessingService, ProjectileSPI {
+public abstract class AbstractBulletControlSystem implements IEntityProcessingService {
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		for (AbstractProjectile bullet : entityManager.getEntitiesByClass(AbstractProjectile.class)) {

@@ -6,18 +6,12 @@ import com.github.sef24sp4.common.item.itemtypes.WeaponItem;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
+import com.github.sef24sp4.weaponpack.AbstractWeaponItem;
 
-public class ShotGunItem extends WeaponItem {
+public class ShotGunItem extends AbstractWeaponItem {
 	@Override
 	public WeaponSPI getWeaponSPI() {
 		return new ShotGun();
-	}
-
-	@Override
-	public void collide(final IEntityManager entityManager, final ICollidableEntity otherEntity) {
-		if (otherEntity.getType() == GameElementType.PLAYER) {
-			entityManager.removeEntity(this);
-		}
 	}
 
 	public ShotGunItem() {

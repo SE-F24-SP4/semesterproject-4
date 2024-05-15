@@ -12,6 +12,6 @@ public class ShotGunItemProvider implements ItemSPI {
 
 	@Override
 	public ItemRarity getRarity() {
-		return ItemRarity.RARE;
+		return ItemRarity.UNCOMMON;
 	}
 }

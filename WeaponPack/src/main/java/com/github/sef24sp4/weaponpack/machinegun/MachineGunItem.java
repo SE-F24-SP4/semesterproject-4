@@ -5,18 +5,12 @@ import com.github.sef24sp4.common.item.itemtypes.WeaponItem;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
+import com.github.sef24sp4.weaponpack.AbstractWeaponItem;
 
-public class MachineGunItem extends WeaponItem {
+public class MachineGunItem extends AbstractWeaponItem {
 
 	public WeaponSPI getWeaponSPI() {
 		return new MachineGun();
-	}
-
-	@Override
-	public void collide(final IEntityManager entityManager, final ICollidableEntity otherEntity) {
-		if (otherEntity.getType() == GameElementType.OTHER) {
-			entityManager.removeEntity(this);
-		}
 	}
 
 	public MachineGunItem() {

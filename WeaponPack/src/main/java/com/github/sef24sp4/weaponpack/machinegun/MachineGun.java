@@ -5,8 +5,6 @@ import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.weaponpack.AbstractWeapon;
 
 public class MachineGun extends AbstractWeapon {
-	//Variables defined for ammoCount and projectiles.
-	private final MachineGunBulletControlSystem machineGunBulletControlSystem = new MachineGunBulletControlSystem();
 
 	public MachineGun() {
 		super(1_000_000_000 / 16, 250);
@@ -17,7 +15,7 @@ public class MachineGun extends AbstractWeapon {
 	@Override
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
 		if (!this.prepareShootIfPossible()) return false;
-		entityManager.addEntity(this.machineGunBulletControlSystem.createProjectile(shooter));
+		entityManager.addEntity(new MachineGunBullet(shooter));
 		return true;
 	}
 

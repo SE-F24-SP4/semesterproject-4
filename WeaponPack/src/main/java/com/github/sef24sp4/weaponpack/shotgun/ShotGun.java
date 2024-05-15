@@ -11,9 +11,8 @@ import java.util.Random;
 public class ShotGun extends AbstractWeapon {
 	//Variables defined for ammoCount and projectiles.
 	private final Random random = new Random();
-	private final double maxDeviationFromRotation = 5;
+	private final double maxDeviationFromRotation = 0.2;
 	private final int numberOfbulletsPerShot = 7;
-	private final ShotGunBulletControlSystem shotGunBulletControlSystem = new ShotGunBulletControlSystem();
 
 	public ShotGun() {
 		super(1_000_000_000 / 16, 25);

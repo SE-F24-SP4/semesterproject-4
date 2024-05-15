@@ -6,13 +6,6 @@ import com.github.sef24sp4.weaponpack.AbstractBulletControlSystem;
 
 public class MachineGunBulletControlSystem extends AbstractBulletControlSystem {
 	private final double bulletSpeed = 10.0;
-
-	//This method creates the look of the projectile and defines direction for the projectile, based on the shooter.
-	@Override
-	public CommonProjectile createProjectile(IEntity shooter) {
-		return new MachineGunBullet(shooter);
-	}
-
 	@Override
 	protected double getBulletSpeed() {
 		return this.bulletSpeed;

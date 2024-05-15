@@ -27,6 +27,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>CommonWeapon</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.github.sef24sp4</groupId>
 			<artifactId>CommonItem</artifactId>
 			<version>1.0-SNAPSHOT</version>
