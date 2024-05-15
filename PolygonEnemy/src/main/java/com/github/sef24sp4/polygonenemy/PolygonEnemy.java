@@ -1,6 +1,8 @@
 package com.github.sef24sp4.polygonenemy;
 
 import com.github.sef24sp4.common.enemy.CommonEnemy;
+import com.github.sef24sp4.common.item.ItemRarity;
+import com.github.sef24sp4.common.item.loottable.LootTable;
 import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
@@ -11,6 +13,9 @@ import com.github.sef24sp4.common.metadata.MetadataBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAttackingEntity {
 	private final int edges;
@@ -19,6 +24,11 @@ public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAtt
 	private double health;
 	private double speed;
 	private final IGameMetadata metadata;
+	private final LootTable lootTable = new LootTable(Map.ofEntries(
+			entry(ItemRarity.COMMON, 0.3),
+			entry(ItemRarity.UNCOMMON, 0.2),
+			entry(ItemRarity.RARE, 0.1)
+	));
 
 	/**
 	 * Constructs a Polygon enemy with the specified amount of edges.
@@ -124,6 +134,10 @@ public class PolygonEnemy extends CommonEnemy implements ICollidableEntity, IAtt
 
 	private void die(IEntityManager entityManager) {
 		entityManager.removeEntity(this);
+		this.lootTable.getItem().ifPresent(item -> {
+			item.setCoordinates(this.getCoordinates());
+			entityManager.addEntity(item);
+		});
 	}
 
 	@Override

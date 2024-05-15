@@ -7,6 +7,7 @@ module PolygonEnemy {
 	requires Common;
 	requires CommonEnemy;
 	requires CommonAI;
+	requires CommonItem;
 	provides EnemySPI with PolygonEnemyControlSystem;
 	provides IEntityProcessingService with PolygonEnemyControlSystem;
 }
