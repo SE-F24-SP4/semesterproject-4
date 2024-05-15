@@ -17,4 +17,12 @@ public interface IGameSettings {
 				&& entity.getX() <= this.getDisplayWidth()
 				&& entity.getY() <= this.getDisplayHeight();
 	}
+
+	/**
+	 * Attempt to stop the current game.
+	 *
+	 * @return {@code true} if the game is stopped successfully.
+	 * {@code false} otherwise.
+	 */
+	public boolean stopGame();
 }

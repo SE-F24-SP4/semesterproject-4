@@ -1,6 +1,7 @@
 package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.entities.IHealingEntity;
+import com.github.sef24sp4.common.interfaces.GameSettingsLoader;
 import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import com.github.sef24sp4.common.item.itemtypes.WeaponItem;
 import com.github.sef24sp4.common.vector.Coordinates;
@@ -96,6 +97,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 	 */
 	void kill(IEntityManager entityManager) {
 		entityManager.removeEntity(this);
+		GameSettingsLoader.load().stopGame();
 	}
 
 	/**

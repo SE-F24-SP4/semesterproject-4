@@ -2,21 +2,25 @@ package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
+import com.github.sef24sp4.common.interfaces.GameSettingsLoader;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
+import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.item.itemtypes.WeaponItem;
 import com.github.sef24sp4.common.projectile.CommonProjectile;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerTest {
@@ -24,6 +28,14 @@ public class PlayerTest {
 
 	@Mock
 	private IEntityManager mockEntityManager;
+
+	private static void runWithMockedGameSettings(final Executable executor) throws Throwable {
+		try (MockedStatic<GameSettingsLoader> mockedGameSettings = mockStatic(GameSettingsLoader.class)) {
+			mockedGameSettings.when(GameSettingsLoader::load).thenReturn(mock(IGameSettings.class));
+			executor.execute();
+			mockedGameSettings.verify(GameSettingsLoader::load); // If this fails then GameSettings is not needed. Run without this method.
+		}
+	}
 
 	@BeforeEach
 	void setUp() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
@@ -83,16 +95,20 @@ public class PlayerTest {
 	}
 
 	@Test
-	void kill() {
+	void kill() throws Throwable {
 		this.mockEntityManager.addEntity(this.player);
-		this.player.kill(this.mockEntityManager);
+
+		runWithMockedGameSettings(() -> this.player.kill(this.mockEntityManager));
+
 		verify(this.mockEntityManager).removeEntity(this.player);
 	}
 
 	@Test
-	void takeDamageAndKill() {
+	void takeDamageAndKill() throws Throwable {
 		this.mockEntityManager.addEntity(this.player);
-		this.player.takeDamage(1000, this.mockEntityManager);
+
+		runWithMockedGameSettings(() -> this.player.takeDamage(1000, this.mockEntityManager));
+
 		verify(this.mockEntityManager).removeEntity(this.player);
 	}
 
@@ -101,7 +117,7 @@ public class PlayerTest {
 		//Setup
 		ICollidableEntity mockCollidableEntity = mock(ICollidableEntity.class, withSettings().extraInterfaces(IAttackingEntity.class));
 		IAttackingEntity mockAttackingEntity = (IAttackingEntity) mockCollidableEntity;
-		when(mockAttackingEntity.getAttackDamage()).thenReturn(10.0);
+		when(mockAttackingEntity.getAttackDamage()).thenReturn(1.0);
 
 		//Method call
 		this.player.collide(this.mockEntityManager, mockCollidableEntity);
