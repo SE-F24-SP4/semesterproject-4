@@ -29,8 +29,4 @@ public class AbstractWeaponItem extends WeaponItem {
 		return super.getType();
 	}
 
-	@Override
-	public WeaponSPI getWeaponSPI() {
-		return null;
-	}
 }
