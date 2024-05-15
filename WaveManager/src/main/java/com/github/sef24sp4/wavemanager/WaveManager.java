@@ -4,6 +4,7 @@ import com.github.sef24sp4.common.enemy.CommonEnemy;
 import com.github.sef24sp4.common.enemy.EnemyRole;
 import com.github.sef24sp4.common.enemy.EnemySPI;
 import com.github.sef24sp4.common.entities.IEntity;
+import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.vector.Coordinates;
 
@@ -33,6 +34,13 @@ public class WaveManager implements IWaveManager {
 	private final int baseDifficulty;
 	private final double growthRate;
 
+	// used in processWaitingWave() to measure time and make sure we update only when needed to.
+	private long lastSecondTimeCheck;
+
+	// test
+	private final long maxCoolDownTicks = 8_000;
+	private long timeOfLastCheck;
+
 	/**
 	 * Constructs a new WaveManager to manage waves, wave timing and enemy compositions.
 	 * <p>
@@ -49,7 +57,7 @@ public class WaveManager implements IWaveManager {
 	 * @exception IllegalArgumentException is thrown when the startWaveNumber is below 1, or if
 	 * timeUntilNextWaveInSeconds is negative.
 	 */
-	public WaveManager(final int startWaveNumber, final int waveCooldownInSeconds, final IGameSettings gameSettings) {
+		public WaveManager(final int startWaveNumber, final int waveCooldownInSeconds, final IGameSettings gameSettings) {
 		this(startWaveNumber, waveCooldownInSeconds, gameSettings, 50, 1.25);
 	}
 
@@ -89,10 +97,11 @@ public class WaveManager implements IWaveManager {
 	}
 
 	@Override
-	public int getSecondsUntilNextWave() {
+	public long getSecondsUntilNextWave() {
+		if (this.waveStatus == WaveStatus.ONGOING) return -1;
 		final long remainingTime = Math.multiplyFull(this.waveCooldownInSeconds, 1000) - (System.currentTimeMillis() - this.timeOfLastWaveStart);
 		if (remainingTime <= 0) return 0;
-		return Math.toIntExact(Math.ceilDiv(remainingTime, 1000));
+		return remainingTime;
 	}
 
 	@Override
@@ -108,6 +117,41 @@ public class WaveManager implements IWaveManager {
 	@Override
 	public Collection<IEntity> getAllEntities() {
 		return Collections.unmodifiableCollection(this.enemyComposition);
+	}
+
+	@Override
+	public void startWaveWithEntities(IEntityManager entityManager) {
+		this.waveStatus = WaveStatus.ONGOING;
+		this.getAllEntities().forEach(entityManager::addEntity);
+	}
+
+	@Override
+	public void processWaitingWave() {
+		long currentTimeUntilNextWave = Math.ceilDiv(this.getSecondsUntilNextWave(), 1000);
+		if (currentTimeUntilNextWave <= 0) {
+			this.waveStatus = WaveStatus.READY;
+			// remove label or hide text
+
+		} else if (currentTimeUntilNextWave != this.lastSecondTimeCheck) {
+			this.lastSecondTimeCheck = currentTimeUntilNextWave;
+			// update label countdown
+			System.out.println(currentTimeUntilNextWave);
+		}
+	}
+
+	@Override
+	public void processOngoingWave(IEntityManager entityManager) {
+		if (entityManager.getEntitiesByClass(CommonEnemy.class).isEmpty()) {
+			this.nextWave();
+			this.waveStatus = WaveStatus.WAITING;
+			this.timeOfLastCheck = System.currentTimeMillis();
+			// update wave number label
+			System.out.println("Wave: " + this.waveNumber);
+		}
+		// test
+		if (this.maxCoolDownTicks - (System.currentTimeMillis() - this.timeOfLastCheck) < 0) {
+			entityManager.removeEntitiesByClass(CommonEnemy.class);
+		}
 	}
 
 	@Override
@@ -196,8 +240,6 @@ public class WaveManager implements IWaveManager {
 		int index = rand.nextInt(availableRoles.size());
 		return availableRoles.get(index);
 	}
-
-
 
 	// goes through the list of enemies and assigns them a spawn location
 	private void assignSpawnLocations() {

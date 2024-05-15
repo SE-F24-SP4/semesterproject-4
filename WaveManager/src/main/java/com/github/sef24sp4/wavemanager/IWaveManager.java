@@ -56,9 +56,9 @@ public interface IWaveManager extends IEntityManager {
 	 * This method returns the countdown timer's current value in seconds, which indicates
 	 * how much time is left before the next wave of enemies is spawned.
 	 *
-	 * @return The number of seconds remaining until the next wave starts.
+	 * @return The number of milliseconds remaining until the next wave starts. Will return -1 if the wave is ongoing.
 	 */
-	public int getSecondsUntilNextWave();
+	public long getSecondsUntilNextWave();
 
 	/**
 	 * Handles all logic that should happen when transitioning to the next wave.
@@ -70,4 +70,30 @@ public interface IWaveManager extends IEntityManager {
 	 * challenge of the gameplay.
 	 */
 	public void nextWave();
+
+	/**
+	 * Starts the wave and adds the enemy composition to the entityManager provided.
+	 * <p>
+	 * Represents the transition and the spawning time of the new enemies when the wave is ready to spawn.
+	 * And is responsible for adding enemies to the entityManager.
+	 *
+	 * @param entityManager Where the enemy composition will be added to.
+	 */
+	public void startWaveWithEntities(IEntityManager entityManager);
+
+	/**
+	 * Handles logic when waiting to spawn the next wave.
+	 * <p>
+	 * This method is responsible for checking if it is ready to start the wave.
+	 */
+	public void processWaitingWave();
+
+	/**
+	 * Handles logic when the wave is ongoing.
+	 * <p>
+	 * This method is responsible for checking if it can go into the next wave.
+	 *
+	 * @param entityManager is used to check entities in the ongoing game.
+	 */
+	public void processOngoingWave(IEntityManager entityManager);
 }
