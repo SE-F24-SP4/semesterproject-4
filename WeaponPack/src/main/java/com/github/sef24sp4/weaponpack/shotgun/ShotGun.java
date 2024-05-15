@@ -24,7 +24,7 @@ public class ShotGun extends AbstractWeapon {
 	@Override
 	public boolean shoot(IEntityManager entityManager, IEntity shooter) {
 		if (!this.prepareShootIfPossible()) return false;
-		entityManager.addEntity(this.shotGunBulletControlSystem.createProjectile(shooter));
+		this.createShotGunBullets(shooter).forEach(entityManager::addEntity);
 		return true;
 	}
 
