@@ -2,16 +2,24 @@ package com.github.sef24sp4.player;
 
 import com.github.sef24sp4.common.gamecontrol.IGameInput;
 import com.github.sef24sp4.common.gamecontrol.InputAction;
+import com.github.sef24sp4.common.graphics.label.Label;
+import com.github.sef24sp4.common.graphics.label.LabelFactory;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.interfaces.IGameSettings;
+import com.github.sef24sp4.common.vector.Coordinates;
 import com.github.sef24sp4.common.weapon.WeaponSPI;
 import com.github.sef24sp4.common.services.IEntityProcessingService;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ServiceLoader;
 
 public class PlayerControl implements IEntityProcessingService {
 	private final Player player = Player.getPlayer();
 
 	private final ServiceLoader<WeaponSPI> weaponProviders = ServiceLoader.load(WeaponSPI.class);
+	private final Label healthLabel = LabelFactory.create(new Coordinates(0,21  ), "", 20);
+	private final Label ammoCountLabel = LabelFactory.create(new Coordinates(0,42), "", 20);
+
 	@Override
 	public void process(IEntityManager entityManager, IGameSettings gameSettings) {
 		double speed = this.player.getWalkSpeed();
@@ -73,5 +81,19 @@ public class PlayerControl implements IEntityProcessingService {
 				this.player.setY(gameSettings.getDisplayHeight());
 			}
 		}
+		updateLabels();
+	}
+	public void updateLabels() {
+		//Update AmmoCountLabel
+		this.player.getActiveWeapon().ifPresent(w -> {
+			String ammoCount;
+			if (w.getAmmoCount() == Integer.MAX_VALUE) {
+				ammoCount = new String(Character.toString('\u221E').getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+			} else ammoCount = String.valueOf(w.getAmmoCount());
+			this.ammoCountLabel.setText(String.format("Ammo: %s",  ammoCount));
+		});
+
+		//Update heal
+		this.healthLabel.setText(String.format("Health: %d", Math.round(this.player.getHealth())));
 	}
 }
