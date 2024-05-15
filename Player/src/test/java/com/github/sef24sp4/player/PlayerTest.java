@@ -131,6 +131,12 @@ public class PlayerTest {
 
 	@Test
 	public void shootWithBaseWeapon() {
+		// Assert
+		assertTrue(this.player.shoot(this.mockEntityManager));
+	}
+
+	@Test
+	public void shootWithDifferentWeapon() {
 		// Arrange
 		WeaponSPI mockWeaponSPI = mock(WeaponSPI.class);
 		WeaponItem weaponItem = mock(WeaponItem.class);
@@ -138,20 +144,8 @@ public class PlayerTest {
 
 		// Act
 		this.player.collide(this.mockEntityManager, weaponItem);
-		boolean result = this.player.shoot(this.mockEntityManager);
 
 		// Assert
-		assertTrue(result);
-	}
-
-	@Test
-	public void shootWithDifferentWeapon() {
-		// Arrange
-
-		// Act
-		boolean result = this.player.shoot(this.mockEntityManager);
-
-		// Assert
-		assertTrue(result);
+		assertTrue(this.player.shoot(this.mockEntityManager));
 	}
 }
