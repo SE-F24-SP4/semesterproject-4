@@ -13,14 +13,14 @@ public class GameLoop implements IGameTick {
 	private final ServiceLoader<IEntityProcessingService> processingServices = ServiceLoader.load(IEntityProcessingService.class);
 
 
-	GameLoop(GameSettings gameSettings, GraphicsOverlayEntityManager graphicsOverlayEntityManager) {
+	GameLoop(final GameSettings gameSettings, final GraphicsOverlayEntityManager graphicsOverlayEntityManager) {
 		this.gameSettings = gameSettings;
 		this.graphicsOverlayEntityManager = graphicsOverlayEntityManager;
 	}
 
 
 	@Override
-	public void tick(long now) {
+	public void tick(final long now) {
 		this.processingServices.forEach(s -> s.process(this.graphicsOverlayEntityManager, this.gameSettings));
 		this.graphicsOverlayEntityManager.render();
 		this.gameSettings.getKeys().clearCurrentTickKeys();

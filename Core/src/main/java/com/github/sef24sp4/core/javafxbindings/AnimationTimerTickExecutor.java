@@ -16,10 +16,10 @@ public class AnimationTimerTickExecutor implements IGameTickExecutor {
 	}
 
 	@Override
-	public void setGameTick(IGameTick gameTick) {
+	public void setGameTick(final IGameTick gameTick) {
 		this.animationTimer = new AnimationTimer() {
 			@Override
-			public void handle(long now) {
+			public void handle(final long now) {
 				gameTick.tick(now);
 			}
 		};

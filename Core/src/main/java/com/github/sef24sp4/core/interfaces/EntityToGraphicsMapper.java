@@ -18,7 +18,7 @@ public interface EntityToGraphicsMapper<E extends IEntity, G> {
 	 * @param entity The entity to be added.
 	 * @return {@code true} if successful, {@code false} otherwise.
 	 */
-	boolean add(E entity);
+	boolean add(final E entity);
 
 	/**
 	 * Remove entity from the mapping. The method should transparently remove the corresponding graphical element.
@@ -26,7 +26,7 @@ public interface EntityToGraphicsMapper<E extends IEntity, G> {
 	 * @param entity The entity to be removed.
 	 * @return {@code true} if successful, {@code false} otherwise.
 	 */
-	boolean remove(E entity);
+	boolean remove(final E entity);
 
 	/**
 	 * Get the current mapping between {@link IEntity entities} and graphical objects.

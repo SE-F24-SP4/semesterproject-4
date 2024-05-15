@@ -11,7 +11,7 @@ public class Game implements IGameProcessor {
 	private final IGameTickExecutor gameTickExecutor;
 	private final GameLoop gameLoop;
 
-	Game(GameLoop gameLoop, IGameTickExecutor gameTickExecutor) {
+	Game(final GameLoop gameLoop, final IGameTickExecutor gameTickExecutor) {
 		this.gameLoop = gameLoop;
 		this.gameTickExecutor = gameTickExecutor;
 		this.gameTickExecutor.setGameTick(this.gameLoop);
