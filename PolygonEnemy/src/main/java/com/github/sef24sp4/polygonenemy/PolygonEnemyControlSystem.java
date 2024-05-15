@@ -1,6 +1,8 @@
 package com.github.sef24sp4.polygonenemy;
 
 import com.github.sef24sp4.common.ai.IPathfindingProvider;
+import com.github.sef24sp4.common.enemy.CommonEnemy;
+import com.github.sef24sp4.common.enemy.EnemyRole;
 import com.github.sef24sp4.common.enemy.EnemySPI;
 import com.github.sef24sp4.common.entities.IEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
@@ -53,7 +55,12 @@ public class PolygonEnemyControlSystem implements IEntityProcessingService, Enem
 	}
 
 	@Override
-	public IEntity createEnemy(int difficulty) {
-		return new PolygonEnemy(difficulty + 2); // plus 2 to get the lowest form of a polygon enemy which have 3 edges, which is the starting point for this enemy.
+	public CommonEnemy createEnemy(int enemyTier) {
+		return new PolygonEnemy(enemyTier + 2); // plus 2 to get the lowest form of a polygon enemy which have 3 edges, which is the starting point for this enemy.
+	}
+
+	@Override
+	public EnemyRole getRole() {
+		return EnemyRole.ATTACKER;
 	}
 }
