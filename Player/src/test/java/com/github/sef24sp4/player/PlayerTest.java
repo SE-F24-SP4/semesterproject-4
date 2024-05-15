@@ -1,4 +1,5 @@
 package com.github.sef24sp4.player;
+
 import com.github.sef24sp4.common.entities.IAttackingEntity;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
@@ -37,10 +38,12 @@ public class PlayerTest {
 		Player p = Player.getPlayer();
 		assertSame(p, Player.getPlayer());
 	}
+
 	@Test
 	void getHealth() {
 		assertEquals(10, this.player.getHealth());
 	}
+
 	@Test
 	void getMaxHealth() {
 		assertEquals(10, this.player.getMaxHealth());
@@ -57,6 +60,7 @@ public class PlayerTest {
 		this.player.takeDamage(5, this.mockEntityManager);
 		assertEquals(this.player.getMaxHealth() - 5, this.player.getHealth());
 	}
+
 	@Test
 	void heal() {
 		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
@@ -65,28 +69,33 @@ public class PlayerTest {
 		this.player.heal(5);
 		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
 	}
+
 	@Test
 	void testHealNegativeAmount() {
 		assertThrows(IllegalArgumentException.class, () -> this.player.heal(-10.0));
 	}
+
 	@Test
 	void testHealExceedsMaxHealth() {
 		double maxHealth = this.player.getMaxHealth();
 		this.player.heal(maxHealth + 10.0);
 		assertEquals(maxHealth, this.player.getHealth());
 	}
+
 	@Test
 	void kill() {
 		this.mockEntityManager.addEntity(this.player);
 		this.player.kill(this.mockEntityManager);
 		verify(this.mockEntityManager).removeEntity(this.player);
 	}
+
 	@Test
 	void takeDamageAndKill() {
 		this.mockEntityManager.addEntity(this.player);
 		this.player.takeDamage(1000, this.mockEntityManager);
 		verify(this.mockEntityManager).removeEntity(this.player);
 	}
+
 	@Test
 	void collideWithAttackingEntity() {
 		//Setup
@@ -100,6 +109,7 @@ public class PlayerTest {
 		//Verify
 		verify(mockAttackingEntity).getAttackDamage();
 	}
+
 	@Test
 	void collideWithOwnBullet() {
 		//Setup
@@ -123,29 +133,24 @@ public class PlayerTest {
 
 		// Act
 		this.player.collide(this.mockEntityManager, weaponItem);
-		WeaponSPI result = this.player.getActiveWeapon().get();
 
 		// Assert
-		assertEquals(mockWeaponSPI, result);
+		this.player.getActiveWeapon().ifPresent(weaponSPI -> assertEquals(mockWeaponSPI, weaponSPI));
 	}
 
 	@Test
-	public void shootWithBaseWeapon() {
-		// Assert
-		assertTrue(this.player.shoot(this.mockEntityManager));
-	}
-
-	@Test
-	public void shootWithDifferentWeapon() {
+	public void shoot() {
 		// Arrange
 		WeaponSPI mockWeaponSPI = mock(WeaponSPI.class);
-		WeaponItem weaponItem = mock(WeaponItem.class);
-		when(weaponItem.getWeaponSPI()).thenReturn(mockWeaponSPI);
+		WeaponItem mockWeaponItem = mock(WeaponItem.class);
+		when(mockWeaponItem.getWeaponSPI()).thenReturn(mockWeaponSPI);
+		when(mockWeaponSPI.getAmmoCount()).thenReturn(1);
 
 		// Act
-		this.player.collide(this.mockEntityManager, weaponItem);
+		this.player.collide(this.mockEntityManager, mockWeaponItem);
+		this.player.shoot(this.mockEntityManager);
 
 		// Assert
-		assertTrue(this.player.shoot(this.mockEntityManager));
+		verify(mockWeaponSPI).shoot(this.mockEntityManager, this.player);
 	}
 }

@@ -26,6 +26,7 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 
 	private final Optional<WeaponSPI> baseWeapon = ServiceLoader.load(WeaponSPI.class).findFirst();
 	private WeaponSPI currentWeapon;
+
 	private Player() {
 		this.metadata = new MetadataBuilder(GameElementType.PLAYER).
 				getMetadata();
