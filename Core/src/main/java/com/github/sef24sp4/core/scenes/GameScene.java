@@ -19,28 +19,37 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 public final class GameScene {
+	private static Scene scene;
+	private static IGameProcessor gameProcessor;
+
 	private GameScene() {
 	}
 
-	public static void load(final Scene scene) {
+	public static void load(final Scene rootScene) {
+		GameScene.scene = rootScene;
+
 		final Button button = new Button("Back to start");
 		final Pane pane = new Pane(button);
-		scene.setRoot(pane);
+		GameScene.scene.setRoot(pane);
 
 		JavaFxLabelProvider.setRoot(pane);
 
-		final IGameProcessor gameProcessor = GameScene.getGameProcessor(pane);
+		gameProcessor = GameScene.getGameProcessor(pane);
 
 		button.addEventHandler(ActionEvent.ANY, event -> {
-			try {
-				gameProcessor.end();
-				StartMenu.load(scene);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
 		});
 
 		gameProcessor.begin();
+	}
+
+	private static boolean endGame() {
+		try {
+			gameProcessor.end();
+			StartMenu.load(scene);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+		return true;
 	}
 
 	public static IGameProcessor getGameProcessor(final Pane pane) {
@@ -49,6 +58,8 @@ public final class GameScene {
 		gameSettings.setDisplayWidth(Math.toIntExact(Math.round(pane.getWidth())));
 
 		GameSettingsProvider.setSettings(gameSettings);
+
+		gameSettings.setEndGameCallback(GameScene::endGame);
 
 		pane.widthProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayWidth(newValue.intValue())));
 		pane.heightProperty().addListener(((observable, oldValue, newValue) -> gameSettings.setDisplayHeight(newValue.intValue())));
