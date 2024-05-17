@@ -53,22 +53,22 @@ public class DumbCache implements IPathCaching {
 				this.pathList = this.aStarSession.calculatePath(this.entity);
 				this.pathCreationTime = System.currentTimeMillis(); //get the time for when last times calculatePath called
 			}
-			if (getNextNodeCoordinate().isPresent()) {
-				return getNextNodeCoordinate().get();
+			if (this.getNextNodeCoordinate().isPresent()) {
+				return this.getNextNodeCoordinate().get();
 			}
 			return this.entity.getCoordinates();
 		}
 		//if cache is valid, return (optional Node) or current position
 
-		if (getNextNodeCoordinate().isPresent()) {
-			return getNextNodeCoordinate().get();
+		if (this.getNextNodeCoordinate().isPresent()) {
+			return this.getNextNodeCoordinate().get();
 		}
 		return this.entity.getCoordinates();
 
 	}
 
 	public boolean isCachedPathValid(IVector targetCoordinate) {
-		if (pathList.isEmpty()) {
+		if (this.pathList.isEmpty()) {
 			return false;
 		}
 		long currentTime = System.currentTimeMillis();
@@ -77,8 +77,8 @@ public class DumbCache implements IPathCaching {
 			return false;
 		}
 		IVector lastNodeCoordinate = this.pathList.getLast().getMapNode().getCenterCoordinates(); //last element is the goalCoordinate
-		System.out.println(lastNodeCoordinate);
 		double distance = targetCoordinate.getVectorTo(lastNodeCoordinate).getNorm();
+
 		if (distance > MAX_DISTANCE_NUM) {
 			this.flush();
 			return false;
