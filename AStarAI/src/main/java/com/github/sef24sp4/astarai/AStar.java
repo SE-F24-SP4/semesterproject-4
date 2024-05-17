@@ -44,7 +44,6 @@ public class AStar {
 		this.currentNode.setGCost(0);
 
 		while (!(this.currentNode.hasSameMapNode(this.goalNode))) { //while goal not reached
-
 			this.openList.remove(this.currentNode);
 			this.currentNode.setChecked(true);
 
