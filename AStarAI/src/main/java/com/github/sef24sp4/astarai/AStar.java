@@ -43,14 +43,14 @@ public class AStar {
 
 		this.currentNode.setGCost(0);
 
-		while (!(this.currentNode == this.goalNode)) { //while goal not reached
+		while (!(this.currentNode.hasSameMapNode(this.goalNode))) { //while goal not reached
 
 			this.openList.remove(this.currentNode);
 			this.currentNode.setChecked(true);
 
 			//get neighbors and open nodes.
 			for (Node eachNode : this.currentNode.getNeighboringNodesFromMapNode()) {
-				if (eachNode.getCoordinates() == this.goalNode.getCoordinates()) {
+				if (eachNode.hasSameMapNode(goalNode)) {
 					this.goalNode.setParent(this.currentNode);
 					this.currentNode = this.goalNode;
 					this.trackPath();
