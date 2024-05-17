@@ -6,16 +6,14 @@ import com.github.sef24sp4.common.ai.IPathfindingProvider;
 import com.github.sef24sp4.common.ai.map.Map;
 import com.github.sef24sp4.common.ai.map.MapProvider;
 import com.github.sef24sp4.common.entities.ICollidableEntity;
-import com.github.sef24sp4.common.interfaces.IGameSettings;
 import com.github.sef24sp4.common.vector.IVector;
 
 import java.util.*;
 
 public class EntityPathFinder implements IPathfindingProvider {
 	private static final int MAX_CAPACITY = 10;
-	private IGameSettings gameSettings;
 	private final SequencedMap<ICollidableEntity, IPathCaching> cachingMap = new LinkedHashMap<>();
-	private final Optional<Map> mapProvider = MapProvider.load(this.gameSettings); // return mapNode or Map? gamesettings?
+	private final Optional<Map> mapProvider = MapProvider.load();
 
 
 	@Override

@@ -50,7 +50,7 @@ public class AStar {
 
 			//get neighbors and open nodes.
 			for (Node eachNode : this.currentNode.getNeighboringNodesFromMapNode()) {
-				if (eachNode.hasSameMapNode(goalNode)) {
+				if (eachNode.hasSameMapNode(this.goalNode)) {
 					this.goalNode.setParent(this.currentNode);
 					this.currentNode = this.goalNode;
 					this.trackPath();
