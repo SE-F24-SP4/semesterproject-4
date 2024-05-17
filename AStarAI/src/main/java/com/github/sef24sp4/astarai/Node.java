@@ -1,6 +1,5 @@
 package com.github.sef24sp4.astarai;
 
-
 import com.github.sef24sp4.common.ai.map.MapNode;
 import com.github.sef24sp4.common.vector.IVector;
 
@@ -12,14 +11,15 @@ public class Node {
 	private double fCost;
 	private final IVector coordinates;
 	private final MapNode mapNode;
+	private boolean checked = false;
 
 	public Node(IVector coordinates, MapNode mapNode) {
 		this.coordinates = coordinates;
 		this.mapNode = mapNode;
 	}
 
-	public Collection<Node> getNeighboringNodes() {
-		return this.mapNode.getNeighboringNodes().stream().map(mapNode1 -> new Node(mapNode1.getCenterCoordinates(), mapNode1)).toList();
+	public Collection<Node> getNeighboringNodesFromMapNode() { //parameter Node?
+		return this.getMapNode().getNeighboringNodes().stream().map(mapNode1 -> new Node(mapNode1.getCenterCoordinates(), mapNode1)).toList();
 	}
 
 	public boolean hasSameMapNode(Node node) {
@@ -57,4 +57,13 @@ public class Node {
 	public void setParent(Node parent) {
 		this.parent = parent;
 	}
+
+	public boolean isChecked() {
+		return this.checked;
+	}
+
+	public void setChecked(final boolean checked) {
+		this.checked = checked;
+	}
+
 }

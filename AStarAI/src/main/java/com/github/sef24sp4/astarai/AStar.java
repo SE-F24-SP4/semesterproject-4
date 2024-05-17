@@ -7,9 +7,9 @@ import com.github.sef24sp4.common.vector.IVector;
 import java.util.*;
 
 public class AStar {
-	private final Node startNode;
-	private final Node goalNode;
-	private Node currentNode;
+	private final Node startNode; //startNode is where the entity using AI starts.
+	private final Node goalNode; //goalNode is the position of the target Goal.
+	private Node currentNode; //is used to iterate though path.
 	private final Collection<Node> openList = new HashSet<>();
 	private final List<Node> pathList = new LinkedList<>();
 
@@ -23,11 +23,6 @@ public class AStar {
 		return this.search(entity);
 	}
 
-	//Explaination
-	//startNode is where the entity using AI is.
-	//goalNode is the position of the targetGoal
-	//currentNode, is used when calculating next node to open.
-
 	private void setFCostForNode(Node aNode) {
 		//gCost
 		double distanceSoFar = aNode.getGCost();
@@ -37,16 +32,30 @@ public class AStar {
 		aNode.setFCost(distanceSoFar + heuristics);
 	}
 
+	/**
+	 * Using A* algorithm, this method finds the optimal path to a targetNode.
+	 * @param entity is the entity that needs to be moved.
+	 * @return a list of Nodes, which is the path of Nodes.
+	 * Each Node holds a MapNode and a Coordinate.
+	 */
 	private List<Node> search(ICollidableEntity entity) {
-
 		this.currentNode = this.startNode; //at first current node is the same as startnode
+
 		this.currentNode.setGCost(0);
-		while (!this.currentNode.hasSameMapNode(this.goalNode)) { //while goal == not reached
+
+		while (!(this.currentNode == this.goalNode)) { //while goal not reached
 
 			this.openList.remove(this.currentNode);
+			this.currentNode.setChecked(true);
 
 			//get neighbors and open nodes.
-			for (Node eachNode : this.currentNode.getNeighboringNodes()) {
+			for (Node eachNode : this.currentNode.getNeighboringNodesFromMapNode()) {
+				if (eachNode.getCoordinates() == this.goalNode.getCoordinates()) {
+					this.goalNode.setParent(this.currentNode);
+					this.currentNode = this.goalNode;
+					this.trackPath();
+					return this.pathList;
+				}
 				this.openNode(entity, eachNode);
 			}
 
@@ -60,18 +69,13 @@ public class AStar {
 			if (minNode.isPresent()) {
 				this.currentNode = minNode.get();
 			}
-
-			if (this.currentNode.hasSameMapNode(this.goalNode)) { //if currentNode equals goalNode, goal is reached
-				this.trackPath();
-			}
 		}
+		this.trackPath(); //when whileloop is over : track Path and add to pathList
 		return this.pathList;
 	}
 
-
 	private void trackPath() {
-
-		while (!this.currentNode.hasSameMapNode(this.startNode)) { //while current node != startnode : backtrack path
+		while (!(this.currentNode == this.startNode)) { //while current node != startnode : backtrack path
 			this.pathList.add(0, this.currentNode);
 			this.currentNode = this.currentNode.getParent(); //parent to currentnode, is the next on path.
 		}
@@ -80,6 +84,7 @@ public class AStar {
 	//Method for open node if not already in the openList
 	private void openNode(ICollidableEntity entity, Node aNode) {
 		if (this.openList.contains(aNode)) return;
+		if (aNode.isChecked()) return;
 
 		//Check how far Entity can go into the aNode.
 		try {
@@ -100,8 +105,6 @@ public class AStar {
 		} catch (NotAdjacentNodeException e) {
 			throw new RuntimeException(e);
 		}
-
-
 	}
 
 }
