@@ -24,14 +24,15 @@
 		<module>CommonWeapon</module>
 		<module>CommonWorldMap</module>
 		<module>Core</module>
+		<module>FPSCounter</module>
 		<module>HealthItem</module>
 		<module>Inventory</module>
+		<module>ItemPack</module>
 		<module>Player</module>
 		<module>PolygonEnemy</module>
 		<module>WaveManager</module>
-		<module>WorldMap</module>
 		<module>WeaponPack</module>
-		<module>ItemPack</module>
+		<module>WorldMap</module>
 	</modules>
 
 	<properties>

@@ -1,6 +1,7 @@
 AStarAI
 BaseWeapon
 CollisionSystem
+Common
 CommonAI
 CommonCollisionSystem
 CommonEnemy
@@ -9,13 +10,13 @@ CommonItem
 CommonProjectile
 CommonWeapon
 CommonWorldMap
-Common
 Core
 HealthItem
 Inventory
+ItemPack
 Player
 PolygonEnemy
-WorldMap
 WaveManager
 WeaponPack
-ItemPack
+WorldMap
+FPSCounter
