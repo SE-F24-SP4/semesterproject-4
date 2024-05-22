@@ -1,16 +1,14 @@
 package com.github.sef24sp4.itempack;
 
 import com.github.sef24sp4.common.entities.ICollidableEntity;
-import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import com.github.sef24sp4.common.interfaces.IEntityManager;
 import com.github.sef24sp4.common.item.CommonItem;
-import com.github.sef24sp4.common.item.ItemRarity;
+import com.github.sef24sp4.common.item.itemtypes.ISpeedItem;
 import com.github.sef24sp4.common.metadata.GameElementType;
 import com.github.sef24sp4.common.vector.Coordinates;
 
 public class SpeedItem extends CommonItem implements ISpeedItem {
-	private final ItemRarity rarity = ItemRarity.UNCOMMON;
-	private final double speed = 0.2;
+	private final double speed = 1.2;
 	private final long itemDuration = 1000 * 10;
 
 	public SpeedItem() {

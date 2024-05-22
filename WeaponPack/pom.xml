@@ -28,12 +28,6 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>CommonWeapon</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>CommonItem</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>

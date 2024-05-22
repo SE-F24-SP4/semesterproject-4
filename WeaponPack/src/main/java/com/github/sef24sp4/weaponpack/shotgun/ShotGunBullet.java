@@ -15,10 +15,10 @@ public class ShotGunBullet extends AbstractProjectile {
 	protected ShotGunBullet(IEntity shooter) {
 		super(shooter);
 		this.setPolygonCoordinates(
-				new Coordinates(-3, 3),
-				new Coordinates(-3, -3),
-				new Coordinates(3, -3),
-				new Coordinates(3, 3)
+				new Coordinates(-2, 2),
+				new Coordinates(-2, -2),
+				new Coordinates(2, -2),
+				new Coordinates(2, 2)
 		);
 	}
 

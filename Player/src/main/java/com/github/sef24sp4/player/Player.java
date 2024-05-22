@@ -43,11 +43,6 @@ public final class Player extends CommonEntity implements ICollidableEntity {
 		);
 	}
 
-	/**
-	 * The player is a singleton.
-	 *
-	 * @return The only instance of the player
-	 */
 	public static Player getPlayer() {
 		return activePlayerInstance;
 	}

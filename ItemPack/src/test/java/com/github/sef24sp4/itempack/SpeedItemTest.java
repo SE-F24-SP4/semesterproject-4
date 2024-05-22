@@ -50,7 +50,7 @@ class SpeedItemTest {
 
 	@Test
 	void getSpeedAmount() {
-		assertEquals(0.2, this.speedItem.getSpeedAmount());
+		assertEquals(1.2, this.speedItem.getSpeedAmount());
 	}
 
 	@Test
