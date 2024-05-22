@@ -37,6 +37,7 @@ public final class GameScene {
 		gameProcessor = GameScene.getGameProcessor(pane);
 
 		button.addEventHandler(ActionEvent.ANY, event -> {
+			endGame();
 		});
 
 		gameProcessor.begin();
