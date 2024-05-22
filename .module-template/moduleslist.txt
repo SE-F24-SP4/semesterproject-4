@@ -11,12 +11,13 @@ CommonProjectile
 CommonWeapon
 CommonWorldMap
 Core
+FPSCounter
 HealthItem
 Inventory
 ItemPack
+NewBaseWeapon
 Player
 PolygonEnemy
 WaveManager
 WeaponPack
 WorldMap
-FPSCounter

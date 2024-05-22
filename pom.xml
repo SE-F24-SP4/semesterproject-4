@@ -32,6 +32,7 @@
 		<module>PolygonEnemy</module>
 		<module>WaveManager</module>
 		<module>WeaponPack</module>
+		<module>NewBaseWeapon</module>
 		<module>WorldMap</module>
 	</modules>
 
