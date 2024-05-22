@@ -49,12 +49,15 @@ public class CollisionSystem implements CollisionSystemSPI {
 			this.collidableEntities.add(c);
 		}
 
+
 		this.map.clearEntities();
 
 		for (final CollidableEntityContainer entity : this.collidableEntities) {
 			this.map.addEntity(entity);
 
 			this.map.getCollidingEntitiesFor(entity).forEach(other -> {
+				if (this.toBeRemoved.contains(entity) || this.toBeRemoved.contains(other)) return;
+
 				entity.getEntity().collide(entityManager, other.getEntity());
 				other.getEntity().collide(entityManager, entity.getEntity());
 			});

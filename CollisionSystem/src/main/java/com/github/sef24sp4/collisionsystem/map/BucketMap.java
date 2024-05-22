@@ -24,7 +24,7 @@ public final class BucketMap implements IGridMap {
 	}
 
 	public static BucketMap generate(final IGameSettings gameSettings) {
-		return generate(gameSettings, 10);
+		return generate(gameSettings, 100);
 	}
 
 	private BucketMap initializeGrid(final INodeFactory factory) {
