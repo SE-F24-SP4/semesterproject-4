@@ -59,10 +59,8 @@ public class EvictingQueue<E> {
 	}
 
 	public int size() {
-		if (this.oldestElementIndex == EMPTY_INDEX) return 0;
-
-		final int betweenIndexes = this.newestElementIndex - this.oldestElementIndex + 1;
-		if (betweenIndexes > 0) return betweenIndexes;
-		return this.array.length - betweenIndexes;
+		if (this.isEmpty()) return 0;
+		// https://stackoverflow.com/a/63260131
+		return ((this.array.length + this.newestElementIndex - this.oldestElementIndex) % this.array.length) + 1;
 	}
 }
