@@ -23,6 +23,7 @@ public class SpeedControl {
 	 */
 	public double getSpeed() {
 		if (this.isSpeedBuffActive()) return this.speed;
+		this.speed = this.defaultSpeed;
 		return this.defaultSpeed;
 	}
 
