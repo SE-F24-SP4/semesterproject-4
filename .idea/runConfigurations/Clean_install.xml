@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Clean run" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Clean install" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -11,7 +11,10 @@
           </option>
           <option name="goals">
             <list>
-              <option value="exec:exec" />
+              <option value="clean" />
+              <option value="install" />
+              <option value="-T" />
+              <option value="2C" />
             </list>
           </option>
           <option name="multimoduleDir" />
@@ -27,8 +30,6 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Clean install" run_configuration_type="MavenRunConfiguration" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>

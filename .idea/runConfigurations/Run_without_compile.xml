@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Clean run" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="Run without compile" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -27,8 +27,6 @@
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Clean install" run_configuration_type="MavenRunConfiguration" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>
