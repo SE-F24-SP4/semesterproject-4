@@ -26,3 +26,4 @@ public interface IGameSettings {
 	 */
 	public boolean stopGame();
 }
+
